@@ -7,4 +7,5 @@ urlpatterns = [
     path('login', views.toLoginPage, name="login"),
     path('register', views.toRegisterPage, name="register"),
     path('forgot', views.toForgotPage, name="forgot"),
+    path('otp', views.toOtpPage, name="otp")
 ]

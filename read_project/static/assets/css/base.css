@@ -3,7 +3,6 @@
   background-color: #18191a;
   position: sticky;
   z-index: 1;
-  justify-content: flex-start;
   height: 10vh;
   padding: 0;
 }
@@ -12,7 +11,7 @@
   background: none;
   border: none;
   height: 10vh;
-  margin: 0;  
+  margin: 0;
 }
 
 .navbar-brand a{

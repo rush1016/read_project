@@ -12,3 +12,6 @@ def toRegisterPage(request):
 
 def toForgotPage(request):
     return render(request, 'forgot.html')
+
+def toOtpPage(request):
+    return render(request, 'confirm_otp.html')
