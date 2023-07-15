@@ -1,0 +1,85 @@
+body {
+  background-color: #63a4ff;
+}
+
+/* User Dropdown */
+.navbar-nav .dropdown-menu {
+background-color: #18191a;
+border: none;
+padding: 10px;
+min-width: 120px;
+}
+
+.navbar-nav .dropdown-item {
+color: #ffffff;
+font-size: 16px;
+}
+
+.navbar-nav .dropdown-item:hover {
+background-color: #b30e0e;
+border-radius: 5px;
+}
+
+.navbar-nav .dropdown-divider {
+border-top-color: #b30e0e;
+}
+
+
+/* Quiz Container */
+.quiz-container h1 {
+  margin-bottom: 30px;
+  color: #ffffff;
+}
+
+.quiz-container {
+  max-width: 800px; 
+}
+
+.instructions {
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+
+.instructions h5 {
+  margin-bottom: 10px;
+}
+
+.instructions ol {
+  margin-left: 10px;
+}
+
+
+/* Questions & Choices */
+.question-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #009687;
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.choices label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.choices input[type="text"] {
+  width: 100%; /* Adjust the width as needed */
+  padding: 10px; /* Adjust the padding as needed */
+  font-size: 16px; /* Adjust the font size as needed */
+}
+
+
+.button-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.button-container button {
+  width: 100%;
+}
+

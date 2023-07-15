@@ -1,0 +1,147 @@
+.profile-heading {
+    margin-bottom: 30px;
+    padding: 4%;
+}
+
+.profile-heading .row {
+    align-items: center;
+    justify-content: space-around;
+}
+
+.profile-heading .col-md-6 {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 2%;
+}
+
+.profile-heading h2 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    padding-top: 10px;
+}
+
+.profile-heading h5 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.profile-heading .rating-text {
+    font-size: 1rem;
+    margin-left: 20px;
+}
+
+
+/* Performance Section */
+.card-performance {
+    background-color: #f8f9fa;
+    border: none;
+    padding: 2%;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.card-performance h5 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-performance p {
+    margin-bottom: 0;
+    font-size: 2rem;
+    color: #000000;
+}
+
+.card-performance.average-words {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.card-performance.average-reading-time {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.card-performance.average-score {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.card-body p {
+    color: #ffffff;
+}
+
+
+/* Assessments Summary Section */
+.assessments-summary {
+    margin-bottom: 30px;
+    padding: 2%;
+}
+
+.assessments-summary .assessments-summary-info {
+    padding-right: 15px;
+}
+
+.assessments-summary-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.assessments-summary-item .legend-color {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.assessments-summary-item h5 {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.assessments-summary-item .value-column {
+    flex-grow: 1;
+    text-align: right;
+    font-size: 1.6rem;
+}
+
+.pie-chart-container {
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.assessments-summary-chart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.assessments-summary-chart .pie-chart .chart-percent {
+    font-size: 2.4rem;
+}
+
+.value-column {
+    display: flex;
+    align-items: center;
+    font-size: 2.4rem;
+}
+
+.assessments-summary-item {
+    display: flex;
+    align-items: center;
+}
+
+.assessments-summary-item h5 {
+    margin-right: 10px;
+    width: 60%;
+}
+
+.assessments-summary-item .value-column {
+    flex-grow: 1;
+    text-align: right;
+}

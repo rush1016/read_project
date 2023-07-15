@@ -1,0 +1,135 @@
+/* Hero Section */
+.banner {
+  height: 60vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.banner .container {
+  position: absolute; 
+  left:0; 
+  right:0; 
+  top:40%; 
+  text-align:left; 
+  transform:translateY(-50%)
+}
+
+.banner img{
+  max-width: 100%;
+  width: 100%;
+  min-width: 1000px;
+  filter: brightness(70%);
+}
+
+.btn-assessment {
+  background: none;
+  border: solid;
+  border-color: #ffffff;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn-assessment:hover {
+  background-color: #00a003;
+  border-color: #00a003;
+}
+
+
+.cta-button {
+  font-size: 18px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #000;
+}
+
+/* Modal */
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 3.5rem);
+}
+
+
+
+/* Features Section */
+#features {
+  background-color: #fff;
+  padding: 50px 0;
+}
+
+#features h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #000;
+}
+
+#features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#features li {
+  margin-bottom: 20px;
+}
+
+#features i {
+  font-size: 48px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+#features h4 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+/* About Section */
+#about {
+  padding: 50px 0;
+}
+
+#about h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #000;
+}
+
+#about p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #000;
+}
+
+#about img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Footer */
+footer {
+  background-color: #18191a;
+  color: #ffffff;
+  text-align: center;
+  padding: 16px 0;
+  position: static;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  font-size: 14px;
+  margin: 0;
+}

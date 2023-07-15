@@ -1,0 +1,185 @@
+/* Forms */
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
+
+
+/* Assessment Container */
+.assessment-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 20px;
+  background-color: #ececec;
+  border-radius: 20px;
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.assessment-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.assessment-container div {
+  margin-bottom: 30px;
+}
+
+.assessment-container h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.assessment-container p {
+  margin-bottom: 10px;
+}
+
+.assessment-container a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.assessment-container a:hover {
+  background-color: #0056b3;
+}
+
+
+/* Grade Container */
+.grade-container {
+  margin-bottom: 30px;
+}
+
+.grade-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.grade-container div {
+  margin-bottom: 30px;
+}
+
+.grade-container h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.grade-container p {
+  margin-bottom: 10px;
+}
+
+.grade-container a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.grade-container a:hover {
+  background-color: #0056b3;
+}
+
+
+/* Modal */
+.modal-dialog {
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  border-radius: 5px;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  justify-content: flex-end;
+  border-top: none;
+}
+
+
+/* Test Type List */
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* Quiz Container */
+.quiz-container h1 {
+  margin-bottom: 30px;
+}
+
+.quiz-container {
+  max-width: 800px; 
+  margin: 30px auto;
+  padding: 20px;
+}
+
+
+/* Questions & Choices */
+.question-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #ececec;
+  border-radius: 20px;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.choices label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.button-container button {
+  margin-left: 15px;
+}
+
+

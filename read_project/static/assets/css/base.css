@@ -1,0 +1,83 @@
+/* Navbar */
+.navbar {
+  background-color: #18191a;
+  position: sticky;
+  z-index: 1;
+  justify-content: flex-start;
+  height: 10vh;
+  padding: 0;
+}
+
+.navbar-brand {
+  background: none;
+  border: none;
+  height: 10vh;
+  margin: 0;  
+}
+
+.navbar-brand a{
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.navbar-brand a:hover{
+  color: #00a003;
+}
+
+.navbar-nav {
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: auto;
+}
+
+.navbar-nav .nav-link {
+  color: #ffffff;
+  margin-right: 30px;
+  font-size: 18px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #00a003;
+}
+
+.navbar-nav .nav-link i {
+  margin-right: 5px;
+}
+
+/* User Dropdown */
+.navbar-nav .dropdown-menu {
+  background-color: #18191a;
+  border: none;
+  padding: 10px;
+  min-width: 120px;
+}
+
+.navbar-nav .dropdown-item {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.navbar-nav .dropdown-item:hover {
+  background-color: #00a003;
+  border-radius: 5px;
+}
+
+.navbar-nav .dropdown-divider {
+  border-top-color: #00a003;
+}
+
+/* Footer */
+footer {
+  background-color: #18191a;
+  color: #ffffff;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer p {
+  font-size: 14px;
+  margin: 0;
+}
