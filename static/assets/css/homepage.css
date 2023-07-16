@@ -1,11 +1,45 @@
 /* Hero Section */
 .banner {
-  position: relative;
+  height: 60vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.banner .container {
+  position: absolute; 
+  left:0; 
+  right:0; 
+  top:40%; 
+  text-align:left; 
+  transform:translateY(-50%)
 }
 
 .banner img{
+  max-width: 100%;
   width: 100%;
+  min-width: 1000px;
+  filter: brightness(70%);
 }
+
+.btn-assessment {
+  background: none;
+  border: solid;
+  border-color: #ffffff;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn-assessment:hover {
+  background-color: #00a003;
+  border-color: #00a003;
+}
+
+
 .cta-button {
   font-size: 18px;
   padding: 12px 24px;

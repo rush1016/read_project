@@ -1,3 +1,9 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Navbar */
 .navbar {
   background-color: #18191a;
@@ -44,6 +50,10 @@
   margin-right: 5px;
 }
 
+#navbarNav {
+  background-color: #18191a;
+  margin: 0;
+}
 /* User Dropdown */
 .navbar-nav .dropdown-menu {
   background-color: #18191a;
@@ -74,6 +84,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  bottom: 0;
+  margin-top: auto;
 }
 
 footer p {
