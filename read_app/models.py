@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 import datetime
 
@@ -10,12 +11,11 @@ class Admin(models.Model):
     date_created = models.DateField(default=datetime.date.today)
 
 
-class Teacher(models.Model):
+class Teacher(AbstractUser):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
-    email = models.EmailField(max_length=80)
-    password = models.CharField(max_length=80)
     date_created = models.DateField(default=datetime.date.today)
+    
     def __str__(self):
         return (f"{self.first_name} {self.last_name}")
 
@@ -107,7 +107,8 @@ class AssessmentInfo(models.Model):
     second_passage = models.IntegerField()
     third_passage = models.IntegerField()
     fourth_passage = models.IntegerField()
-    time = models.TimeField()
+    read_time = models.TimeField(default=None)
+    answer_time = models.TimeField(default=None)
     score = models.IntegerField()
-    date_started = models.DateTimeField()
-
+    date_started = models.DateTimeField(null=True, blank=True)
+    date_finished = models.DateTimeField(null=True, blank=True)
