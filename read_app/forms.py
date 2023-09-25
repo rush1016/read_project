@@ -64,7 +64,20 @@ class CustomPasswordResetConfirmForm(SetPasswordForm):
         self.fields['new_password2'].label = ''
         self.fields['new_password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'	
 
-class StudentForm(forms.ModelForm):
+class AddStudentForm(forms.ModelForm):
+    GRADE_LEVEL_CHOICES = [
+        (4, 'Grade 4'),
+        (5, 'Grade 5'),
+        (6, 'Grade 6'),
+    ]
+
+    grade_level = forms.ChoiceField(choices=GRADE_LEVEL_CHOICES, label='Grade Level')
+
+    class Meta:
+        model = Student
+        fields = ['first_name', 'last_name', 'grade_level']
+
+class EditStudentForm(forms.ModelForm):
     GRADE_LEVEL_CHOICES = [
         (4, 'Grade 4'),
         (5, 'Grade 5'),

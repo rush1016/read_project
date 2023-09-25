@@ -7,62 +7,13 @@
     <h2>Student List</h2>
     
     <!-- This is the table that is included from another template -->
-    {% include 'partial_student_table.html' %}  
+    {% include 'partial_student_table.html' %}
 
-    <!-- Button to trigger the modal -->
-    <button type="button" class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-        Add Student
-    </button>
-    <!-- End Modal Button -->
+    <!--Modal adding student records -->
+    {% include 'modal_add_student.html' %}
 
-    <!-- Modal -->
-    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{% url 'add_student' %}" id="addStudentForm">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal -->
+    <!--Modal for editing student records-->
+    {% include 'modal_edit_student.html' %}
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#addStudentForm').submit(function(e) {
-            e.preventDefault();
-            // Get the CSRF token
-            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-            
-            $.ajax({
-                type: 'POST',
-                url: '{% url "add_student" %}',  
-                data: $('#addStudentForm').serialize(),
-                headers: {
-                    'X-CSRFToken': csrfToken  // Include the CSRF token in the headers
-                },
-                success: function(response) {
-                    // Handle success
-                    $('#addStudentModal').modal('hide');
-                    // Update the student list
-                    $('#studentList').html(response.html_student_list);
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(error);
-                }
-            });
-        });
-    });
-</script>
 {% endblock %}

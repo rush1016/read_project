@@ -4,7 +4,7 @@ from .models import Teacher, Student
 
 # Teacher (User)
 class TeacherAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'email', 'date_created', 'is_staff')
+    list_display = ('id', 'username', 'first_name', 'last_name', 'email', 'date_created', 'is_staff')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email', 'date_created')}),
@@ -20,8 +20,9 @@ class TeacherAdmin(UserAdmin):
 
 admin.site.register(Teacher, TeacherAdmin)
 
+
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'grade_level', 'date_added')
+    list_display = ('teacher_id', 'first_name', 'last_name', 'grade_level', 'date_added')
     list_filter = ('grade_level', 'date_added')
     search_fields = ('first_name', 'last_name')
     ordering = ('date_added',)

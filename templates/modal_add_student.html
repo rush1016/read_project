@@ -1,0 +1,57 @@
+<!-- Button to trigger the modal -->
+<button type="button" class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+    Add Student
+</button>
+<!-- End Modal Button -->
+
+<!-- Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="addStudentForm">
+                    {% csrf_token %}
+                    {{ addStudentForm.as_p }}
+                    <button type="submit" class="btn btn-success w-100">Add Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#addStudentForm').submit(function(e) {
+            e.preventDefault();
+                
+            $.ajax({
+                type: 'POST',
+                url: '{% url "add_student" %}',  
+                data: $('#addStudentForm').serialize(),
+                
+                success: function(response) {
+                    // Handle success
+                    $('#addStudentModal').modal('hide');
+                    // Update the student list
+                    $('#studentList').html(response.html_student_list);
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+    // Clear the form fields when the modal is closed
+    $('#addStudentModal').on('hidden.bs.modal', function() {
+        $('#addStudentForm')[0].reset();
+    });
+</script>

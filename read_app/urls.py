@@ -23,4 +23,7 @@ urlpatterns = [
     # Student Records Handling
     path('student_list', views.student_list, name="student_list"),
     path('add_student', views.add_student, name="add_student"),
+    path('get_student_info/<int:student_id>', views.get_student_info, name="get_student_info"),
+    path('edit_student/<int:student_id>', views.edit_student, name="edit_student"),
+    path('delete_student/<int:student_id>/', views.delete_student, name='delete_student'),
 ]
