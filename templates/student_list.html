@@ -5,15 +5,45 @@
 
 <div class="container">
     <h2>Student List</h2>
-    
-    <!-- This is the table that is included from another template -->
+    <!-- Filter records -->
+    {% include 'filter_student_table.html' %}
+
+    <div class="add-button-container d-flex flex-row-reverse">
+        <!-- Button to trigger the modal -->
+        <button type="button" class="btn btn-success w-25 mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+            Add Student
+        </button>
+    </div>
+    <!-- End Modal Button -->
+
+    <!-- Student table that contains student records -->
     {% include 'partial_student_table.html' %}
 
-    <!--Modal adding student records -->
+    <!-- Modal adding student records -->
     {% include 'modal_add_student.html' %}
 
-    <!--Modal for editing student records-->
+    <!-- Modal for editing student records-->
     {% include 'modal_edit_student.html' %}
+
+    <!-- Modal for delete record confirmation-->
+    {% include 'modal_delete_student.html' %}
 </div>
 
+<!--Include jQuery -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js'%}"></script>
+
+<!--Script for fetching class section data -->
+<script src="{% static 'assets/js/get_class_section_data.js' %}"></script>
+
+<!--Script for fetching class section data -->
+<script src="{% static 'assets/js/get_single_student_record.js' %}"></script>
+
+<!--Script for dynamic class section choices -->
+<script src="{% static 'assets/js/dynamic_choice_field.js' %}"></script>
+
+<!--Script for auto filling the edit form -->
+<script src="{% static 'assets/js/auto_fill_edit_form.js' %}"></script>
+
+<!-- Filter script -->
+<script src="{% static 'assets/js/filter_student_table.js' %}"></script>
 {% endblock %}

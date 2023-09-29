@@ -20,6 +20,11 @@ class Teacher(AbstractUser):
         return (f"{self.first_name} {self.last_name}")
 
 
+class ClassSection(models.Model):
+    grade_level = models.IntegerField()
+    section_name = models.CharField(max_length=80)
+
+
 class Student(models.Model):
     teacher = models.ForeignKey(
         'read_app.Teacher', on_delete=models.CASCADE
@@ -27,6 +32,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
+    class_section = models.CharField(max_length=80, default='undefined')
     date_added = models.DateField(default=datetime.date.today)
 
 

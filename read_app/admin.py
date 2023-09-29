@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Teacher, Student
+from .models import Teacher, Student, ClassSection
 
 # Teacher (User)
 class TeacherAdmin(UserAdmin):
@@ -18,13 +18,22 @@ class TeacherAdmin(UserAdmin):
         }),
     )
 
-admin.site.register(Teacher, TeacherAdmin)
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('teacher_id', 'first_name', 'last_name', 'grade_level', 'date_added')
+    list_display = ('teacher_id', 'first_name', 'last_name', 'grade_level', 'class_section','date_added')
     list_filter = ('grade_level', 'date_added')
     search_fields = ('first_name', 'last_name')
     ordering = ('date_added',)
 
+
+class ClassSectionAdmin(admin.ModelAdmin):
+    list_display = ('grade_level', 'section_name')
+    filter = ('grade_level')
+    search_field = ('section_name')
+
+
+# Register Models into the Admin Site
+admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Student, StudentAdmin)
+admin.site.register(ClassSection, ClassSectionAdmin)

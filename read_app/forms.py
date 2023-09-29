@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm,password_validation
-from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django import forms
-from .models import Teacher, Student
+from .models import Teacher, Student, ClassSection
+from string import capwords
+
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -64,28 +66,55 @@ class CustomPasswordResetConfirmForm(SetPasswordForm):
         self.fields['new_password2'].label = ''
         self.fields['new_password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'	
 
-class AddStudentForm(forms.ModelForm):
-    GRADE_LEVEL_CHOICES = [
-        (4, 'Grade 4'),
-        (5, 'Grade 5'),
-        (6, 'Grade 6'),
-    ]
 
-    grade_level = forms.ChoiceField(choices=GRADE_LEVEL_CHOICES, label='Grade Level')
+class StudentForm(forms.ModelForm):
+    # Regular expression pattern for valid names
+    name_validator = RegexValidator(
+        regex=r'^[A-Za-z\s\'-]+$',
+        message='Enter a valid name containing only letters, spaces, hyphens, and apostrophes.',
+    )
+    # Apply the validator for both first_name and last_name
+    first_name = forms.CharField(
+        validators=[name_validator],  
+        label='First Name',
+    )
+    last_name = forms.CharField(
+        validators=[name_validator],  
+        label='Last Name',
+    )
+    grade_level = forms.ChoiceField(choices=[], label='Grade Level')
+    class_section = forms.ChoiceField(choices=[], label='Section')
+
+    # Override clean methods to convert to Title Case / Capital first letter
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        return capwords(first_name)
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data['last_name']
+        return capwords(last_name)
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'grade_level']
+        fields = ['first_name', 'last_name', 'grade_level', 'class_section']
 
-class EditStudentForm(forms.ModelForm):
-    GRADE_LEVEL_CHOICES = [
-        (4, 'Grade 4'),
-        (5, 'Grade 5'),
-        (6, 'Grade 6'),
-    ]
+    def __init__(self, *args, **kwargs):
+        super(StudentForm, self).__init__(*args, **kwargs)
 
-    grade_level = forms.ChoiceField(choices=GRADE_LEVEL_CHOICES, label='Grade Level')
+        grade_level_choices = [
+            (4, 'Grade 4'),
+            (5, 'Grade 5'),
+            (6, 'Grade 6'),
+        ]
+        class_section_choices = [(obj.section_name, obj.section_name) for obj in ClassSection.objects.all()]
 
-    class Meta:
-        model = Student
-        fields = ['first_name', 'last_name', 'grade_level']
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+
+        self.fields['grade_level'].choices = grade_level_choices
+        self.fields['grade_level'].widget.attrs['class'] = 'form-select'
+        self.fields['grade_level'].widget.attrs['required'] = 'required'
+
+        self.fields['class_section'].choices = class_section_choices
+        self.fields['class_section'].widget.attrs['class'] = 'form-select'
+        self.fields['class_section'].widget.attrs['required'] = 'required'

@@ -2,11 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
 from django.http import JsonResponse, Http404
-
-from .forms import RegisterForm, AddStudentForm, EditStudentForm
-from .models import Student
+from .forms import RegisterForm, StudentForm
+from .models import Student, ClassSection
 
 
 # Account Handling Views 
@@ -70,8 +68,8 @@ def forgot_password(request):
 @login_required
 def student_list(request):
     students = Student.objects.filter(teacher_id=request.user.id).order_by('id')
-    addStudentForm = AddStudentForm()
-    editStudentForm = EditStudentForm()
+    addStudentForm = StudentForm()
+    editStudentForm = StudentForm()
     context = {
         'students': students,
         # Forms
@@ -84,32 +82,37 @@ def student_list(request):
 
 def add_student(request):
     if request.method == 'POST':
-        form = AddStudentForm(request.POST)
+        form = StudentForm(request.POST)
 
         if form.is_valid():
             student = form.save(commit=False)
             student.teacher_id = request.user.id
             student.save()
+            messages.success(request, 'Student record successfully added')
 
-            # Get the updated student list as HTML
-            students = Student.objects.filter(teacher_id=request.user.id)
-            html_student_list = render_to_string('partial_student_table.html', {'students': students})
+            return redirect('student_list')
+        else:
+            messages.error(request, form.errors)
 
-            return JsonResponse({'success': True, 'html_student_list': html_student_list})
-    
-    return JsonResponse({'success': False, 'errors': form.errors})
+            return redirect('student_list')
+
+    else:
+        form = StudentForm()
+   
+        messages.error(request, form.errors) 
+        return redirect('student_list')
 
 
 def get_student_info(request, student_id):
     try:
         # Retrieve the student record
         student = get_object_or_404(Student, pk=student_id)
-        
         student_data = {
             'id': student.id,
             'first_name': student.first_name,
             'last_name': student.last_name,
             'grade_level': student.grade_level,
+            'class_section': student.class_section, 
         }
 
         return JsonResponse({'success': True, 'data': student_data})
@@ -117,25 +120,30 @@ def get_student_info(request, student_id):
     except Http404:
         # Handle the case where the student record is not found
         return JsonResponse({'success': False, 'error': 'Student not found'}, status=404)
-    except Exception as e:
-        # Handle other exceptions
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
 def edit_student(request, student_id):
     if request.method == 'POST':
         # Retrieve the student record
         student = get_object_or_404(Student, pk=student_id)
-        form = EditStudentForm(request.POST, instance=student)
+        form = StudentForm(request.POST, instance=student)
 
         if form.is_valid():
-            form.save()  # Save the edited data to the database
+            # Form is accepted
+            form.save()
             messages.success(request, 'Student record edited.')
 
             return redirect('../student_list')
         else:
             # Form validation failed
-            return JsonResponse({'errors': form.errors})
+            if (form.errors.get('first_name')):
+                formError = form.errors.get('first_name')
+            elif (form.errors.get('last_name')):
+                formError = form.errors.get('last_name')
+            formError = form.errors
+
+            messages.error(request, formError)
+            return redirect('../student_list')
 
 
 def delete_student(request, student_id):
@@ -150,3 +158,8 @@ def delete_student(request, student_id):
 
     messages.error(request, "An error occured.")
     return redirect('student_list')
+
+
+def get_class_section_data(request):
+    class_section_data = ClassSection.objects.values('grade_level', 'section_name')
+    return JsonResponse({'class_section_data': list(class_section_data)})

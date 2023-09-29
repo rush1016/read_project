@@ -7,44 +7,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{% url 'edit_student' 0 %}" id="editStudentForm">
+                <form method="POST" action="edit_student/0" id="editStudentForm">
                     {% csrf_token %}
                     {{ editStudentForm.as_p }}
-                    <button type="submit" class="btn btn-success w-100">Done</button>
+                    <!-- Button container -->
+                    <div class="container d-flex justify-content-around">
+                        <button type="submit" class="btn btn-success w-50 m-1">Done</button>
+                        <button type="button" class="btn btn-secondary w-50 m-1" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <!-- End Modal -->
-
-
-<script>
-    $(document).ready(function() {
-        $('.edit-student-btn').click(function() {
-            let studentId = $(this).data('student-id');
-            let modalForm = $('#editStudentForm');
-           
-            // Set the form action with the studentId
-            modalForm.attr('action', '{% url "edit_student" 0 %}'.replace('0', studentId));
-
-            // AJAX request to retrieve student data based on the studentId
-            $.ajax({
-                type: 'GET',
-                url: '/get_student_info/' + studentId,
-
-                success: function(response) {
-                    // Populate the form fields with the retrieved data
-                    modalForm.find('#id_first_name').val(response.data['first_name']);
-                    modalForm.find('#id_last_name').val(response.data['last_name']);
-                    modalForm.find('#id_grade_level').val(response.data['grade_level']);
-                    
-                    console.log(response.data);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
-    });
-</script>
