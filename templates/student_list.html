@@ -3,14 +3,17 @@
 
 {% block content %}
 
-<div class="container">
-    <h2>Student List</h2>
+<div class="container mt-5">
+    <h2 class="display-3 mt-3">Student List</h2>
     <!-- Filter records -->
-    {% include 'filter_student_table.html' %}
 
-    <div class="add-button-container d-flex flex-row-reverse">
+    <div class="form-group d-flex justify-content-end p-3">
+        <!-- Filter options -->
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." value="">
+        {% include 'filter_student_table.html' %}
+        
         <!-- Button to trigger the modal -->
-        <button type="button" class="btn btn-success w-25 mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+        <button type="button" class="btn btn-success w-25 h-50 my-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
             Add Student
         </button>
     </div>
@@ -22,6 +25,9 @@
     <!-- Modal adding student records -->
     {% include 'modal_add_student.html' %}
 
+    <!-- Modal for confirmation of adding from archived records -->
+    {% include 'modal_add_archived_student.html' %}
+
     <!-- Modal for editing student records-->
     {% include 'modal_edit_student.html' %}
 
@@ -31,6 +37,9 @@
 
 <!--Include jQuery -->
 <script src="{% static 'assets/js/jquery-3.6.0.min.js'%}"></script>
+
+<!-- Script for calling add_student view -->
+<script src="{% static 'assets/js/add_student.js' %}"></script>
 
 <!--Script for fetching class section data -->
 <script src="{% static 'assets/js/get_class_section_data.js' %}"></script>
@@ -42,7 +51,10 @@
 <script src="{% static 'assets/js/dynamic_choice_field.js' %}"></script>
 
 <!--Script for auto filling the edit form -->
-<script src="{% static 'assets/js/auto_fill_edit_form.js' %}"></script>
+<script src="{% static 'assets/js/fill_form_fields.js' %}"></script>
+
+<!-- Populate Section Filter -->
+<script src="{% static 'assets/js/populate_filter_by_section.js' %}"></script>
 
 <!-- Filter script -->
 <script src="{% static 'assets/js/filter_student_table.js' %}"></script>

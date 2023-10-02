@@ -26,17 +26,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i>Home</a>
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_list' %}"><i class="fas fa-chalkboard-teacher"></i>Student List</a>
+                        <a class="nav-link" href="{% url 'student_list' %}"><i class="fas fa-chalkboard-teacher"></i> Student List</a>
                     </li>
 
                     {% if user_first_name or user.is_authenticated %}
                         <!-- Drop down -->
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="far fa-user-circle"></i>{{ user_first_name }} </a>
+                            <i class="far fa-user-circle"></i> {{ user_first_name }} </a>
                           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="nav-link" href="/logout">Logout</a></li>
                           </ul>

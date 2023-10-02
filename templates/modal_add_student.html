@@ -7,10 +7,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{% url 'add_student' %}" id="addStudentForm">
+                <form method="POST" id="addStudentForm">
                     {% csrf_token %}
                     {{ addStudentForm.as_p }}
-                    <button type="submit" class="btn btn-success w-100">Add Student</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success w-100">Add Student</button>
+                    </div>
                 </form>
             </div>
         </div>

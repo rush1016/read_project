@@ -32,8 +32,18 @@ class Student(models.Model):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
-    class_section = models.CharField(max_length=80, default='undefined')
+    class_section = models.CharField(max_length=80)
     date_added = models.DateField(default=datetime.date.today)
+    is_archived = models.BooleanField(default=False)
+
+
+class ArchivedStudent(models.Model):
+    teacher = models.ForeignKey('read_app.Teacher', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=80)
+    last_name = models.CharField(max_length=80)
+    grade_level = models.IntegerField()
+    class_section = models.CharField(max_length=80, default='undefined')
+    date_archived = models.DateField(auto_now_add=True)
 
 
 class StudentInfo(models.Model):
