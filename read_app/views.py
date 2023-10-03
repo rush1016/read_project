@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, Http404
 from django.db import transaction
-from .forms import RegisterForm, StudentForm
+from .forms.students import StudentRegistrationForm
+from .forms.teachers import TeacherRegistrationForm
 from .models import Student, ClassSection, ArchivedStudent
 import datetime
 
@@ -43,7 +44,7 @@ def logout_user(request):
     return redirect('home')
 
 
-def register_user(request):
+""" def register_user(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -61,7 +62,55 @@ def register_user(request):
     if request.user.is_authenticated:
         return redirect('home')
     form = RegisterForm()
-    return render(request, 'registration/register.html', {'registerForm': form})
+    return render(request, 'registration/register.html', {'registerForm': form}) """
+
+
+def registration(request):
+    return render(request, 'registration/signup_role_select.html')
+
+
+def student_registration(request):
+    if request.method == "POST":
+        form = StudentRegistrationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You have successfully registered! Welcome!")
+            return redirect('home')
+        else:
+            messages.error(request, form.errors)
+
+
+    form = StudentRegistrationForm()
+    context = {
+        'register_form': form
+    }
+    return render(request, 'registration/signup_student.html', context)
+
+
+def teacher_registration(request):
+    if request.method == "POST":
+        form = TeacherRegistrationForm(request.POST)
+
+        if form.is_valid():
+            form.save() # Save the account into the database
+
+            username = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user) # Login the user before redirecting to homepage
+
+            messages.success(request, "You have successfully registered! Welcome!")
+            return redirect('home')
+        
+        else:
+            messages.error(request, form.errors)
+    
+    form = TeacherRegistrationForm()
+    context = {
+        'register_form': form
+    }
+    return render(request, 'registration/signup_teacher.html', context)
 
 
 def forgot_password_request(request):
@@ -73,15 +122,9 @@ def forgot_password_request(request):
 @login_required
 def student_list(request):
     students = Student.objects.filter(teacher_id=request.user.id).order_by('id')
-    addStudentForm = StudentForm()
-    editStudentForm = StudentForm()
     context = {
         'students': students,
-        # Forms
-        'addStudentForm': addStudentForm,
-        'editStudentForm': editStudentForm,
     }
-    
     return render(request, 'student_list.html', context)
 
 
@@ -96,7 +139,7 @@ def check_archived_student(student_data):
     return archived_student
 
 
-def add_student(request):
+""" def add_student(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
 
@@ -124,7 +167,7 @@ def add_student(request):
         messages.error(request, form.errors)
         return JsonResponse({'success': False, 'errors': form.errors})
 
-    return redirect('student_list')
+    return redirect('student_list') """
 
 
 def confirm_add_archived_student(request, archived_student_id):
@@ -156,7 +199,7 @@ def confirm_add_archived_student(request, archived_student_id):
     return redirect('student_list')
 
 
-def edit_student(request, student_id):
+""" def edit_student(request, student_id):
     if request.method == 'POST':
         # Retrieve the student record
         student = get_object_or_404(Student, pk=student_id)
@@ -177,7 +220,7 @@ def edit_student(request, student_id):
             formError = form.errors
 
             messages.error(request, formError)
-            return redirect('../student_list')
+            return redirect('../student_list') """
 
 
 def delete_student(request, student_id):

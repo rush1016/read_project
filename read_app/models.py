@@ -2,39 +2,51 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import datetime
 
-# Create your models here.
+
+class User(AbstractUser):
+    is_student = models.BooleanField('student_status', default=False)
+    is_teacher = models.BooleanField('teacher_status', default=False)
+    is_school_admin = models.BooleanField('school_admin_status', default=False)
+
+
 class Admin(models.Model):
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    email = models.EmailField(max_length=80)
-    password = models.CharField(max_length=80)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     date_created = models.DateField(default=datetime.date.today)
 
 
-class Teacher(AbstractUser):
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
+class Teacher(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     date_created = models.DateField(default=datetime.date.today)
-    
+
     def __str__(self):
-        return (f"{self.first_name} {self.last_name}")
-
-
-class ClassSection(models.Model):
-    grade_level = models.IntegerField()
-    section_name = models.CharField(max_length=80)
+        return self.user.get_full_name()
 
 
 class Student(models.Model):
+    user = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE, 
+        primary_key=True, 
+        related_name='student_profile'
+        )
     teacher = models.ForeignKey(
-        'read_app.Teacher', on_delete=models.CASCADE
-    )
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
+        'read_app.Teacher', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        )
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
     date_added = models.DateField(default=datetime.date.today)
     is_archived = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
 
 
 class ArchivedStudent(models.Model):
@@ -44,6 +56,11 @@ class ArchivedStudent(models.Model):
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80, default='undefined')
     date_archived = models.DateField(auto_now_add=True)
+
+
+class ClassSection(models.Model):
+    grade_level = models.IntegerField()
+    section_name = models.CharField(max_length=80)
 
 
 class StudentInfo(models.Model):
