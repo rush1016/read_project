@@ -5,16 +5,12 @@ function updateSectionOptions(gradeField, sectionField) {
     // Iterate through each options of class_section field within the current modal
     $(`${sectionField} option`).each(function() {
         const gradeLevelAttribute = $(this).attr('data-grade-level');
-        $(this).hide();
+        $(this).show();
         
         // If the grade section matches the selected grade
-        if (gradeLevelAttribute === selectedGradeLevel) {
-            $(this).show();
+        if (gradeLevelAttribute != selectedGradeLevel && selectedGradeLevel != '') {
+            $(this).hide();
         } 
-        // If the grade selection is All (for filter)
-        else if (selectedGradeLevel === ''){
-            $(this).show();
-        }
     });
 }
 

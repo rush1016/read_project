@@ -9,7 +9,7 @@
 
     <div class="form-group d-flex justify-content-end p-3">
         <!-- Filter options -->
-        {% include 'filter_student_table.html' %}
+        {% include 'students/filter_student_table.html' %}
         
         <!-- Button to trigger the modal -->
         <button type="button" class="btn btn-success w-25 h-50 my-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
@@ -19,19 +19,19 @@
     <!-- End Modal Button -->
 
     <!-- Student table that contains student records -->
-    {% include 'partial_student_table.html' %}
+    {% include 'students/partial_student_table.html' %}
 
     <!-- Modal adding student records -->
-    {% include 'modal_add_student.html' %}
+    {% include 'students/modal_add_student.html' %}
 
     <!-- Modal for confirmation of adding from archived records -->
-    {% include 'modal_add_archived_student.html' %}
+    {% include 'students/modal_add_archived_student.html' %}
 
     <!-- Modal for editing student records-->
-    {% include 'modal_edit_student.html' %}
+    {% include 'students/modal_edit_student.html' %}
 
     <!-- Modal for delete record confirmation-->
-    {% include 'modal_delete_student.html' %}
+    {% include 'students/modal_delete_student.html' %}
 </div>
 
 <!--Include jQuery -->

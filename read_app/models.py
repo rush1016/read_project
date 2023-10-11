@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from django.db import models
 import datetime
 
@@ -7,6 +8,9 @@ class User(AbstractUser):
     is_student = models.BooleanField('student_status', default=False)
     is_teacher = models.BooleanField('teacher_status', default=False)
     is_school_admin = models.BooleanField('school_admin_status', default=False)
+
+    def __str__(self):
+        return self.get_full_name()
 
 
 class Admin(models.Model):
@@ -24,6 +28,7 @@ class Teacher(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+    teacher_code = models.CharField(max_length=80)
     date_created = models.DateField(default=datetime.date.today)
 
     def __str__(self):
@@ -36,12 +41,15 @@ class Student(models.Model):
         on_delete=models.CASCADE, 
         primary_key=True, 
         related_name='student_profile'
-        )
+    )
     teacher = models.ForeignKey(
-        'read_app.Teacher', 
+        'read_app.User', 
         on_delete=models.SET_NULL, 
-        null=True, 
-        )
+        null=True,
+    )
+    student_id = models.IntegerField(unique=True)
+    first_name = models.CharField(max_length=80)
+    last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
     date_added = models.DateField(default=datetime.date.today)
@@ -54,7 +62,7 @@ class ArchivedStudent(models.Model):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
-    class_section = models.CharField(max_length=80, default='undefined')
+    class_section = models.CharField(max_length=80)
     date_archived = models.DateField(auto_now_add=True)
 
 
@@ -80,46 +88,34 @@ class StudentInfo(models.Model):
 class Passage(models.Model):
     passage_title = models.CharField(max_length=150)
     passage_content = models.CharField(max_length=5000)
-    passage_grade = models.IntegerField()
+    grade_level = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.passage_title
 
 
-class PassageQuestion(models.Model):
+class Question(models.Model):
     passage = models.ForeignKey(
         'read_app.Passage', on_delete=models.CASCADE
     )
     question_content = models.CharField(max_length=500)
-    question_type = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=datetime.date.today)
+
+    def __str__(self):
+        return self.question_content
 
 
-class MultipleChoice(models.Model):
+class Choice(models.Model):
     question = models.ForeignKey(
-        'read_app.PassageQuestion', on_delete=models.CASCADE
-    )
-    choice_label = models.CharField(max_length=10)
-    choice_content = models.CharField(max_length=500)
-    is_correct = models.BooleanField()
-
-
-class TrueFalse(models.Model):
-    question = models.ForeignKey(
-        'read_app.PassageQuestion', on_delete=models.CASCADE
+        'read_app.Question', on_delete=models.CASCADE
     )
     choice_content = models.CharField(max_length=500)
-    is_correct = models.BooleanField()
+    is_correct = models.BooleanField(default=False)
 
-
-class FillBlanks(models.Model):
-    question = models.ForeignKey(
-        'read_app.PassageQuestion', on_delete=models.CASCADE
-    )
-    answer_content = models.CharField(max_length=500)
-
-
-class OpenEnded(models.Model):
-    question = models.ForeignKey(
-        'read_app.PassageQuestion', on_delete=models.CASCADE
-    )
-    answer_content = models.CharField(max_length=500)
+    def __str__(self):
+        return self.choice_content
 
 
 class StudentAnswer(models.Model):
@@ -127,21 +123,20 @@ class StudentAnswer(models.Model):
         'read_app.Student', on_delete=models.CASCADE
     )
     question = models.ForeignKey(
-        'read_app.PassageQuestion', on_delete=models.CASCADE
+        'read_app.Question', on_delete=models.CASCADE
     )
     answer_content = models.CharField(max_length=500)
 
 
-class AssessmentInfo(models.Model):
-    student = models.ForeignKey(
-        'read_app.Student', on_delete=models.CASCADE
-    )
-    first_passage = models.IntegerField()
-    second_passage = models.IntegerField()
-    third_passage = models.IntegerField()
-    fourth_passage = models.IntegerField()
-    read_time = models.TimeField(default=None)
-    answer_time = models.TimeField(default=None)
-    score = models.IntegerField()
-    date_started = models.DateTimeField(null=True, blank=True)
-    date_finished = models.DateTimeField(null=True, blank=True)
+class AssessmentSession(models.Model):
+    passage = models.ForeignKey(Passage, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_score = models.IntegerField()
+    total_reading_time = models.PositiveIntegerField()
+    total_answering_time = models.PositiveIntegerField()
+    grade_level = models.IntegerField()
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"Assessment Session for {self.student} - Passage: {self.passage.passage_title}"

@@ -1,12 +1,16 @@
 from django import forms
 from .base_registration import BaseRegistrationForm
 from django.db import transaction
-from ..models import User, Teacher, Student, ClassSection
+from read_app.models import User, Teacher, Student, ClassSection
 
 # For unique username generator
 from django.utils.text import slugify
 
 class StudentRegistrationForm(BaseRegistrationForm):
+    class Meta:
+        model = User
+        fields = ('teacher_code', 'first_name', 'last_name', 'grade_level', 'class_section', 'email', 'password1', 'password2')
+
     grade_level = forms.ChoiceField(
         choices=[], 
         label='Grade Level',
@@ -15,17 +19,14 @@ class StudentRegistrationForm(BaseRegistrationForm):
         choices=[], 
         label='Section',
     )
-    teacher = forms.ChoiceField(
-        choices=[],
-        label='Teacher',
-        widget=forms.Select(
+    teacher_code = forms.CharField(
+        label='Teacher Code',
+        widget=forms.TextInput(
             attrs={
-                'class': 'form-select',
+                'class': 'form-control',
+                'placeholder': 'Teacher Registration Code',
                 'required': 'required',}))
     
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'teacher', 'grade_level', 'class_section', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(StudentRegistrationForm, self).__init__(*args, **kwargs)
@@ -39,7 +40,6 @@ class StudentRegistrationForm(BaseRegistrationForm):
         teachers = Teacher.objects.all()
         teacher_choices = [(teacher.user.id, f"{teacher.user.first_name} {teacher.user.last_name}") for teacher in teachers]
 
-        self.fields['teacher'].choices = teacher_choices
 
         self.fields['grade_level'].choices = grade_level_choices
         self.fields['grade_level'].widget.attrs['class'] = 'form-select'
@@ -64,15 +64,27 @@ class StudentRegistrationForm(BaseRegistrationForm):
         user.save()
 
         # Create an instance of corresponding teacher and assign it as foreign key
-        teacher_user_id = self.cleaned_data['teacher']
-        teachers = Teacher.objects.get(pk=teacher_user_id)
+        teacher_code = self.cleaned_data['teacher_code']
+        teacher_instance = Teacher.objects.get(teacher_code=teacher_code)
+        teacher_user_instance = User.objects.get(pk=teacher_instance.user.id)
+
+        # Assign the student info into the Student model too
+        student_id = user.id
+        first_name = user.first_name
+        last_name = user.last_name
+        grade_level = self.cleaned_data['grade_level']
+        class_section = self.cleaned_data['class_section']
+
         # Create a Student model associated with the Student User Account
         # And add the necessary data into their respective fields
         student = Student.objects.create(
-            user=user,
-            teacher=teachers,
-            grade_level=self.cleaned_data['grade_level'], 
-            class_section=self.cleaned_data['class_section']
+            user=user,                      # Primary Key (Instance)
+            teacher=teacher_user_instance,  # Foreign Key (Instance)
+            student_id=student_id,
+            first_name=first_name,
+            last_name=last_name,
+            grade_level=grade_level, 
+            class_section=class_section
         )
 
         student.save()

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Passage Form -->
+    <form id="#passage-form" 
+        hx-post="{% url 'add_passage' %}" 
+        hx-trigger="click from:#submit-all"
+        hx-swap="none">
+
+        {% csrf_token %}
+        {{ passage_form }}
+        <input type="hidden" name="passage_id" id="passage_instance_field" value="{{ passage_id }}">
+    </form>
+
+    <div id="question-container">
+        <!-- Render partial_question_form.html -->        
+        {% include 'reading/partial_question_form.html' %}
+        
+    </div>
+
+    <!-- Button for questions -->
+    <div class="button-container m-3">
+        <button type="button" id="add-question-button" class="btn btn-primary"
+            hx-get="add_question"
+            hx-vals='{ "passage_id": "{{ passage_id }}" }'
+            hx-target="#question-container"
+            hx-swap="beforeend">
+                Add Question
+        </button>
+        
+        <button type="button" class="btn btn-success d-none" id="submit-all">
+            Save Reading Material
+        </button>
+    </div>
+</div>
+<script>
+    const saveButton = $('#submit-all');
+    let questionLimit = 1;
+    function updateFormCount() {
+        formCount = $('#question-container form').length;
+        return formCount;
+    };
+    $(document).ready(function(){
+        let formCount = $("#question-container form").length;
+
+        $('#add-question-button').click(function() {
+            formCount = updateFormCount();
+            console.log(formCount);
+            if (formCount+1 >= questionLimit) {
+                saveButton.removeClass('d-none');
+            }
+        })
+    });
+</script>
+{% endblock %}

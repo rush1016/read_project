@@ -4,12 +4,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from read_app.models import User
 from string import capwords
-
 # For unique username generator
 from django.utils.text import slugify
 
 
 class BaseRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
+
     email = forms.EmailField(
         label="", 
         widget=forms.TextInput(
@@ -34,33 +37,18 @@ class BaseRegistrationForm(UserCreationForm):
             RegexValidator(
                 r'^[A-Za-z\s\'-]+$',
                 'Enter a valid last name containing only letters, spaces, hyphens, and apostrophes.',)])
-    """
-    username = forms.CharField(
-        label="",
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control', 
-                'placeholder': 'Username'
-            }
-        )
-    )
-    """
-    
     password1 = forms.CharField( # First password input
         label="",
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Password'}),
-        help_text='<ul class="form-text text-muted small"><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul>')
+        help_text='<ul class="form-text text-muted small"><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul>'
+    )
     password2 = forms.CharField( # Confirm password input
         label="",
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
         help_text= '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
     )
-    
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
     # Override clean methods to convert to Title Case / Capital first letter
     def clean_first_name(self):
