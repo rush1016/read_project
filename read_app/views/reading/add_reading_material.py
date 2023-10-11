@@ -41,7 +41,7 @@ def add_question(request):
                 choice.save()
 
         messages.success(request, 'Successfully added reading material!')
-        return JsonResponse({"success", True})
+        return JsonResponse({"success": True})
 
 
     # If request method is not POST send back the forms and passage_id
