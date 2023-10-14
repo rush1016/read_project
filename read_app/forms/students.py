@@ -1,6 +1,8 @@
 from django import forms
-from .base_registration import BaseRegistrationForm
 from django.db import transaction
+from django.core.exceptions import ValidationError
+
+from .base_registration import BaseRegistrationForm
 from read_app.models import User, Teacher, Student, ClassSection
 
 # For unique username generator
@@ -9,7 +11,15 @@ from django.utils.text import slugify
 class StudentRegistrationForm(BaseRegistrationForm):
     class Meta:
         model = User
-        fields = ('teacher_code', 'first_name', 'last_name', 'grade_level', 'class_section', 'email', 'password1', 'password2')
+        fields = (
+             'teacher_code', 
+             'first_name', 
+             'last_name', 
+             'grade_level', 
+             'class_section', 
+             'email', 
+             'password1', 
+             'password2')
 
     grade_level = forms.ChoiceField(
         choices=[], 
@@ -26,7 +36,6 @@ class StudentRegistrationForm(BaseRegistrationForm):
                 'class': 'form-control',
                 'placeholder': 'Teacher Registration Code',
                 'required': 'required',}))
-    
 
     def __init__(self, *args, **kwargs):
         super(StudentRegistrationForm, self).__init__(*args, **kwargs)
@@ -37,9 +46,6 @@ class StudentRegistrationForm(BaseRegistrationForm):
         ]
         # Get the class section data from the database then assign them as choices
         class_section_choices = [(obj.section_name, obj.section_name) for obj in ClassSection.objects.all().order_by('grade_level')]
-        teachers = Teacher.objects.all()
-        teacher_choices = [(teacher.user.id, f"{teacher.user.first_name} {teacher.user.last_name}") for teacher in teachers]
-
 
         self.fields['grade_level'].choices = grade_level_choices
         self.fields['grade_level'].widget.attrs['class'] = 'form-select'
@@ -48,6 +54,17 @@ class StudentRegistrationForm(BaseRegistrationForm):
         self.fields['class_section'].choices = class_section_choices
         self.fields['class_section'].widget.attrs['class'] = 'form-select'
         self.fields['class_section'].widget.attrs['required'] = 'required'
+    
+    def clean_teacher_code(self):
+         cleaned_data = super().clean()
+         teacher_code = cleaned_data.get('teacher_code')
+
+         teacher_exists = Teacher.objects.filter(teacher_code=teacher_code)
+
+         if not teacher_exists:
+              raise ValidationError("Invalid teacher code. Please enter ask your Teacher for their registration code.")
+         
+         return teacher_code
 
     @transaction.atomic # Package the database operation to maintain data integrity.
     def save(self):

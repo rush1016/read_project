@@ -9,9 +9,12 @@
             <div class="modal-body">
                 <form method="POST" id="addStudentForm">
                     {% csrf_token %}
-                    {{ addStudentForm.as_p }}
+                    <div class="container text-center my-5">
+                        <p class="display-6">Registration Code</p>
+                        <h5 class="display-2">{{ teacher_code }}</h5>
+                    </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success w-100">Add Student</button>
+                        <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>

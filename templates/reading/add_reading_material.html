@@ -1,57 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-
-<div class="container">
-    <!-- Passage Form -->
-    <form id="#passage-form" 
-        hx-post="{% url 'add_passage' %}" 
-        hx-trigger="click from:#submit-all"
-        hx-swap="none">
-
+<div class="container mt-5">
+    <h1 class="display-3 mt-3">Add Reading Material</h1>
+    <form id="form-container" method="POST" action="{% url 'add_reading_material' %}">
         {% csrf_token %}
+        <!-- Passage Form -->
         {{ passage_form }}
-        <input type="hidden" name="passage_id" id="passage_instance_field" value="{{ passage_id }}">
+        
+        {{ question_formset.management_form }}
+        {{ question_formset.non_form_errors }}
+        {% for question_form in question_formset %}
+                <div class="question-form">
+                    {{ question_form }}
+    
+                    {% if question_form.nested %}
+                        {{ question_form.nested.management_form }}
+                        {{ question_form.nested.non_form_errors }}
+    
+                        {% for choice_form in question_form.nested %}
+                        <div class="row">
+                            <div class="col-2 d-flex justify-content-around align-items-center">
+                                <p class="text-muted m-0 p-0">Correct Answer</p>
+                                {{ choice_form.is_correct }}
+                            </div>
+                            <div class="col-10">
+                                {{ choice_form.choice_content }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <!-- Add more questions here -->
+        
+        <div class="container my-3">
+            <button type="button" id="add-question-button" class="btn btn-primary">Add Question</button>
+            <button type="submit" class="btn btn-success">Save Questions</button>
+        </div>
     </form>
-
-    <div id="question-container">
-        <!-- Render partial_question_form.html -->        
-        {% include 'reading/partial_question_form.html' %}
-        
-    </div>
-
-    <!-- Button for questions -->
-    <div class="button-container m-3">
-        <button type="button" id="add-question-button" class="btn btn-primary"
-            hx-get="add_question"
-            hx-vals='{ "passage_id": "{{ passage_id }}" }'
-            hx-target="#question-container"
-            hx-swap="beforeend">
-                Add Question
-        </button>
-        
-        <button type="button" class="btn btn-success d-none" id="submit-all">
-            Save Reading Material
-        </button>
-    </div>
 </div>
-<script>
-    const saveButton = $('#submit-all');
-    let questionLimit = 1;
-    function updateFormCount() {
-        formCount = $('#question-container form').length;
-        return formCount;
-    };
-    $(document).ready(function(){
-        let formCount = $("#question-container form").length;
-
-        $('#add-question-button').click(function() {
-            formCount = updateFormCount();
-            console.log(formCount);
-            if (formCount+1 >= questionLimit) {
-                saveButton.removeClass('d-none');
-            }
-        })
-    });
-</script>
+<script src="{% static 'assets/js/reading/add_question.js' %}"></script>
 {% endblock %}

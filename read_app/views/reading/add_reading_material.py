@@ -1,58 +1,42 @@
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.db import transaction
 
-from read_app.forms.materials import PassageForm, QuestionFormSet, ChoiceFormSet
-from read_app.models import Passage
+from read_app.forms.materials import (
+    PassageForm, 
+    QuestionFormset
+)
 
 
-def add_passage(request):
-    passage_form = PassageForm(request.POST or None)
-
-    if passage_form.is_valid():
-        passage_instance = passage_form.save(commit=False)
-        # Use generated passage_id from the hidden field in the form
-        passage_instance.id = request.POST['passage_id']
-        passage_instance.save()
-
-        return JsonResponse({"success": True})
-
-    else:
-        messages.error(request, passage_form.errors)
-        return JsonResponse({"success": False})
-    
-
-def add_question(request):
+@transaction.atomic # To group series of database transactions into one
+def add_reading_material(request):
     if request.method == 'POST':
-        # Get passage id from the hidden field
-        passage_id = request.POST['passage_id']
-        # Create instance of Passage model and use as foreign key
-        # for each question
-        passage_instance = get_object_or_404(Passage, pk=passage_id)
-        question_formset = QuestionFormSet(request.POST, instance=passage_instance)
-        questions = question_formset.save()
+        # Save the passage
+        passage_form = PassageForm(request.POST)
+        passage_instance = passage_form.save()
+        print(type(passage_instance))
 
-        for question in questions:
-            # Use each question form as foreign key for each choice
-            choice_formset = ChoiceFormSet(request.POST, instance=question)
-            choices = choice_formset.save()
+        # Save the questions and choices
+        # Using the saved passage_instance as the foreign key
+        question_formset = QuestionFormset(request.POST, instance=passage_instance)
+        if question_formset.is_valid():
+            question_formset.save()
 
-            for choice in choices:
-                choice.save()
+            messages.success(request, 'Successfully added reading material!')
+            return redirect('reading_material')
 
-        messages.success(request, 'Successfully added reading material!')
-        return JsonResponse({"success": True})
+        else:
+            messages.error(request, question_formset.errors)
+            messages.error(request, 'Unable to add reading material.')
+            return redirect('reading_material')
+        
+    else:
+        passage_form = PassageForm()
+        question_formset = QuestionFormset()
 
-
-    # If request method is not POST send back the forms and passage_id
-    # to generate more question forms to be submitted
-    passage_id = request.GET.get('passage_id')
-    question_formset = QuestionFormSet()
-    choice_formset = ChoiceFormSet()
     context = {
+        'passage_form': passage_form,
         'question_formset': question_formset,
-        'choice_formset': choice_formset,
-        'passage_id': passage_id
     }
 
-    return render(request, 'reading/partial_question_form.html', context)
+    return render(request, 'reading/add_reading_material.html', context)

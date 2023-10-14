@@ -48,6 +48,7 @@ class Student(models.Model):
         null=True,
     )
     student_id = models.IntegerField(unique=True)
+    student_lrn = models.FloatField(unique=True, null=True)
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
@@ -101,7 +102,7 @@ class Question(models.Model):
         'read_app.Passage', on_delete=models.CASCADE
     )
     question_content = models.CharField(max_length=500)
-    created_at = models.DateTimeField(default=datetime.date.today)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.question_content

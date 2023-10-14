@@ -3,7 +3,7 @@
     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <i class="far fa-user-circle"></i> {{ user_first_name }} </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-    <li><a class="nav-link" href="/logout">Logout</a></li>
+    <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </li>
 <!-- End drop down -->

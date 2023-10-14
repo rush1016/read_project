@@ -1,9 +1,17 @@
 $(document).ready(function() {
-    let alertDurationMilliseconds = 5000;
+    function dismissMessages() {
+        // Target messages with the custom CSS class applied by Django
+        let messages = $(".dismissable-message");
+        console.log(messages);
 
-    // Automatically close the alert 
-    setTimeout(function() {
-        let alert = $('#alert');
-        alert.removeClass('show');
-    }, alertDurationMilliseconds); 
+        // Automatically dismiss messages after 5 seconds
+        for (let i = 0; i < messages.length; i++) {
+            let message = messages.item(i);
+            console.log(message);
+            setTimeout(function () {
+                message.hide();
+            }, 5000); // 5000 milliseconds (5 seconds)
+        };
+    }
+    dismissMessages();
 });

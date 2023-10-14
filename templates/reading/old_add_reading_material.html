@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="display-3 mt-3">Add Reading Material</h1>
+    <!-- Passage Form -->
+    <form id="#passage-form" 
+        hx-post="{% url 'add_passage' %}" 
+        hx-trigger="click from:#submit-all"
+        hx-swap="none">
+
+        {% csrf_token %}
+        {{ passage_form }}
+        <input type="hidden" name="passage_id" id="passage_instance_field" value="{{ passage_id }}">
+    </form>
+
+    <div id="question-container">
+        <!-- Render partial_question_form.html -->        
+        {% include 'reading/partial_question_form.html' %}
+        
+    </div>
+
+    <!-- Button for questions -->
+    <div class="button-container m-3">
+        <button type="button" id="add-question-button" class="btn btn-primary"
+            hx-get="add_question"
+            hx-vals='{ "passage_id": "{{ passage_id }}" }'
+            hx-target="#question-container"
+            hx-swap="beforeend">
+                Add Question
+        </button>
+        
+        <button type="button" class="btn btn-success d-none" id="submit-all">
+            Save Reading Material
+        </button>
+    </div>
+</div>
+<script src="{% static 'assets/js/reading/update_save_button.js' %}"></script>
+<script src="{% static 'assets/js/reading/add_reading_material_form.js' %}"></script>
+<script src="{% static 'assets/js/reading/remove_question.js' %}"></script>
+<script src="{% static 'assets/js/reading/redirect_after_success.js' %}"></script>
+
+{% endblock %}

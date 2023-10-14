@@ -30,11 +30,8 @@
                                 Delete Student
                             </button>
                         {% else %}
-                            <button type="button" class="btn btn-success btn-sm approve-student-btn" id="approveStudentButton" data-student-id="{{ student.user.id }}">
+                            <button type="button" class="btn btn-success btn-sm approve-student-btn" id="approve-button" data-bs-toggle="modal" data-bs-target="#approve-student-modal" data-student-id="{{ student.user.id }}">
                                 Approve Registration
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm deny-student-btn" id="denyStudentButton" data-student-id="{{ student.user.id }}">
-                                Deny
                             </button>
                         {% endif %}
                     </td>
@@ -44,3 +41,26 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function() {
+        let approveButton = $('#approve-button');
+        let approveForm = $('#approve-student-form');
+
+        approveButton.click(function() {
+            let studentId = approveButton.data('student-id');
+            approveForm.find('#student-id').val(studentId);
+           
+            getSingleStudentRecord(studentId)
+            .then(function(studentRecord) {
+                approveForm.find('#id_first_name').val(studentRecord.first_name);
+                approveForm.find('#id_last_name').val(studentRecord.last_name);
+                approveForm.find('#id_grade_level').val(studentRecord.grade_level);
+                approveForm.find('#id_class_section').val(studentRecord.class_section);
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>

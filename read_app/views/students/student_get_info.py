@@ -14,7 +14,8 @@ def get_student_info(request, student_id):
             'first_name': student.first_name,
             'last_name': student.last_name,
             'grade_level': student.grade_level,
-            'class_section': student.class_section, 
+            'class_section': student.class_section,
+            'date_added': student.date_added,
         }
 
         return JsonResponse({'success': True, 'student_data': student_data})

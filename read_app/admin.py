@@ -36,7 +36,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'last_name', 'first_name', 'teacher', 'grade_level', 'class_section', 'date_added', 'is_approved')
+    list_display = ('user', 'student_lrn', 'last_name', 'first_name', 'teacher', 'grade_level', 'class_section', 'date_added', 'is_approved')
 
     # Define methods to access User model fields
     def first_name(self, obj):

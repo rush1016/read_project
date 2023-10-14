@@ -1,6 +1,6 @@
 <form 
     hx-post="{% url 'add_question' %}" 
-    hx-trigger="click from:#submit-all"
+    hx-trigger="click from:#submit-all delay: 0.5s"
     hx-swap="none">
     {{ question_formset.management_form }}
 
@@ -25,30 +25,3 @@
     {% endfor %}
     <input type="hidden" name="passage_id" id="passage_instance_field" value="{{ passage_id }}">
 </form>
-
-<script>
-    $(document).ready(function(){
-        let formCount = $("#question-container form").length;
-
-        $('.remove-form-button').click(function() {
-            formCount = updateFormCount();
-            console.log(formCount, "<", questionLimit);
-            if (formCount < questionLimit) {
-                
-                saveButton.addClass('d-none')
-            }
-        })
-
-        function updateFormCount() {
-            formCount = $('#question-container form').length;
-
-            return formCount;
-        }
-
-        $(document).on('htmx:afterRequest', function(event, xhr, elt) {
-            if (xhr.status === 200) {
-                
-            }
-        })
-    });
-</script>

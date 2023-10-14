@@ -1,0 +1,25 @@
+<table class="table table-bordered">
+    <thead>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Grade Level</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {% for passage in passages %}
+            <tr>
+                <td>{{ passage.id }}</td>
+                <td>{{ passage.passage_title }}</td>
+                <td>{{ passage.grade_level }}</td>
+                <td class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-primary btn-sm w-25 edit-passage-button" id="edit-passage-button" data-bs-toggle="modal" data-bs-target="#edit-passage-modal" data-passage-id="{{ passage.id }}">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm w-25 delete-passage-button" id="delete-passage-button" data-bs-toggle="modal" data-bs-target="#delete-passage-modal" data-passage-id="{{ passage.id }}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
