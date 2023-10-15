@@ -1,10 +1,19 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from read_app.models import User, Teacher, Student, ClassSection, Passage, Question, Choice
+from read_app.models import User, Teacher, Student, ClassSection, Passage, Question, Choice, ArchivedStudent
 
 # Teacher (User)
 class UserAdmin(UserAdmin):
-    list_display = ('id', 'username', 'first_name', 'last_name', 'email', 'is_student', 'is_teacher', 'is_school_admin')
+    list_display = (
+        'id', 
+        'username', 
+        'first_name', 
+        'last_name', 
+        'email', 
+        'is_student', 
+        'is_teacher', 
+        'is_school_admin'
+    )
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email')}),
@@ -36,7 +45,17 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'student_lrn', 'last_name', 'first_name', 'teacher', 'grade_level', 'class_section', 'date_added', 'is_approved')
+    list_display = (
+        'user', 
+        'student_lrn', 
+        'last_name', 
+        'first_name', 
+        'teacher', 
+        'grade_level', 
+        'class_section', 
+        'date_added', 
+        'is_approved'
+    )
 
     # Define methods to access User model fields
     def first_name(self, obj):
@@ -46,6 +65,20 @@ class StudentAdmin(admin.ModelAdmin):
     def last_name(self, obj):
         return obj.user.last_name
     last_name.short_description = 'Last Name'
+
+class ArchivedStudentAdmin(admin.ModelAdmin):
+    list_display = (
+        'student_id', 
+        'previous_teacher', 
+        'first_name', 
+        'last_name', 
+        'student_lrn', 
+        'grade_level', 
+        'class_section', 
+        'date_added', 
+        'is_approved', 
+        'date_archived'
+    )
 
 
 class ClassSectionAdmin(admin.ModelAdmin):
@@ -77,6 +110,7 @@ class ChoiceAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Student, StudentAdmin)
+admin.site.register(ArchivedStudent, ArchivedStudentAdmin)
 
 # Passages and Reading Materials
 admin.site.register(Passage, PassageAdmin)

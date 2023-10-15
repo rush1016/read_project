@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+<form method="POST" action="{% url 'delete_student' student_id %}">
+    {% csrf_token %}
+
+    {{ student_form.student_lrn.label }}
+    {% render_field student_form.student_lrn style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+    {{ student_form.first_name.label }}
+    {% render_field student_form.first_name style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+    {{ student_form.last_name.label }}
+    {% render_field student_form.last_name style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+    {{ student_form.grade_level.label }}
+    {% render_field student_form.grade_level style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+    {{ student_form.class_section.label }}
+    {% render_field student_form.class_section style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+
+    <!--Button container-->
+    <div class="container d-flex justify-content-around mt-5">
+        <button type="submit" class="btn btn-danger w-50 m-1">Delete Student</button>
+        <button type="button" class="btn btn-success w-50 m-1" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>

@@ -54,16 +54,23 @@ class Student(models.Model):
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
     date_added = models.DateField(default=datetime.date.today)
-    is_archived = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
 
 
 class ArchivedStudent(models.Model):
-    teacher = models.ForeignKey('read_app.Teacher', on_delete=models.CASCADE)
+    previous_teacher = models.ForeignKey(
+        'read_app.User', 
+        on_delete=models.SET_NULL, 
+        null=True
+    )
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
+    student_id = models.IntegerField()
+    student_lrn = models.FloatField(unique=True, null=True)
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
+    date_added = models.DateField(default=datetime.date.today)
+    is_approved = models.BooleanField(default=False)
     date_archived = models.DateField(auto_now_add=True)
 
 
@@ -74,7 +81,9 @@ class ClassSection(models.Model):
 
 class StudentInfo(models.Model):
     student = models.ForeignKey(
-        'read_app.Student', on_delete=models.CASCADE
+        'read_app.Student', 
+        on_delete=models.SET_NULL, 
+        null=True
     )
     overall_rating = models.CharField(max_length=100)
     words_per_minute = models.DecimalField(decimal_places=2, max_digits=10)

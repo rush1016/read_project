@@ -12,7 +12,8 @@ from read_app.views.students import (
     student_get_info, 
     section_get_info, 
     approve_student,
-    student_edit_view
+    student_edit_view,
+    student_delete_view
 )
 from read_app.views.reading import ( 
     add_reading_material, 
@@ -53,7 +54,7 @@ urlpatterns = [
     path('get_class_section_data/', section_get_info.get_class_section_data, name="get_class_section_data"),
     path('approve_student', approve_student.approve_student, name="approve_student"),
     path('edit_student/<int:student_id>', student_edit_view.student_edit, name="edit_student"),
-    # path('delete_student/<int:student_id>', views.delete_student, name='delete_student'),
+    path('delete_student/<int:student_id>', student_delete_view.student_delete, name='delete_student'),
     # path('confirm_add_archived_student/<int:archived_student_id>', views.confirm_add_archived_student, name="confirm_add_archived_student"),
 
     # Reading Materials

@@ -1,37 +1,15 @@
 <!-- Modal -->
-<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete-student-modal" tabindex="-1" aria-labelledby="delete-student-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteStudentModalLabel">Are you sure to delete this student record?</h5>
+                <h5 class="modal-title" id="delete-student-modal-label">Are you sure to delete this student record?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="delete_student/0/" id="deleteStudentForm">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label class="form-label" for="first_name">First Name:</label>
-                        <input class="form-control" type="text" id="id_first_name" name="first_name" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="last_name">Last Name:</label>
-                        <input class="form-control" type="text" id="id_last_name" name="last_name" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="last_name">Grade Level:</label>
-                        <input class="form-control" type="text" id="id_grade_level" name="last_name" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="last_name">Section:</label>
-                        <input class="form-control" type="text" id="id_class_section" name="last_name" readonly>
-                    </div>
-
-                    <!--Button container-->
-                    <div class="container d-flex justify-content-around mt-5">
-                        <button type="submit" class="btn btn-danger w-50 m-1">Delete Student</button>
-                        <button type="button" class="btn btn-success w-50 m-1" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                <div id="delete-form-container">
+                    <!-- Rendered using JavaScript -->
+                </div>
             </div>
         </div>
     </div>
