@@ -13,7 +13,7 @@
         
         <!-- Button to trigger the modal -->
         <button type="button" class="btn btn-success w-25 h-50 my-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-            Add Student
+            Registration Code
         </button>
     </div>
     <!-- End Modal Button -->
@@ -41,23 +41,26 @@
 <script src="{% static 'assets/js/jquery-3.6.0.min.js'%}"></script>
 
 <!-- Script for calling add_student view -->
-<script src="{% static 'assets/js/add_student.js' %}"></script>
+<script src="{% static 'assets/js/students/add_student.js' %}"></script>
+
+<!-- Script for listening to edit button click and rendering edit form -->
+<script src="{% static 'assets/js/students/edit_student.js' %}"></script>
 
 <!--Script for fetching class section data -->
-<script src="{% static 'assets/js/get_class_section_data.js' %}"></script>
+<script src="{% static 'assets/js/students/get_class_section_data.js' %}"></script>
 
 <!--Script for fetching class section data -->
-<script src="{% static 'assets/js/get_single_student_record.js' %}"></script>
+<script src="{% static 'assets/js/students/get_single_student_record.js' %}"></script>
 
 <!--Script for dynamic class section choices -->
-<script src="{% static 'assets/js/dynamic_choice_field.js' %}"></script>
+<script src="{% static 'assets/js/students/dynamic_choice_field.js' %}"></script>
 
 <!--Script for auto filling the edit form -->
-<script src="{% static 'assets/js/fill_form_fields.js' %}"></script>
+<script src="{% static 'assets/js/students/fill_form_fields.js' %}"></script>
 
 <!-- Populate Section Filter -->
-<script src="{% static 'assets/js/populate_filter_by_section.js' %}"></script>
+<script src="{% static 'assets/js/students/populate_filter_by_section.js' %}"></script>
 
 <!-- Filter script -->
-<script src="{% static 'assets/js/filter_student_table.js' %}"></script>
+<script src="{% static 'assets/js/students/filter_student_table.js' %}"></script>
 {% endblock %}

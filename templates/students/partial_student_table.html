@@ -23,10 +23,10 @@
                     <!--Action buttons-->
                     <td class="d-flex justify-content-around">
                         {% if student.is_approved %}
-                            <button type="button" class="btn btn-primary btn-sm edit-student-btn" id="editStudentButton" data-bs-toggle="modal" data-bs-target="#editStudentModal" data-student-id="{{ student.user.id }}">
+                            <button type="button" id="edit-student-button" class="btn btn-primary btn-sm edit-student-btn" data-bs-toggle="modal" data-bs-target="#edit-student-modal" data-student-id="{{ student.user.id }}">
                                 Edit Student
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm delete-student-btn" id="deleteStudentButton" data-bs-toggle="modal" data-bs-target="#deleteStudentModal" data-student-id="{{ student.user.id }}">
+                            <button type="button" id="deleteStudentButton" class="btn btn-danger btn-sm delete-student-btn" data-bs-toggle="modal" data-bs-target="#deleteStudentModal" data-student-id="{{ student.user.id }}">
                                 Delete Student
                             </button>
                         {% else %}

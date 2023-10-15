@@ -8,7 +8,11 @@ from read_app.views.user import (
     user_auth, user_register, user_forgot, 
 )
 from read_app.views.students import (
-    student_list, student_get_info, section_get_info, approve_student
+    student_list, 
+    student_get_info, 
+    section_get_info, 
+    approve_student,
+    student_edit_view
 )
 from read_app.views.reading import ( 
     add_reading_material, 
@@ -48,8 +52,7 @@ urlpatterns = [
     path('get_student_info/<int:student_id>', student_get_info.get_student_info, name="get_student_info"),
     path('get_class_section_data/', section_get_info.get_class_section_data, name="get_class_section_data"),
     path('approve_student', approve_student.approve_student, name="approve_student"),
-    # path('add_student', views.add_student, name="add_student"),
-    # path('edit_student/<int:student_id>', views.edit_student, name="edit_student"),
+    path('edit_student/<int:student_id>', student_edit_view.student_edit, name="edit_student"),
     # path('delete_student/<int:student_id>', views.delete_student, name='delete_student'),
     # path('confirm_add_archived_student/<int:archived_student_id>', views.confirm_add_archived_student, name="confirm_add_archived_student"),
 

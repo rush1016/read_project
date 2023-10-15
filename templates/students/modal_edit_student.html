@@ -1,21 +1,15 @@
 <!-- Modal -->
-<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+<div class="modal fade" id="edit-student-modal" tabindex="-1" aria-labelledby="edit-student-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editStudentModalLabel">Edit student record</h5>
+                <h5 class="modal-title" id="edit-student-modal-label">Edit student record</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="edit_student/0" id="editStudentForm">
-                    {% csrf_token %}
-                    {{ editStudentForm.as_p }}
-                    <!-- Button container -->
-                    <div class="container d-flex justify-content-around mt-5">
-                        <button type="submit" class="btn btn-success w-50 m-1">Done</button>
-                        <button type="button" class="btn btn-secondary w-50 m-1" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                <div id="edit-form-container">
+                    <!-- To be rendered -->
+                </div>
             </div>
         </div>
     </div>
