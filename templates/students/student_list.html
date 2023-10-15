@@ -9,7 +9,7 @@
 
     <div class="form-group d-flex justify-content-end p-3">
         <!-- Filter options -->
-        {% include 'students/filter_student_table.html' %}
+        {% include 'students/partials/filter_student_table.html' %}
         
         <!-- Button to trigger the modal -->
         <button type="button" class="btn btn-success w-25 h-50 my-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
@@ -19,22 +19,22 @@
     <!-- End Modal Button -->
 
     <!-- Student table that contains student records -->
-    {% include 'students/partial_student_table.html' %}
+    {% include 'students/partials/partial_student_table.html' %}
 
     <!-- Modal for approving student registration -->
-    {% include 'students/modal_approve_student.html' %}
+    {% include 'students/modals/modal_approve_student.html' %}
 
     <!-- Modal adding student records -->
-    {% include 'students/modal_add_student.html' %}
+    {% include 'students/modals/modal_add_student.html' %}
 
     <!-- Modal for confirmation of adding from archived records -->
-    {% include 'students/modal_add_archived_student.html' %}
+    {% include 'students/modals/modal_add_archived_student.html' %}
 
     <!-- Modal for editing student records-->
-    {% include 'students/modal_edit_student.html' %}
+    {% include 'students/modals/modal_edit_student.html' %}
 
     <!-- Modal for delete record confirmation-->
-    {% include 'students/modal_delete_student.html' %}
+    {% include 'students/modals/modal_delete_student.html' %}
 </div>
 
 <!--Include jQuery -->
@@ -48,6 +48,9 @@
 
 <!-- Script for listening to delete button click and rendering delete form -->
 <script src="{% static 'assets/js/students/delete_student.js' %}"></script>
+
+<!-- Script for student approval modal -->
+<script src="{% static 'assets/js/students/approve_student.js' %}"></script>
 
 <!--Script for fetching class section data -->
 <script src="{% static 'assets/js/students/get_class_section_data.js' %}"></script>

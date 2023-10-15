@@ -10,6 +10,7 @@ def student_delete(request, student_id):
     student_instance = get_object_or_404(Student, user=student_user_instance)
 
     if request.method == 'POST':
+        # Archive the deleted student record 
         archive_student_instance = ArchivedStudent.objects.create(
             previous_teacher = student_instance.teacher,
             first_name = student_instance.first_name,

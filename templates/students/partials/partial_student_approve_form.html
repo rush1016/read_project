@@ -1,0 +1,11 @@
+<form method="POST" action="{% url 'approve_student' student_id %}" id="approve-student-form">
+    {% csrf_token %}
+
+    {{ approve_form }}
+
+    <!--Button container-->
+    <div class="container d-flex justify-content-around mt-5">
+        <button type="submit" class="btn btn-success w-50 m-1">Approve Student</button>
+        <button type="button" class="btn btn-secondary w-50 m-1" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
