@@ -1,6 +1,9 @@
+{% load static %}
+
 <form method="POST" action="{% url 'edit_student' student_instance.student_id %}" id="edit-student-form">
     {% csrf_token %}
 
+    
     {{ student_edit_form }}
 
     <!-- Button container -->
@@ -9,3 +12,5 @@
         <button type="button" class="btn btn-secondary w-50 m-1" data-bs-dismiss="modal">Cancel</button>
     </div>
 </form>
+
+<script src="{% static 'assets/js/students/student_lrn_parse_int.js' %}"></script>

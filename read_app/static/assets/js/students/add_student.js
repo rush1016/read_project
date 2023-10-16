@@ -15,7 +15,6 @@ $(document).ready(function() {
         // A matching archived student record exists, show the confirmation modal
         if (response.archived_student_id) {
           confirmationModal.show();
-          console.log(response.archived_student_id);
           $('#confirmButton').click(function() {
             window.location.href = 'confirm_add_archived_student/' + response.archived_student_id;
             

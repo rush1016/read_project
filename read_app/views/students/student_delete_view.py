@@ -34,6 +34,6 @@ def student_delete(request, student_id):
             'student_form': student_form,
             'student_id': student_id,
         }
-        return render(request, 'students/partial_student_delete_form.html', context)
+        return render(request, 'students/partials/partial_student_delete_form.html', context)
 
 

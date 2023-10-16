@@ -30,5 +30,5 @@ def student_edit(request, student_id):
         'student_instance': student_instance,
     }
 
-    return render(request, 'students/partial_student_edit_form.html', context)
+    return render(request, 'students/partials/partial_student_edit_form.html', context)
         

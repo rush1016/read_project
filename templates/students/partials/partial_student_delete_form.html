@@ -1,10 +1,11 @@
 {% load widget_tweaks %}
+{% load static %}
 
 <form method="POST" action="{% url 'delete_student' student_id %}">
     {% csrf_token %}
 
     {{ student_form.student_lrn.label }}
-    {% render_field student_form.student_lrn style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
+    {% render_field student_form.student_lrn id="id_student_lrn" style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
     {{ student_form.first_name.label }}
     {% render_field student_form.first_name style+="border:none; border-bottom: 1px solid #575757; pointer-events: none;" %}
     {{ student_form.last_name.label }}
@@ -20,3 +21,5 @@
         <button type="button" class="btn btn-success w-50 m-1" data-bs-dismiss="modal">Cancel</button>
     </div>
 </form>
+
+<script src="{% static 'assets/js/students/student_lrn_parse_int.js' %}"></script>
