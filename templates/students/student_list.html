@@ -12,8 +12,12 @@
         {% include 'students/partials/filter_student_table.html' %}
         
         <!-- Button to trigger the modal -->
-        <button type="button" class="btn btn-success w-25 h-50 my-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-            Registration Code
+        <button 
+            type="button" 
+            class="btn btn-success w-25 h-50 my-3" 
+            data-bs-toggle="modal" 
+            data-bs-target="#addStudentModal">
+                Registration Code
         </button>
     </div>
     <!-- End Modal Button -->
@@ -37,8 +41,6 @@
     {% include 'students/modals/modal_delete_student.html' %}
 </div>
 
-<!--Include jQuery -->
-<script src="{% static 'assets/js/jquery-3.6.0.min.js'%}"></script>
 
 <!-- Script for calling add_student view -->
 <script src="{% static 'assets/js/students/add_student.js' %}"></script>

@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login
 
 
 def registration(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     return render(request, 'registration/signup_role_select.html')
 
 

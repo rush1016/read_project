@@ -43,6 +43,7 @@ $(document).ready(function() {
     // To be used as reference which options to hide and show
     async function setGradeLevelAttribute(idModal) {
         const gradeLevelMapping = await createGradeLevelMapping();
+        console.log(gradeLevelMapping);
         // Iterate through the list and assign the 
         // value into data-grade-level attribute
         $(`${idModal} #id_class_section option`).each(function() {
@@ -52,6 +53,7 @@ $(document).ready(function() {
                 let gradeLevel = gradeLevelMapping[classSectionName];
                 $(this).attr('data-grade-level', gradeLevel);
             }
+
         });
     }
 
@@ -77,10 +79,5 @@ $(document).ready(function() {
         $(idModal).on('shown.bs.modal', function () {
             updateSectionOptions(gradeLevelField, classSectionField);
         });
-    }
-  
-    // Initialize the modals
-    initializeModal('#addStudentModal');
-    initializeModal('#editStudentModal');
-
+    };
 });

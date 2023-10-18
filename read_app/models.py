@@ -5,9 +5,9 @@ import datetime
 
 
 class User(AbstractUser):
-    is_student = models.BooleanField('student_status', default=False)
-    is_teacher = models.BooleanField('teacher_status', default=False)
-    is_school_admin = models.BooleanField('school_admin_status', default=False)
+    is_student = models.BooleanField('Student status', default=False)
+    is_teacher = models.BooleanField('Teacher status', default=False)
+    is_school_admin = models.BooleanField('School Admin status', default=False)
 
     def __str__(self):
         return self.get_full_name()
@@ -19,7 +19,7 @@ class Admin(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    date_created = models.DateField(default=datetime.date.today)
+    date_created = models.DateField(default=timezone.now)
 
 
 class Teacher(models.Model):
@@ -29,7 +29,7 @@ class Teacher(models.Model):
         primary_key=True,
     )
     teacher_code = models.CharField(max_length=80)
-    date_created = models.DateField(default=datetime.date.today)
+    date_created = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.user.get_full_name()
@@ -53,8 +53,19 @@ class Student(models.Model):
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
-    date_added = models.DateField(default=datetime.date.today)
+    date_added = models.DateField(default=timezone.now)
     is_approved = models.BooleanField(default=False)
+
+    # Assessments
+    has_ongoing_assessment = models.BooleanField(default=False)
+    overall_rating = models.CharField(default=0, max_length=100)
+    words_per_minute = models.DecimalField(default=0, decimal_places=2, max_digits=10)
+    mean_read_time = models.DecimalField(default=0, decimal_places=2, max_digits=10)
+    mean_score = models.DecimalField(default=0, decimal_places=2, max_digits=10)
+    assessments_done = models.IntegerField(default=0)
+    fourth_grade_passage = models.IntegerField(default=0)
+    fifth_grade_passage = models.IntegerField(default=0)
+    sixth_grade_passage = models.IntegerField(default=0)
 
 
 class ArchivedStudent(models.Model):
@@ -69,7 +80,7 @@ class ArchivedStudent(models.Model):
     student_lrn = models.FloatField(unique=True, null=True)
     grade_level = models.IntegerField()
     class_section = models.CharField(max_length=80)
-    date_added = models.DateField(default=datetime.date.today)
+    date_added = models.DateField(default=timezone.now)
     is_approved = models.BooleanField(default=False)
     date_archived = models.DateField(auto_now_add=True)
 
@@ -77,22 +88,6 @@ class ArchivedStudent(models.Model):
 class ClassSection(models.Model):
     grade_level = models.IntegerField()
     section_name = models.CharField(max_length=80)
-
-
-class StudentInfo(models.Model):
-    student = models.ForeignKey(
-        'read_app.Student', 
-        on_delete=models.SET_NULL, 
-        null=True
-    )
-    overall_rating = models.CharField(max_length=100)
-    words_per_minute = models.DecimalField(decimal_places=2, max_digits=10)
-    mean_read_time = models.DecimalField(decimal_places=2, max_digits=10)
-    mean_score = models.DecimalField(decimal_places=2, max_digits=10)
-    assessments_done = models.IntegerField()
-    fourth_grade_passage = models.IntegerField()
-    fifth_grade_passage = models.IntegerField()
-    sixth_grade_passage = models.IntegerField()
 
 
 class Passage(models.Model):
@@ -139,14 +134,26 @@ class StudentAnswer(models.Model):
 
 
 class AssessmentSession(models.Model):
-    passage = models.ForeignKey(Passage, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    total_score = models.IntegerField()
-    total_reading_time = models.PositiveIntegerField()
-    total_answering_time = models.PositiveIntegerField()
+    ASSESSMENT_TYPES = (
+        ('Screening', 'Screening'),
+        ('Normal', 'Normal'),
+    )
+    assessment_type = models.CharField(max_length=10, choices=ASSESSMENT_TYPES)
     grade_level = models.IntegerField()
-    start_time = models.DateTimeField(auto_now_add=True)
+    total_score = models.IntegerField(null=True)
+    total_reading_time = models.PositiveIntegerField(null=True)
+    total_answering_time = models.PositiveIntegerField(null=True)
+    assigned_time = models.DateTimeField(default=timezone.now)
+    start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
+    is_finished = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"Assessment Session for {self.student} - Passage: {self.passage.passage_title}"
+        return f"Assessment Session for {self.student}"
+    
+
+class AssessmentSessionPassage(models.Model):
+    assessment_session = models.ForeignKey(AssessmentSession, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField()
+    passage = models.ForeignKey(Passage, on_delete=models.CASCADE)

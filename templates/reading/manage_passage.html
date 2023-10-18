@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container my-5 px-5">
+    <div class="container d-flex">
+        <a href="{% url 'reading_material' %}" class="lead text-decoration-none">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            Back
+        </a>
+    </div>
+    <form method="POST" action="{% url 'manage_passage' passage.id %}">
+        {% csrf_token %}
+         
+        <!-- Top buttons -->
+        {% include 'reading/partial_edit_buttons.html' %}
+        <input type="hidden" id="passage-id" name="passage-id" value="{{ passage.id }}">
+        <!-- Form fields -->
+        {{ passage_form.grade_level.label }}
+        {% render_field passage_form.grade_level disabled=disabled %}
+        {{ passage_form.passage_title.label }}
+        {% render_field passage_form.passage_title readonly=readonly %}
+        {{ passage_form.passage_content.label }}
+        {% render_field passage_form.passage_content readonly=readonly %}
+        
+        {{ question_formset.management_form }}
+        {{ question_formset.non_form_errors }}
+        {% for question_form in question_formset %}
+            <div class="question-form">
+                {% render_field question_form.question_content class+="question-content" readonly=readonly %}
+                {% if question_form.id %}
+                    {{ question_form.id }}
+                {% endif %}
+    
+                {% if question_form.nested %}
+                    {{ question_form.nested.management_form }}
+                    {{ question_form.nested.non_form_errors }}
+    
+                    {% for choice_form in question_form.nested %}
+                    <div class="row">
+                        <div class="col-2 col-xs-4 d-flex justify-content-around align-items-center">
+                            <p class="text-muted m-0 p-0">Correct Answer</p>
+                            {% render_field choice_form.is_correct class+="is-correct" disabled=disabled %}
+                        </div>
+                        <div class="col-10 col-xs-8">
+                            {% render_field choice_form.choice_content class+="choice-content" readonly=readonly %}
+                            {% if choice_form.id %}
+                                {{ choice_form.id }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <!-- Bottom buttons -->
+        {% include 'reading/partial_edit_buttons.html' %}
+
+        {% include 'reading/modal_delete_passage.html' %}
+
+    </form>
+</div>
+{% endblock %}

@@ -20,6 +20,11 @@ from read_app.views.reading import (
     reading_material,
     get_passage_info,
     delete_reading_material,
+    manage_passage
+)
+from read_app.views.assessment import (
+    assessment_select,
+    assessment_session
 )
 from read_app.forms.custom_password_confirm_form import CustomPasswordResetConfirmForm
 
@@ -60,6 +65,15 @@ urlpatterns = [
     # Reading Materials
     path('reading_material', reading_material.to_reading_materials, name="reading_material"),
     path('add_reading_material', add_reading_material.add_reading_material, name="add_reading_material"),
-    path('get_passage_info/<int:passage_id>', get_passage_info.get_passage_info, name="get_passage_info"),
+    path('manage_passage/<int:passage_id>', manage_passage.manage_passage, name="manage_passage"),
     path('delete_passage/<int:passage_id>', delete_reading_material.delete_passage, name="delete_passage"),
+    path('get_passage_info/<int:passage_id>', get_passage_info.get_passage_info, name="get_passage_info"),
+
+
+    # Assessments
+    path('assessment/select', assessment_select.select, name="assessment/select"),
+    path('assessment/screening/select_student', assessment_select.select_student_screening, name="assessment/screening/select_student"),
+    path('assessment/assign', assessment_select.assign_screening_assessment, name="assessment/assign"),
+
+    path('assessment/list', assessment_session.student_assessment_list, name="assessment/list"),
 ]

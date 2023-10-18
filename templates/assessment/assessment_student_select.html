@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="display-5">Select students: </h1>
+    <table class="table table-hover" id="studentList">
+        <form method="POST" action="{% url 'assessment/assign' %}">
+            {% csrf_token %}
+        <thead>
+            <tr>
+                <th>
+                    <input 
+                        type="checkbox" 
+                        id="select-all-check" 
+                        class="form-check-input">    
+                            Select All
+                </th>
+                <th>ID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Grade Level</th>
+                <th>Section</th>
+                <th>Date Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <!-- Select student checkbox -->
+                    <td>
+                        <input 
+                            type="checkbox"
+                            class="form-check-input align-self-center" 
+                            name="selected_records" 
+                            value="{{ student.student_id }}">
+                    </td>
+                    <!-- Checkbox end -->
+                    <td>{{ student.student_id }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.first_name }}</td>
+                    <td>Grade {{ student.grade_level }}</td>
+                    <td>{{ student.class_section }}</td>
+                    <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
+                    
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+        <button type="submit" class="btn btn-success">Assign screening test</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        // Get references to the checkboxes
+        let selectAllCheck = $("#select-all-check");
+        let otherCheckboxes = $('input[name="selected_records"]');
+
+        // Add a change event handler to the "Select All" checkbox
+        selectAllCheck.change(function () {
+            otherCheckboxes.prop('checked', selectAllCheck.prop('checked'));
+        });
+  
+        // Add a change event handler to the other checkboxes
+        otherCheckboxes.change(function () {
+            selectAllCheck.prop('checked', otherCheckboxes.length === otherCheckboxes.filter(':checked').length);
+        });
+    });
+</script>
+{% endblock %}

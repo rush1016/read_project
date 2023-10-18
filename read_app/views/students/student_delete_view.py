@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 from read_app.forms.student_edit import StudentEditForm
 from read_app.models import User, Teacher, Student, ArchivedStudent
 
+@login_required
 @transaction.atomic
 def student_delete(request, student_id):
     student_user_instance = get_object_or_404(User, pk=student_id)

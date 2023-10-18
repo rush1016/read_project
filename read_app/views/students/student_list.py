@@ -12,8 +12,8 @@ from read_app.forms.student_edit import StudentEditForm
 def student_list(request):
     # Create an instance to use as ForeignKey
     teacher_instance = User.objects.get(pk=request.user.id, is_teacher=True)
-    students = Student.objects.filter(teacher=teacher_instance).order_by('student_id')
-    print(students)
+    students = get_student_list(teacher_instance)
+    
     approval_form = ApprovalForm()
     context = {
         'students': students,
@@ -22,3 +22,7 @@ def student_list(request):
     }
     return render(request, 'students/student_list.html', context)
 
+def get_student_list(teacher_instance):
+    students = Student.objects.filter(teacher=teacher_instance).order_by('student_id')
+
+    return students

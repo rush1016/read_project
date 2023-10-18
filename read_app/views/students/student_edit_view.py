@@ -1,10 +1,11 @@
 from django.contrib import messages
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from read_app.forms.student_edit import StudentEditForm
 from read_app.models import User, Student
 
+@login_required
 def student_edit(request, student_id):
     student_user_instance = get_object_or_404(User, pk=student_id)
     student_instance = get_object_or_404(Student, user=student_user_instance)

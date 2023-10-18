@@ -1,19 +1,27 @@
 <div class="table-responsive">
-    <table class="table table-bordered table-hover" id="studentList">
+    <table class="table table-hover" id="studentList">
         <thead>
             <tr>
+                <th></th>
                 <th>ID</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Grade Level</th>
                 <th>Section</th>
                 <th>Date Added</th>
-                <th class="text-center">Actions</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
             {% for student in students %}
                 <tr>
+                    <!-- Select student checkbox -->
+                    <td><input 
+                        type="checkbox"
+                        class="form-check-input align-self-center" 
+                        name="selected_records" 
+                        value="{{ student.student_id }}"></td>
+                    <!-- Checkbox end -->
                     <td>{{ student.student_id }}</td>
                     <td>{{ student.last_name }}</td>
                     <td>{{ student.first_name }}</td>
@@ -23,15 +31,33 @@
                     <!--Action buttons-->
                     <td class="d-flex justify-content-around">
                         {% if student.is_approved %}
-                            <button type="button" id="edit-student-button" class="btn btn-primary btn-sm edit-student-button" data-bs-toggle="modal" data-bs-target="#edit-student-modal" data-student-id="{{ student.user.id }}">
-                                Edit Student
+                            <button 
+                                type="button" 
+                                id="edit-student-button" 
+                                class="btn btn-primary btn-sm edit-student-button" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#edit-student-modal" 
+                                data-student-id="{{ student.user.id }}">
+                                    Edit Student
                             </button>
-                            <button type="button" id="delete-student-button" class="btn btn-danger btn-sm delete-student-button" data-bs-toggle="modal" data-bs-target="#delete-student-modal" data-student-id="{{ student.user.id }}">
-                                Delete Student
+                            <button 
+                                type="button" 
+                                id="delete-student-button" 
+                                class="btn btn-danger btn-sm delete-student-button" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#delete-student-modal" 
+                                data-student-id="{{ student.user.id }}">
+                                    Delete Student
                             </button>
                         {% else %}
-                            <button type="button" class="btn btn-success btn-sm approve-student-button" id="approve-button" data-bs-toggle="modal" data-bs-target="#approve-student-modal" data-student-id="{{ student.user.id }}">
-                                Approve Registration
+                            <button 
+                                type="button" 
+                                class="btn btn-success btn-sm approve-student-button" 
+                                id="approve-button" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#approve-student-modal" 
+                                data-student-id="{{ student.user.id }}">
+                                    Approve Registration
                             </button>
                         {% endif %}
                     </td>

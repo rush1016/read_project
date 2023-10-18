@@ -1,6 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from read_app.models import User, Teacher, Student, ClassSection, Passage, Question, Choice, ArchivedStudent
+from read_app.models import (
+    User, 
+    Teacher, 
+    Student, 
+    ClassSection, 
+    Passage, 
+    Question, 
+    Choice, 
+    ArchivedStudent,
+    AssessmentSession
+)
 
 # Teacher (User)
 class UserAdmin(UserAdmin):
@@ -17,13 +27,13 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_school_admin', 'is_teacher', 'is_student')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name', 'email')
+            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name', 'email', 'is_school_admin')
         }),
     ) 
 
@@ -106,6 +116,21 @@ class ChoiceAdmin(admin.ModelAdmin):
         return obj.passage.question_content
 
 
+class AssessmentSessionAdmin(admin.ModelAdmin):
+    list_display = (
+        'student', 
+        'assessment_type', 
+        'grade_level', 
+        'total_score', 
+        'total_reading_time', 
+        'total_answering_time',
+        'assigned_time',
+        'start_time',
+        'end_time',
+        'is_finished',
+    )
+
+
 # User accounts
 admin.site.register(User, UserAdmin)
 admin.site.register(Teacher, TeacherAdmin)
@@ -117,6 +142,8 @@ admin.site.register(Passage, PassageAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)
 
+# Assessments
+admin.site.register(AssessmentSession, AssessmentSessionAdmin)
 
-"""admin.site.register(ArchivedStudent, ArchivedStudentAdmin) """
+
 admin.site.register(ClassSection, ClassSectionAdmin)

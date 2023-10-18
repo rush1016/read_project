@@ -1,0 +1,73 @@
+<!-- Buttons -->
+<div class="container d-grid gap-2 d-md-flex justify-content-md-end m-2 p-0">
+    <button id="save-passage-button" 
+        class="btn btn-success save-passage-button d-none" type="submit">Save
+    </button>
+    <button id="add-question-button" 
+        class="btn btn-primary add-question-button d-none" type="button">Add question
+    </button>
+    <button id="cancel-edit-button" 
+        class="btn btn-secondary cancel-edit-button d-none" type="button">Cancel
+    </button>
+    <button id="edit-passage-button" 
+        class="btn btn-primary edit-passage-button" type="button">Edit passage
+    </button>
+    <button id="delete-passage-button" 
+        class="btn btn-danger delete-passage-button" type="button" data-bs-toggle="modal" data-bs-target="#delete-passage-modal" data-passage-id="{{ passage.id }}">Delete passage
+    </button>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // Define the buttons
+        let addButton = $('.add-question-button');
+        let editButton = $('.edit-passage-button');
+        let deleteButton = $('.delete-passage-button');
+        let confirmDeleteButotn = $('#confirm-delete-passage-button');
+        let saveButton = $('.save-passage-button');
+        let cancelButton = $('.cancel-edit-button');
+
+        // Define the elements
+        let passageId = $('#passage-id').val();
+        let url = `{% url 'delete_passage' passage.id %}`;
+        let gradeLevelField = $('#id_grade_level');
+        let passageTitleField = $('#id_passage_title');
+        let passageContentField = $('#id_passage_content');
+        let questionField = $('.question-content');
+        let choiceField = $('.choice-content');
+        let choiceCorrect = $('.is-correct');
+
+
+        editButton.click(function() {
+            gradeLevelField.removeAttr('disabled');
+            passageTitleField.removeAttr('readonly');
+            passageContentField.removeAttr('readonly');
+            questionField.removeAttr('readonly');
+            choiceField.removeAttr('readonly');
+            choiceCorrect.removeAttr('disabled');
+
+            editButton.addClass('d-none');
+            saveButton.removeClass('d-none');
+            cancelButton.removeClass('d-none');
+            gradeLevelField.focus();
+        });
+        
+        cancelButton.click(function() {
+            gradeLevelField.attr('disabled', 'disabled');
+            passageTitleField.attr('readonly', 'readonly');
+            passageContentField.attr('readonly', 'readonly');
+            questionField.attr('readonly', 'readonly');
+            choiceField.attr('readonly', 'readonly');
+            choiceCorrect.attr('disabled', 'disabled');
+
+            editButton.removeClass('d-none');
+            saveButton.addClass('d-none');
+            cancelButton.addClass('d-none');
+        });
+
+        confirmDeleteButotn.click(function() {
+            window.location.href = url;
+        })
+    });
+</script>

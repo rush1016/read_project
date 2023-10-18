@@ -12,27 +12,27 @@
         {{ question_formset.management_form }}
         {{ question_formset.non_form_errors }}
         {% for question_form in question_formset %}
-                <div class="question-form">
-                    {{ question_form }}
+            <div class="question-form">
+                {{ question_form }}
     
-                    {% if question_form.nested %}
-                        {{ question_form.nested.management_form }}
-                        {{ question_form.nested.non_form_errors }}
+                {% if question_form.nested %}
+                    {{ question_form.nested.management_form }}
+                    {{ question_form.nested.non_form_errors }}
     
-                        {% for choice_form in question_form.nested %}
-                        <div class="row">
-                            <div class="col-2 d-flex justify-content-around align-items-center">
-                                <p class="text-muted m-0 p-0">Correct Answer</p>
-                                {{ choice_form.is_correct }}
-                            </div>
-                            <div class="col-10">
-                                {{ choice_form.choice_content }}
-                            </div>
+                    {% for choice_form in question_form.nested %}
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-around align-items-center">
+                            <p class="text-muted m-0 p-0">Correct Answer</p>
+                            {{ choice_form.is_correct }}
                         </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            {% endfor %}
+                        <div class="col-10">
+                            {{ choice_form.choice_content }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
             <!-- Add more questions here -->
         
         <div class="container my-3">
