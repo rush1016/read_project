@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Assessment Result</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="div d-md-flex align-items-center">
+        <div class="mt-5 d-flex justify-content-center">
+            {% include "assessment/student/partials/donut_chart.html" %}
+        </div>
+        <div class="mt-xs-5 mx-5">
+            <h1 class="display-5">Score: {{ score }}</h1>
+            <div class=>
+                <h1 class="display-3">
+                {% if score == 5 %}
+                    Great Job!
+                {% elif score == 4 %}
+                    Almost perfect! Keep it up!
+                {% elif score == 3 %}
+                    Nice work!
+                {% elif score < 3 %}
+                    Not bad. You will get it next time!
+                {% endif %}
+                </h1> 
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="student-score" value="{{ score }}">
+    <input type="hidden" id="question-count" value="{{ student_answers.0.passage.number_of_questions }}">
+    {% for student_answer in student_answers %}
+        <hr>
+        <div class="card text-light">
+            <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
+                <div class="lead">
+                    {{ student_answer.question }}
+                </div>
+                <div class="lead">
+                    {{ student_answer.answer }}
+                </div>
+                {% if student_answer.correct == False %}
+                    <div class="container lead bg-success rounded px-2">
+                        Correct Answer: {{ student_answer.question.get_correct }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'assets/js/assessment/result_chart.js' %}"></script>
+
+{% endblock content %}

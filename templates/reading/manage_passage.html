@@ -13,7 +13,7 @@
         {% csrf_token %}
          
         <!-- Top buttons -->
-        {% include 'reading/partial_edit_buttons.html' %}
+        {% include 'reading/partials/partial_edit_buttons.html' %}
         <input type="hidden" id="passage-id" name="passage-id" value="{{ passage.id }}">
         <!-- Form fields -->
         {{ passage_form.grade_level.label }}
@@ -55,9 +55,9 @@
         {% endfor %}
         
         <!-- Bottom buttons -->
-        {% include 'reading/partial_edit_buttons.html' %}
+        {% include 'reading/partials/partial_edit_buttons.html' %}
 
-        {% include 'reading/modal_delete_passage.html' %}
+        {% include 'reading/modals/modal_delete_passage.html' %}
 
     </form>
 </div>

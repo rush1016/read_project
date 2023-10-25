@@ -1,0 +1,16 @@
+/* Footer */
+footer {
+  background-color: #18191a;
+  color: #ffffff;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  margin-top: auto;
+}
+
+footer p {
+  font-size: 14px;
+  margin: 0;
+}

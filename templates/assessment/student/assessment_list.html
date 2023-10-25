@@ -1,12 +1,52 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Assessment Title</h5>
-    <p class="card-text">Sample content</p>
-    <a href="#" class="btn btn-primary">Begin</a>
-  </div>
+
+<div class="container my-5">
+    <h1 class="display-5 mb-5">Assessments</h1>
+    <div class="container">
+        {% if assessment_sessions %}
+            {% for assessment_session in assessment_sessions %}
+                <!-- CARD -->
+                <div class="card w-75 mx-auto my-2 p-md-5 p-xs-1">
+                    <div class="card-body">
+                        <h5 class="card-title display-6 mb-5">{{ assessment_session.assessment_type }} 
+                            {% if assessment_session.assessment_type == 'Screening' %} 
+                                Test 
+                            {% else  %} 
+                                Reading Passage Assessment 
+                            {% endif %}
+                        </h5>
+
+                        <!-- Card Text Info About the Assessment -->
+                        {% for passage in assessment_session.get_passages %} 
+                            <p class="lead">Passage Title:
+                                {{ passage.passage.passage_title }} 
+                            </p>
+                            <p class="lead">Grade Level:
+                                {{ passage.passage.grade_level }} 
+                            </p>
+                            <p class="lead">Words:
+                                {{ passage.passage.passage_length }} 
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Buttons for each type of assessment -->
+                    <div class="d-grid gap-2 col-10 mx-auto my-2">
+                        {% if assessment_session.assessment_type == 'Screening' %}
+                            <a href="{% url 'screening_assessment' assessment_session.id %}" class="btn btn-primary">Begin</a>
+                        {% elif assessment_session.assessment_type == 'Graded' %}
+                            <a href="{% url 'graded_assessment' assessment_session.id %}" class="btn btn-primary">Begin</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+        <!-- No Assessment assigned -->
+        {% else %}
+            <p class="lead">You currently have no assessments assigned</p>
+        {% endif %}
+    </div>
 </div>
 
 

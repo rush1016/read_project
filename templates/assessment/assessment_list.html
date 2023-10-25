@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Assessment List</title>
+{% endblock title %}
+{% block content %}
+<div class="container my-5">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>Assessment Type</th>
+                <th>Passage</th>
+                <th>Grade Level</th>
+                <th>Assigned Time</th>
+                <th>Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assessment in assessments %}
+            <tr>
+                <td>{{ assessment.student }}</td>
+                <td>{{ assessment.assessment_type }}</td>
+                <td>
+                    {% for passage in assessment.get_passages %}
+                        | {{ passage }} 
+                    {% endfor %}
+                </td>
+                <td>Grade {{ assessment.grade_level }}</td>
+                <td>{{ assessment.assigned_time }}</td>
+                <td>
+                    {% if assessment.is_finished %}
+                        Completed 
+                    {% else %}
+                        On-going
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

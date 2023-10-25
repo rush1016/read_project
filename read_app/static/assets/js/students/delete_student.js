@@ -3,7 +3,7 @@ $(document).ready(function() {
     
     $('.delete-student-button').click(function() {
         let studentId = $(this).data('student-id');
-        let url = `delete_student/${studentId}`;
+        let url = `delete/${studentId}`;
 
         $.ajax({
             type: 'GET',

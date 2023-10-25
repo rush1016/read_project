@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from read_app.forms.students import StudentRegistrationForm
+from students.forms.students import StudentRegistrationForm
 from read_app.forms.teachers import TeacherRegistrationForm
 from django.contrib.auth import authenticate, login
 
