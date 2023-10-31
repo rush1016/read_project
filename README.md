@@ -1,2 +1,2 @@
 # read_project
-this is a thesis project for computer science degree
+a web based reading comprehension assessment tracker for a computer science degree thesis paper
