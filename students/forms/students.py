@@ -1,6 +1,7 @@
 from django import forms
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 from read_app.forms.base_registration import BaseRegistrationForm
 from read_app.models import User, Teacher
@@ -35,7 +36,7 @@ class StudentRegistrationForm(BaseRegistrationForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Teacher Registration Code',
+                'placeholder': 'Enter 6-Character Teacher Registration Code',
                 'required': 'required',}))
 
     def __init__(self, *args, **kwargs):

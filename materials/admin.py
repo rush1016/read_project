@@ -19,7 +19,7 @@ class ChoiceInLine(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'passage', 'question_content', 'created_at')
+    list_display = ('id', 'passage', 'question_type','question_content', 'created_at')
 
     inlines = [ChoiceInLine]
 

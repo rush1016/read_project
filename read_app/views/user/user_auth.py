@@ -29,4 +29,4 @@ def logout_user(request):
     logout(request) # Django's built-in logout function from authentication app
     messages.success(request, "You have been logged out!")
     
-    return redirect('home')
+    return redirect('login')

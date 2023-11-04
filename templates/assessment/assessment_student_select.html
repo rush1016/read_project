@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}
+    <title>
+        {% if assessment_type == 'Screening' %}
+            Screening Test
+        {% else %}
+            Graded Passages
+        {% endif %}
+    </title>
+{% endblock title %}
+
+
 {% block content %}
 <div class="container my-5">
     <!-- Screening -->

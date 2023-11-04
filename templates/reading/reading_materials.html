@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+	<title>Reading Materials</title>
+{% endblock title %}
+
 {% block content %}
 <div class="container mt-5">
 	<h1 class="display-3 mt-3">Reading Materials</h1>
@@ -20,4 +24,4 @@
 <script src="{% static 'assets/js/reading/get_passage_info.js' %}"></script>
 <script src="{% static 'assets/js/reading/delete_passage_button.js' %}"></script>
 <script src="{% static 'assets/js/reading/filter_reading_materials.js' %}"></script>
-{% endblock %}
+{% endblock content %}

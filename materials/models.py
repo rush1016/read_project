@@ -46,6 +46,12 @@ class Question(models.Model):
     passage = models.ForeignKey(
         Passage, on_delete=models.CASCADE
     )
+    QUESTION_TYPES = (
+        ('Literal', 'Literal'),
+        ('Inferential', 'Inferential'),
+        ('Critical', 'Critical'),
+    )
+    question_type = models.CharField(max_length=64, choices=QUESTION_TYPES, null=True, blank=True)
     question_content = models.CharField(max_length=500)
     created_at = models.DateTimeField(default=timezone.now)
 

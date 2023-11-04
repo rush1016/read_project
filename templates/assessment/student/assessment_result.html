@@ -12,41 +12,70 @@
             {% include "assessment/student/partials/donut_chart.html" %}
         </div>
         <div class="mt-xs-5 mx-5">
-            <h1 class="display-5">Score: {{ score }}</h1>
-            <div class=>
+            <h1 class="display-5">Score: {{ score }} / {{ assessment_instance.number_of_questions }}</h1>
+            <div>
                 <h1 class="display-3">
-                {% if score == 5 %}
-                    Great Job!
-                {% elif score == 4 %}
-                    Almost perfect! Keep it up!
-                {% elif score == 3 %}
-                    Nice work!
-                {% elif score < 3 %}
-                    Not bad. You will get it next time!
+                {% if assessment_instance.assessment_type == 'Screening' %}
+                    {% if score == 20 %}
+                        Perfect score! Excellent work!
+                    {% elif score == 19 %}
+                        Almost perfect! Just one step away!
+                    {% elif score == 18 %}
+                        Outstanding performance! Keep it up!
+                    {% elif score == 17 %}
+                        Fantastic! You're doing exceptionally well!
+                    {% elif score == 16 %}
+                        Excellent! Your hard work is paying off!
+                    {% elif score == 15 %}
+                        Great job! You're on the right track.
+                    {% elif score == 14 %}
+                        Well done! You've passed with flying colors!
+                    {% elif score > 10 %}
+                        Almost there! Keep it going! 
+                    {% elif score > 5 %}
+                        You are making progress! Do your best!
+                    {% elif score < 5 %}
+                        Nice effort! Do your best!
+                    {% endif %}
+                {% else %}
+                    {% if score == 5 %}
+                        Perfect score! Very good! 
+                    {% elif score == 4 %}
+                        Almost perfect! Just one step away!
+                    {% elif score == 3 %}
+                        Halfway there! Keep it up!
+                    {% else %}
+                        Nice effort! Keep doing your best!
+                    {% endif %}
                 {% endif %}
                 </h1> 
             </div>
         </div>
     </div>
     <input type="hidden" id="student-score" value="{{ score }}">
-    <input type="hidden" id="question-count" value="{{ student_answers.0.passage.number_of_questions }}">
-    {% for student_answer in student_answers %}
-        <hr>
-        <div class="card text-light">
-            <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
-                <div class="lead">
-                    {{ student_answer.question }}
-                </div>
-                <div class="lead">
-                    {{ student_answer.answer }}
-                </div>
-                {% if student_answer.correct == False %}
-                    <div class="container lead bg-success rounded px-2">
-                        Correct Answer: {{ student_answer.question.get_correct }}
+    <input type="hidden" id="question-count" value="{{ assessment_instance.number_of_questions }}">
+
+    {% for passage_instance, student_answers in student_answers.items %}
+        <h1 class="display-6 mt-5">{{ passage_instance.passage_title }}</h1>
+
+        {% for student_answer in student_answers %}
+            <hr>
+            <div class="card text-light">
+                <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
+                    <div class="lead">
+                        {{ student_answer.question }}
                     </div>
-                {% endif %}
+                    <div class="lead">
+                        {{ student_answer.answer }}
+                    </div>
+                    {% if student_answer.correct == False %}
+                        <div class="container lead bg-success rounded px-2">
+                            Correct Answer: {{ student_answer.question.get_correct }}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endfor %}
     {% endfor %}
 </div>
 

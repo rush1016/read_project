@@ -1,7 +1,8 @@
 <table id="reading-list" class="table table-responsive">
     <thead class="table-dark">
         <th>ID</th>
-        <th class="w-50">Passage Title</th>
+        <th class="">Passage Title</th>
+        <th class="">Type</th>
         <th class="">Grade Level</th>
         <th class="">Word Count</th>
         <th class="">Number of Questions</th>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ passage.id }}</td>
                 <td>{{ passage.passage_title }}</td>
+                <td>{{ passage.preset }}</td>
                 <td>Grade {{ passage.grade_level }}</td>
                 <td>{{ passage.passage_length }} words</td>
                 <td>{{ passage.number_of_questions }} questions</td>

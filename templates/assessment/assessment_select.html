@@ -1,28 +1,33 @@
 {% extends 'base.html' %}
+
+{% block title %}
+    <title>Assessment Select</title>
+{% endblock title %}
+
 {% block content %}
 <div class="container text-center">
     <h1 class="display-5 m-5">Select the type of assessment:</h1>
-    <div class="row d-flex justify-content-around my-2">
-        <div class="col-6">
+    <div class="d-lg-flex justify-content-around my-2 border">
+        <div class="container my-2">
             <div class="card pb-5">
                 <div class="card-header">
                     <h3 class="card-title display-6">Screening Test</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text lead">Screening Test is a 20-item comprehension test in Filipino and English for Grades 3 to 6 in Filipino and Grades 4 to 6 in English. It assesses comprehension based on leveled passages, chosen for concept load, vocabulary, sentence complexity, themes, and cohesion.</p>
+                    <p class="card-text lead">Screening Test is a 20-item comprehension test in Filipino and English. It assesses comprehension based on leveled passages, chosen for concept load, vocabulary, sentence complexity, themes, and cohesion.</p>
                 </div>
                 <div class="d-grid col-6 mx-auto">
                     <a href="{% url 'select_student_screening' %}" class="btn btn-primary btn-lg">Select</a>
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="container my-2">
             <div class="card pb-5">
                 <div class="card-header">
-                    <h3 class="card-title display-6">Graded Passages - Silent Reading Test</h3>
+                    <h3 class="card-title display-6">Graded Passages</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text lead">Silent Reading Test may be administered after the Oral Reading Test is conducted to further check the student’s comprehension skill. This is an optional activity.</p>
+                    <p class="card-text lead">Graded Passages consist of a passage and 5-item comrepehension test in Filipino and English. It assesses comprehension based on leveled passages, chosen for concept load, vocabulary, sentence complexity, themes, and cohesion.</p>
                 </div>
                 <div class="d-grid col-6 mx-auto">
                     <a href="{% url 'select_material_graded' %}" class="btn btn-primary btn-lg">Select</a>

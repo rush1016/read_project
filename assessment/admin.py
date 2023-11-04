@@ -4,14 +4,18 @@ from assessment.forms.student_answer_admin import StudentAnswerAdminForm
 from assessment.models import (
     AssessmentSession,
     AssessmentSessionPassage,
+    ScreeningAssessment,
+    GradedAssessment,
     StudentAnswer,
 )
 
 class AssessmentSessionAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'student', 
         'assessment_type', 
-        'grade_level', 
+        'grade_level',
+        'number_of_questions',
         'total_score', 
         'total_reading_time', 
         'total_answering_time',
@@ -21,11 +25,23 @@ class AssessmentSessionAdmin(admin.ModelAdmin):
         'is_finished',
     )
 
+
+class ScreeningAssessmentAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'assessment_session',
+        'current_passage',
+    )
+
 class AssessmentPassageAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'assessment_session',
         'order',
         'passage',
+        'score',
+        'reading_time',
+        'answering_time',
     )
 
 class StudentAnswerAdmin(admin.ModelAdmin):
@@ -43,4 +59,7 @@ class StudentAnswerAdmin(admin.ModelAdmin):
 # Assessments
 admin.site.register(AssessmentSession, AssessmentSessionAdmin)
 admin.site.register(AssessmentSessionPassage, AssessmentPassageAdmin)
+admin.site.register(ScreeningAssessment, ScreeningAssessmentAdmin)
+admin.site.register(GradedAssessment)
+
 admin.site.register(StudentAnswer, StudentAnswerAdmin)

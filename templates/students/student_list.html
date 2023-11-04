@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+    <title>Student List</title>
+{% endblock title %}
+
 {% block content %}
 
 <div class="container mt-5">
@@ -75,4 +79,4 @@
 
 <!-- Filter script -->
 <script src="{% static 'assets/js/students/filter_student_table.js' %}"></script>
-{% endblock %}
+{% endblock content %}

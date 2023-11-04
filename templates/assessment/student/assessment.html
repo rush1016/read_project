@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 <title>Assessment</title>
@@ -6,60 +7,73 @@
 
 {% block content %}
 <div class="container my-5">
+    <!-- Instruction Card -->
+    {% include "assessment/student/partials/instruction_card.html" %}
 
-    <!-- Passage -->
-    <div class="passage-container border border-5 bg-warning rounded p-3">
-        <h1 class="display-3 text-center my-3 my-sm-2">
-            <strong>
-                {{ passage_instance.passage_title }}
-            </strong>
-        </h1>
-        <p class="display-6 m-md-5 m-sm-3">
-            <strong>
-                {{ passage_instance.passage_content }}
-            </strong>
-        </p>
-    </div>
-    <div class="d-grid gap-2">
-        <button 
-            id="start-answering" 
-            class="btn btn-primary my-2" 
-            data-passage-id="{{ passage_instance.id }}">
-                Start Answering
-        </button>
-    </div>
+    <div id="assessment-container" class="d-none">
+        {% if type == 'Screening' %}
+            <h1 class="display-5">Passage No. {{ order }}</h1>
+        {% endif %}
+        <!-- Timer -->
+        {% include "assessment/student/partials/timer.html" %}
 
-    <!-- Questions -->
-    <div id="question-container" class="d-none my-5">
-        <form method="POST" action="{% url 'graded_assessment' assessment_id %}">
-            {% csrf_token %}
-            {% for form_instance in form_instances %}
-            <div class="card my-5 bg-secondary p-3">
-                <div class="card-body text-light">
-                    {{ form_instance }}
+        <!-- Passage -->
+        <div id="passage-container" class="passage-container border border-5 bg-warning rounded p-2">
+            <h1 class="display-3 text-center my-3 my-sm-2">
+                <strong>
+                    {{ passage_instance.passage_title }}
+                </strong>
+            </h1>
+            <p class="display-6 m-md-5 m-sm-3">
+                <strong>
+                    {{ passage_instance.passage_content }}
+                </strong>
+            </p>
+        </div>
+        <div class="d-grid gap-2">
+            <button 
+                id="start-answering" 
+                class="btn btn-primary my-2" 
+                data-passage-id="{{ passage_instance.id }}">
+                    Start Answering
+            </button>
+        </div>
+    
+        <!-- Questions -->
+        <div id="question-container" class="d-none my-5">
+
+            {% if type == 'Graded' %}
+                <form method="POST" action="{% url 'graded_assessment' assessment_instance.id %}">
+            {% elif type == 'Screening' %}
+                <form method="POST" action="{% url 'screening_assessment_next' assessment_id=assessment_instance.id order=order %}">
+            {% endif %}
+                    
+                {% csrf_token %}
+                <!-- Hidden Field for Passage ID -->
+                <input type="hidden" name="passage_id" value="{{ passage_instance.id }}">
+
+                {% for question_form in question_forms %}
+                <div class="card my-5 bg-secondary p-3">
+                    <div class="card-body text-light">
+                        {{ question_form }}
+                    </div>
                 </div>
-            </div>
-            {% endfor %}
-            <div id="btn-container" class="container d-grid gap-2 mx-auto">
-                <button type="submit" class="btn btn-success col-6 mx-auto">Submit</button>
-            </div>
-        </form>
-    </div>
+                {% endfor %}
+                <!-- Hidden fields for timer values -->
+                <input type="hidden" name="reading_time" id="reading-time" value="0">
+                <input type="hidden" name="answering_time" id="answering-time" value="0">
 
-    <!-- Time -->
-    <input type="hidden" id="start-time" name="start-time" value="{{ start_time }}">
+                <div id="btn-container" class="container d-grid gap-2 mx-auto">
+                    {% if type == 'Graded' %}
+                        <button type="submit" class="btn btn-success col-6 mx-auto">Submit</button>
+                    {% elif type == 'Screening' %}
+                        <button type="submit" class="btn btn-success col-6 mx-auto">Next</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
 
 </div>
-<script>
-    $(document).ready(function() {
-        let startButton = $('#start-answering');
-        let questionContainer = $('#question-container');
-        let startTime = $('#start-time');
-
-        startButton.click(function() {
-            questionContainer.removeClass('d-none')
-            $(this).remove()
-        })
-    });
-</script>
-{% endblock %}
+<script src="{% static 'assets/js/assessment/main.js' %}"></script>
+{% endblock content %}

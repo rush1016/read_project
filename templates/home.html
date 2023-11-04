@@ -3,7 +3,9 @@
 
 {% block content %}
 <head>
-	<title>Reading Comprehension</title>
+	{% block title %}
+		<title>Reading Assessment Tracker</title>	
+	{% endblock title %}
 
 	<!-- Local CSS files -->
 	<link rel="stylesheet" href='{% static "assets/css/homepage.css" %}'>
@@ -70,4 +72,4 @@
 	</div>
 </section>
 
-{% endblock %}
+{% endblock content %}

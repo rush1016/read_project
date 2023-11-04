@@ -23,7 +23,7 @@ class Student(models.Model):
         },
     )
     student_id = models.IntegerField(unique=True)
-    student_school_id = models.CharField(unique=True, null=True)
+    student_school_id = models.CharField(unique=True, null=True, blank=True)
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     grade_level = models.IntegerField()
@@ -48,11 +48,16 @@ class Student(models.Model):
     
     def save(self, *args, **kwargs):
         has_screening_session = self.assessment_session.filter(
-            assessment_type = 'Screening'
+            assessment_type = 'Screening',
+            is_finished=False
         ).exists()
-        print(has_screening_session)
 
         self.screening = has_screening_session
+
+        if not self.student_school_id:
+            current_year = str(timezone.now().year % 100)
+            student_count = Student.objects.count() + 1
+            self.student_school_id = f'{current_year}-{student_count:04d}'
         super().save(*args, **kwargs)
 
 

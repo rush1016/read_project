@@ -6,38 +6,39 @@
     <div class="container">
         {% if assessment_sessions %}
             {% for assessment_session in assessment_sessions %}
-                <!-- CARD -->
-                <div class="card w-75 mx-auto my-2 p-md-5 p-xs-1">
-                    <div class="card-body">
-                        <h5 class="card-title display-6 mb-5">{{ assessment_session.assessment_type }} 
-                            {% if assessment_session.assessment_type == 'Screening' %} 
-                                Test 
-                            {% else  %} 
-                                Reading Passage Assessment 
+                <div class="row">
+                    <!-- CARD -->
+                    <div class="card col-sm-12 col-lg-8 mx-auto my-2 p-md-5 p-xs-1">
+                        <div class="card-body">
+                            <h5 class="card-title display-6 mb-5">{{ assessment_session.assessment_type }} 
+                                {% if assessment_session.assessment_type == 'Screening' %} 
+                                    Test 
+                                {% else  %} 
+                                    Reading Passage Assessment 
+                                {% endif %}
+                            </h5>
+                            <!-- Card Text Info About the Assessment -->
+                            {% for passage in assessment_session.get_passages %} 
+                                <hr>
+                                <p class="lead">Passage Title:
+                                    {{ passage.passage.passage_title }} 
+                                </p>
+                                <p class="lead">Grade Level:
+                                    {{ passage.passage.grade_level }} 
+                                </p>
+                                <p class="lead">Words:
+                                    {{ passage.passage.passage_length }} 
+                                </p>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Buttons for each type of assessment -->
+                        <div class="d-grid gap-2 col-10 mx-auto my-2">
+                            {% if assessment_session.assessment_type == 'Screening' %}
+                                <a href="{% url 'screening_assessment' assessment_id=assessment_session.id order=assessment_session.screening_assessment.current_passage %}" class="btn btn-primary">Begin</a> {% elif assessment_session.assessment_type == 'Graded' %}
+                                <a href="{% url 'graded_assessment' assessment_session.id %}" class="btn btn-primary">Begin</a>
                             {% endif %}
-                        </h5>
-
-                        <!-- Card Text Info About the Assessment -->
-                        {% for passage in assessment_session.get_passages %} 
-                            <p class="lead">Passage Title:
-                                {{ passage.passage.passage_title }} 
-                            </p>
-                            <p class="lead">Grade Level:
-                                {{ passage.passage.grade_level }} 
-                            </p>
-                            <p class="lead">Words:
-                                {{ passage.passage.passage_length }} 
-                            </p>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Buttons for each type of assessment -->
-                    <div class="d-grid gap-2 col-10 mx-auto my-2">
-                        {% if assessment_session.assessment_type == 'Screening' %}
-                            <a href="{% url 'screening_assessment' assessment_session.id %}" class="btn btn-primary">Begin</a>
-                        {% elif assessment_session.assessment_type == 'Graded' %}
-                            <a href="{% url 'graded_assessment' assessment_session.id %}" class="btn btn-primary">Begin</a>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -48,6 +49,4 @@
         {% endif %}
     </div>
 </div>
-
-
 {% endblock %}

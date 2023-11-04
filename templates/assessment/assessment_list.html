@@ -13,7 +13,10 @@
                 <th>Passage</th>
                 <th>Grade Level</th>
                 <th>Assigned Time</th>
-                <th>Completed</th>
+                <th>Date Taken</th>
+                <th>Date Finished</th>
+                <th>Status</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -29,11 +32,28 @@
                 <td>Grade {{ assessment.grade_level }}</td>
                 <td>{{ assessment.assigned_time }}</td>
                 <td>
+                    {% if assessment.start_time %}
+                        {{ assessment.start_time }}
+                    {% else %}
+                        Not yet started
+                    {% endif %}
+                </td>
+                <td>
+                    {% if assessment.end_time %}
+                        {{ assessment.end_time }}
+                    {% else %}
+                        Not yet started
+                    {% endif %}
+                </td>
+                <td>
                     {% if assessment.is_finished %}
                         Completed 
                     {% else %}
                         On-going
                     {% endif %}
+                </td>
+                <td>
+                    <a href="#" class="text-decoration-none">View assessment</a>
                 </td>
             </tr>
             {% endfor %}

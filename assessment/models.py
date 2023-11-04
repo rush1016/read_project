@@ -16,6 +16,7 @@ class AssessmentSession(models.Model):
         ('Graded', 'Graded'),
     )
     assessment_type = models.CharField(max_length=16, choices=ASSESSMENT_TYPES)
+    number_of_questions = models.IntegerField(default=0)
     grade_level = models.IntegerField()
     total_score = models.IntegerField(null=True)
     total_reading_time = models.PositiveIntegerField(null=True)
@@ -34,6 +35,29 @@ class AssessmentSession(models.Model):
 
     def get_responses(self):
         return self.student_answer.all()
+    
+
+class ScreeningAssessment(models.Model):
+    assessment_session = models.OneToOneField(
+        AssessmentSession,
+        on_delete=models.CASCADE,
+        related_name='screening_assessment'
+    )
+    current_passage = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f'Screening Test for {self.assessment_session.student}'
+
+
+class GradedAssessment(models.Model):
+    assessment_session = models.OneToOneField(
+        AssessmentSession,
+        on_delete=models.CASCADE,
+        related_name='graded_assessment'
+    )
+
+    def __str__(self):
+        return f'Graded Assessment for {self.assessment_session.student}'
 
 
 class AssessmentSessionPassage(models.Model):
@@ -43,7 +67,14 @@ class AssessmentSessionPassage(models.Model):
         related_name='assessment_passage'
     )
     order = models.PositiveIntegerField(null=True)
-    passage = models.ForeignKey(Passage, on_delete=models.CASCADE)
+    passage = models.ForeignKey(
+        Passage, 
+        on_delete=models.CASCADE,
+        related_name='assessment_passage',
+    )
+    score = models.PositiveIntegerField(null=True, blank=True)
+    reading_time = models.PositiveIntegerField(null=True, blank=True)
+    answering_time = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.passage.passage_title
