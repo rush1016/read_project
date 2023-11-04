@@ -8,9 +8,11 @@ def assessment_list_view(request):
     teacher_instance = get_object_or_404(User, pk=request.user.id, is_teacher=True)
     students = get_list_or_404(Student, teacher=teacher_instance)
 
-    assessments = AssessmentSession.objects.filter(student__in=students)
+    screening_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Screening')
+    graded_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Graded')
     context = {
-        'assessments': assessments,
+        'screening_assessments': screening_assessments,
+        'graded_assessments': graded_assessments
     }
 
     return render(request, 'assessment/assessment_list.html', context)

@@ -31,6 +31,12 @@ class ScreeningAssessmentAdmin(admin.ModelAdmin):
         'id',
         'assessment_session',
         'current_passage',
+        'correct_literal',
+        'correct_inferential',
+        'correct_critical',
+        'total_literal',
+        'total_inferential',
+        'total_critical',
     )
 
 class AssessmentPassageAdmin(admin.ModelAdmin):

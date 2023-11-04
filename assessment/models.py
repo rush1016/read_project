@@ -45,9 +45,30 @@ class ScreeningAssessment(models.Model):
     )
     current_passage = models.IntegerField(default=1)
 
+    correct_literal = models.PositiveIntegerField(default=0)
+    correct_inferential = models.PositiveIntegerField(default=0)
+    correct_critical = models.PositiveIntegerField(default=0)
+
+    total_literal = models.PositiveIntegerField(default=0)
+    total_inferential = models.PositiveIntegerField(default=0)
+    total_critical = models.PositiveIntegerField(default=0)
     def __str__(self):
         return f'Screening Test for {self.assessment_session.student}'
+    
+    def update_question_counts(self):
+        # Iterate through related passages and their questions
+        for assessment_passage in self.assessment_session.get_passages():
+            questions = assessment_passage.passage.get_questions()
+            for question in questions:
+                if question.question_type == 'Literal':
+                    self.total_literal += 1
+                elif question.question_type == 'Inferential':
+                    self.total_inferential += 1
+                elif question.question_type == 'Critical':
+                    self.total_critical += 1
 
+        # Save the updated counts
+        self.save()
 
 class GradedAssessment(models.Model):
     assessment_session = models.OneToOneField(

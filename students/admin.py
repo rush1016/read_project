@@ -19,6 +19,7 @@ class StudentAdmin(admin.ModelAdmin):
         'is_approved',
         'screening',
         'is_screened',
+        'overall_rating',
     )
 
     # Define methods to access User model fields

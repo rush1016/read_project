@@ -32,9 +32,16 @@ class Student(models.Model):
     is_approved = models.BooleanField(default=False)
 
     # Assessments
+    RATING = (
+        ('Independent', 'Independent'),
+        ('Instructional', 'Instructional'),
+        ('Frustration', 'Frustration'),
+        ('Not yet screened', 'Not yet screened'),
+    )
+
     is_screened = models.BooleanField(default=False)
     screening = models.BooleanField(default=False)
-    overall_rating = models.CharField(default=0, max_length=100)
+    overall_rating = models.CharField(default='Not yet screened', max_length=64, choices=RATING)
     words_per_minute = models.DecimalField(default=0, decimal_places=2, max_digits=10)
     mean_read_time = models.DecimalField(default=0, decimal_places=2, max_digits=10)
     mean_score = models.DecimalField(default=0, decimal_places=2, max_digits=10)
@@ -54,11 +61,15 @@ class Student(models.Model):
 
         self.screening = has_screening_session
 
+        # Generate School ID for the student account
         if not self.student_school_id:
             current_year = str(timezone.now().year % 100)
             student_count = Student.objects.count() + 1
             self.student_school_id = f'{current_year}-{student_count:04d}'
         super().save(*args, **kwargs)
+
+    def get_assessments(self):
+        return self.assessment_session.all()
 
 
 

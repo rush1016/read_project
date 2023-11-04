@@ -59,9 +59,11 @@ def assign_screening(assessment_session, preset_id):
     assessment_session.number_of_questions = total_questions
     assessment_session.save()
 
-    ScreeningAssessment.objects.create(
+    screening_assessment_instance = ScreeningAssessment.objects.create(
         assessment_session = assessment_session
-    )    
+    )
+    screening_assessment_instance.update_question_counts() 
+
 
 def assign_graded(assessment_session, passage_id):
     passage_instance = get_object_or_404(Passage, pk=passage_id)
@@ -73,6 +75,7 @@ def assign_graded(assessment_session, passage_id):
     GradedAssessment.objects.create(
         assessment_session = assessment_session
     )    
+
 
 def create_assessment_session_passage(assessment_session, passage, order):
     AssessmentSessionPassage.objects.create(

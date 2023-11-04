@@ -5,59 +5,36 @@
 {% endblock title %}
 {% block content %}
 <div class="container my-5">
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Student</th>
-                <th>Assessment Type</th>
-                <th>Passage</th>
-                <th>Grade Level</th>
-                <th>Assigned Time</th>
-                <th>Date Taken</th>
-                <th>Date Finished</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for assessment in assessments %}
-            <tr>
-                <td>{{ assessment.student }}</td>
-                <td>{{ assessment.assessment_type }}</td>
-                <td>
-                    {% for passage in assessment.get_passages %}
-                        | {{ passage }} 
-                    {% endfor %}
-                </td>
-                <td>Grade {{ assessment.grade_level }}</td>
-                <td>{{ assessment.assigned_time }}</td>
-                <td>
-                    {% if assessment.start_time %}
-                        {{ assessment.start_time }}
-                    {% else %}
-                        Not yet started
-                    {% endif %}
-                </td>
-                <td>
-                    {% if assessment.end_time %}
-                        {{ assessment.end_time }}
-                    {% else %}
-                        Not yet started
-                    {% endif %}
-                </td>
-                <td>
-                    {% if assessment.is_finished %}
-                        Completed 
-                    {% else %}
-                        On-going
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="#" class="text-decoration-none">View assessment</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#screening" type="button" role="tab" aria-controls="home" aria-selected="true">Screening Tests</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#graded" type="button" role="tab" aria-controls="profile" aria-selected="false">Graded Passages</button>
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content" id="myTabsContent">
+        <div class="tab-pane fade show active" id="screening" role="tabpanel" aria-labelledby="home-tab">
+            {% if screening_assessments %}
+                {% for assessment in screening_assessments %}
+                    {% include "assessment/partials/partial_assessment_table.html" %}
+                {% endfor %}
+            {% else %}
+                <p class="lead m-5">No screening assessments assigned or conducted yet</p>
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="graded" role="tabpanel" aria-labelledby="profile-tab">
+            {% if graded_assessments %}
+                {% for assessment in graded_assessments %}
+                    {% include "assessment/partials/partial_assessment_table.html" %}
+                {% endfor %}
+            {% else %}
+                <p class="lead m-5">No graded assessments assigned or conducted yet</p>
+            {% endif %}
+        </div>
+        <!-- Add more tab panes as needed -->
+    </div>
 </div>
 {% endblock content %}

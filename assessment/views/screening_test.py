@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction, models
 
-from materials.models import Passage, Choice
-from assessment.models import AssessmentSession, AssessmentSessionPassage, StudentAnswer
+from materials.models import Choice
+from assessment.models import AssessmentSession, ScreeningAssessment, StudentAnswer
 from assessment.views.check_answer import check_answer
 from assessment.views.update_passage_data import update_assessment_passage_data
 
@@ -102,6 +102,16 @@ def screening_save_answers_view(request, assessment_id, order):
         order += 1
 
         if order > len(assessment_passages):
+            # Screening Assessment model
+            screening_instance = get_object_or_404(ScreeningAssessment, assessment_session = assessment_instance)
+
+            screening_instance.correct_literal = get_question_type_count(assessment_instance, 'Literal')
+            screening_instance.correct_inferential = get_question_type_count(assessment_instance, 'Inferential')
+            screening_instance.correct_critical = get_question_type_count(assessment_instance, 'Critical')
+
+            screening_instance.save()
+
+
             # AssessmentSession model
             assessment_instance.total_score = assessment_instance.assessment_passage.aggregate(total_score=models.Sum('score'))['total_score'] or 0
             assessment_instance.total_reading_time = assessment_instance.assessment_passage.aggregate(total_reading_time=models.Sum('reading_time'))['total_reading_time'] or 0
@@ -117,3 +127,12 @@ def screening_save_answers_view(request, assessment_id, order):
 
         return redirect('screening_assessment', assessment_id=assessment_id, order=order)
     
+
+def get_question_type_count(assessment_instance, question_type):
+    count = StudentAnswer.objects.filter(
+        assessment = assessment_instance,
+        correct = True,
+        question__question_type = question_type,
+    ).count()
+
+    return count
