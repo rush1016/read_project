@@ -9,6 +9,7 @@ from materials.models import Passage, Choice
 from assessment.models import AssessmentSession, AssessmentSessionPassage, StudentAnswer
 from assessment.views.check_answer import check_answer
 from assessment.views.update_passage_data import update_assessment_passage_data
+from assessment.views.calculate_overall_rating import calculate_overall_rating
 
 from assessment.forms.question import AssessmentQuestionForm
 
@@ -80,6 +81,7 @@ def graded_assessment_view(request, assessment_id):
         assessment_instance.is_finished = True
         assessment_instance.save()
 
+        calculate_overall_rating(student_instance, assessment_instance)
 
         messages.success(request, 'Assessment done.')
         return redirect('assessment_done', assessment_id = assessment_instance.id)

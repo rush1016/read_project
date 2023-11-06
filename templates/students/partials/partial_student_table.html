@@ -6,6 +6,7 @@
                 <th>Name</th>
                 <th>Grade Level</th>
                 <th>Section</th>
+                <th>Comprehension Level</th>
                 <th>Date Added</th>
                 <th class="text-center"></th>
             </tr>
@@ -17,6 +18,7 @@
                     <td>{{ student.last_name }}, {{ student.first_name }}</td>
                     <td>Grade {{ student.grade_level }}</td>
                     <td>{{ student.class_section }}</td>
+                    <td>{{ student.overall_rating }}</td>
                     <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
                     <!--Action buttons-->
                     <td class="d-grid gap-2 d-md-flex justify-content-md-around">

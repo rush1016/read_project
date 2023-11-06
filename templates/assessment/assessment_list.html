@@ -18,18 +18,49 @@
     <div class="tab-content" id="myTabsContent">
         <div class="tab-pane fade show active" id="screening" role="tabpanel" aria-labelledby="home-tab">
             {% if screening_assessments %}
-                {% for assessment in screening_assessments %}
-                    {% include "assessment/partials/partial_assessment_table.html" %}
-                {% endfor %}
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student</th>
+                        <th>Assessment Type</th>
+                        <th>Grade Level</th>
+                        <th>Score</th> 
+                        <th>Literal</th>
+                        <th>Inferential</th>
+                        <th>Critical</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assessment in screening_assessments %}
+                        {% include "assessment/partials/partial_assessment_table.html" %}
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
                 <p class="lead m-5">No screening assessments assigned or conducted yet</p>
             {% endif %}
         </div>
         <div class="tab-pane fade" id="graded" role="tabpanel" aria-labelledby="profile-tab">
             {% if graded_assessments %}
-                {% for assessment in graded_assessments %}
-                    {% include "assessment/partials/partial_assessment_table.html" %}
-                {% endfor %}
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student</th>
+                        <th>Assessment Type</th>
+                        <th>Grade Level</th>
+                        <th>Score</th> 
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assessment in graded_assessments %}
+                        {% include "assessment/partials/partial_assessment_table.html" %}
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
                 <p class="lead m-5">No graded assessments assigned or conducted yet</p>
             {% endif %}

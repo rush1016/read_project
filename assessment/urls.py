@@ -30,6 +30,8 @@ urlpatterns = [
     path('graded/<int:assessment_id>', graded_assessment_session.graded_assessment_view, name="graded_assessment"),
 
     # Results
-    path('result/<int:assessment_id>', assessment_result.assessment_result_view, name="assessment_done" )
+    path('result/<int:assessment_id>', assessment_result.assessment_result_view, name="assessment_done" ),
 
+    # View info
+    path('view/<int:assessment_id>', assessment_info.assessment_info_view, name="view_assessment") 
 ]

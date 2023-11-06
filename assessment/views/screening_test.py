@@ -4,9 +4,11 @@ from django.utils import timezone
 from django.db import transaction, models
 
 from materials.models import Choice
+from students.models import Student
 from assessment.models import AssessmentSession, ScreeningAssessment, StudentAnswer
 from assessment.views.check_answer import check_answer
 from assessment.views.update_passage_data import update_assessment_passage_data
+from assessment.views.calculate_overall_rating import calculate_overall_rating
 
 from assessment.forms.question import AssessmentQuestionForm
 
@@ -122,6 +124,9 @@ def screening_save_answers_view(request, assessment_id, order):
             assessment_instance.student.is_screened = True
             assessment_instance.student.save()
             assessment_instance.save()
+
+            calculate_overall_rating(student_instance, assessment_instance)
+
             messages.success(request, 'Assessment done.')
             return redirect('assessment_done', assessment_id=assessment_instance.id)
 
@@ -136,3 +141,4 @@ def get_question_type_count(assessment_instance, question_type):
     ).count()
 
     return count
+

@@ -1,34 +1,9 @@
-<table class="table table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Student</th>
-            <th>Assessment Type</th>
-            <th>Passage</th>
-            <th>Grade Level</th>
-            {% if assessment.assessment_type == 'Screening' %}
-                <th>Score</th> 
-                <th>Literal</th>
-                <th>Inferential</th>
-                <th>Critical</th>
-            {% elif assessment.assessment_type == 'Graded' %}
-                <th>Score</th> 
-            {% endif %}
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
         <tr>
             <td>{{ assessment.student.last_name }}, {{ assessment.student.first_name }}</td>
             <td>{{ assessment.assessment_type }}</td>
-            <td>
-                {% for passage in assessment.get_passages %}
-                    | {{ passage }} 
-                {% endfor %}
-            </td>
             <td>Grade {{ assessment.grade_level }}</td>
             {% if assessment.assessment_type == 'Screening' %}
-                <td>{{ assessment.total_score }}</td>
+                <td>{{ assessment.total_score }} / {{ assessment.number_of_questions }}</td>
                 <td>
                     {{ assessment.screening_assessment.correct_literal }} / {{ assessment.screening_assessment.total_literal }}
                 </td>
@@ -39,7 +14,7 @@
                     {{ assessment.screening_assessment.correct_critical }} / {{ assessment.screening_assessment.total_critical }}
                 </td>
             {% elif assessment.assessment_type == 'Graded' %}
-                <td>{{ assessment.total_score }}</td>
+                <td>{{ assessment.total_score }} / {{ assessment.number_of_questions }}</td>
             {% endif %}
             <td>
                 {% if assessment.is_finished %}
@@ -49,8 +24,6 @@
                 {% endif %}
             </td>
             <td>
-                <a href="#" class="text-decoration-none">View assessment</a>
+                <a href="{% url 'view_assessment' assessment.id %}" class="text-decoration-none">View assessment</a>
             </td>
         </tr>
-    </tbody>
-</table>

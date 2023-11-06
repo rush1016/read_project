@@ -6,5 +6,37 @@
 {% endblock title %}
 
 {% block content %}
+<div class="container my-5">
+    <div class="my-5">
+        <div class="display-4">{{ assessment_instance.assessment_type }}</div>
+        <div class="lead">Total Score: {{ assessment_instance.total_score }} / {{ assessment_instance.number_of_questions }}</div> 
+        <div class="lead">Total Reading Time: {{ assessment_instance.total_reading_time }} seconds</div>
+        <div class="lead">Total Answering Time: {{ assessment_instance.total_answering_time }} seconds</div>
+    </div>
+        {% for passage_instance, student_answers in student_answers.items %}
+            <hr class="mt-5">
+            <h1 class="display-6">{{ passage_instance.passage.passage_title }}</h1>
+            <div class="lead">Score: {{ passage_instance.score }} / {{ passage_instance.passage.get_questions|length }}</div>
+            <div class="lead">Reading Time: {{ passage_instance.reading_time }} seconds</div>
+            <div class="lead">Answering Time: {{ passage_instance.answering_time }} seconds</div>
 
+            {% for student_answer in student_answers %}
+                <div class="card text-light">
+                    <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
+                        <div class="lead">
+                            ({{ student_answer.question.question_type }}) {{ student_answer.question }}
+                        </div>
+                        <div class="lead">
+                            {{ student_answer.answer }}
+                        </div>
+                        {% if student_answer.correct == False %}
+                            <div class="container lead bg-success rounded px-2">
+                                Correct Answer: {{ student_answer.question.get_correct }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+</div>
 {% endblock content %}

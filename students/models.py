@@ -3,7 +3,6 @@ from django.utils import timezone
 
 from read_app.models import User
 
-# Create your models here.
 class Student(models.Model):
     user = models.OneToOneField(
         User, 
@@ -36,6 +35,8 @@ class Student(models.Model):
         ('Independent', 'Independent'),
         ('Instructional', 'Instructional'),
         ('Frustration', 'Frustration'),
+        ('Passed Screening Test', 'Passed Screening Test'),
+        ('Further Assessment Required', 'Further Assessment Required'),
         ('Not yet screened', 'Not yet screened'),
     )
 
