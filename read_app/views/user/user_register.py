@@ -5,7 +5,7 @@ from read_app.forms.teachers import TeacherRegistrationForm
 from django.contrib.auth import authenticate, login
 
 
-def registration(request):
+def register(request):
     if request.user.is_authenticated:
         return redirect('home')
 
@@ -19,7 +19,7 @@ def login_after_register(request, form):
     login(request, user) # Login the user before redirecting to homepage
 
 
-def student_registration(request):
+def student_register(request):
     if request.method == "POST":
         form = StudentRegistrationForm(request.POST)
 
@@ -49,7 +49,7 @@ def student_registration(request):
     return render(request, 'registration/signup_student.html', context)
 
 
-def teacher_registration(request):
+def teacher_register(request):
     if request.method == "POST":
         form = TeacherRegistrationForm(request.POST)
 

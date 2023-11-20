@@ -1,0 +1,62 @@
+{% if student.student_rating %} <!-- Ratings per grade level in English and Filipino -->
+    <div class="d-flex justify-content-around">
+        <!-- English -->
+        <div>
+            <div class="display-6">
+                Rating per Grade Level in English
+            </div>
+            <div class="my-3">
+                <div class="lead">
+                    Grade 1: {{ student.student_rating.first_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 2: {{ student.student_rating.second_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 3: {{ student.student_rating.third_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 4: {{ student.student_rating.fourth_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 5: {{ student.student_rating.fifth_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 6: {{ student.student_rating.sixth_grade_eng }}
+                </div>	
+                <div class="lead">
+                    Grade 7: {{ student.student_rating.seventh_grade_eng }}
+                </div>	
+            </div>
+        </div>
+        <!-- Filipino -->
+        <div>
+            <div class="display-6">
+                Rating per Grade Level in Filipino
+            </div>
+            <div class="my-3">
+                <div class="lead">
+                    Grade 1: {{ student.student_rating.first_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 2: {{ student.student_rating.second_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 3: {{ student.student_rating.third_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 4: {{ student.student_rating.fourth_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 5: {{ student.student_rating.fifth_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 6: {{ student.student_rating.sixth_grade_fil }}
+                </div>	
+                <div class="lead">
+                    Grade 7: {{ student.student_rating.seventh_grade_fil }}
+                </div>	
+            </div>
+        </div>
+    </div>
+{% endif %}

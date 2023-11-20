@@ -7,6 +7,7 @@ from assessment.models import (
     ScreeningAssessment,
     GradedAssessment,
     StudentAnswer,
+    AssessmentMiscue,
 )
 
 class AssessmentSessionAdmin(admin.ModelAdmin):
@@ -23,6 +24,18 @@ class AssessmentSessionAdmin(admin.ModelAdmin):
         'start_time',
         'end_time',
         'is_finished',
+        'passcode',
+    )
+
+
+class AssessmentMiscueAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'assessment',
+        'passage',
+        'word',
+        'miscue',
+        'index',
     )
 
 
@@ -37,6 +50,17 @@ class ScreeningAssessmentAdmin(admin.ModelAdmin):
         'total_literal',
         'total_inferential',
         'total_critical',
+    )
+
+class GradedAssessmentAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'assessment_session',
+        'oral_reading_score',
+        'oral_reading_rating',
+        'reading_comprehension_score',
+        'reading_comprehension_rating',
+        'overall_rating'
     )
 
 class AssessmentPassageAdmin(admin.ModelAdmin):
@@ -64,8 +88,9 @@ class StudentAnswerAdmin(admin.ModelAdmin):
 
 # Assessments
 admin.site.register(AssessmentSession, AssessmentSessionAdmin)
+admin.site.register(AssessmentMiscue, AssessmentMiscueAdmin)
 admin.site.register(AssessmentSessionPassage, AssessmentPassageAdmin)
 admin.site.register(ScreeningAssessment, ScreeningAssessmentAdmin)
-admin.site.register(GradedAssessment)
+admin.site.register(GradedAssessment, GradedAssessmentAdmin)
 
 admin.site.register(StudentAnswer, StudentAnswerAdmin)

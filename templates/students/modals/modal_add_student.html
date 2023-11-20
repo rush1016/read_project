@@ -3,18 +3,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Add Student</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="addStudentForm">
+                <form method="POST" action="{% url 'add_student' %}" id="add-student-form">
                     {% csrf_token %}
-                    <div class="container text-center my-5">
-                        <p class="display-6">Registration Code</p>
-                        <h5 class="display-2">{{ teacher_code }}</h5>
-                        <p class="mt-5">Use this code to create a new student account.</p>
+                    <div class="container mb-5">
+                        {{ add_form }}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="modal-add-button">Add Student</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>

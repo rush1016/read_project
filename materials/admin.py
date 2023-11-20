@@ -1,4 +1,7 @@
 from django.contrib import admin
+from nested_admin import NestedModelAdmin, NestedTabularInline
+
+from materials.forms.PassageAdminForm import PassageAdminForm
 
 from materials.models import (
     AssessmentPreset,
@@ -8,14 +11,27 @@ from materials.models import (
 )
 
 class PresetAdmin(admin.ModelAdmin):
-    list_display = ('grade_level', 'assessment_type', 'name')
-
-class PassageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'preset','grade_level', 'passage_title', 'passage_content', 'passage_length')
+    list_display = ('grade_level', 'language', 'assessment_type', 'name')
 
 
-class ChoiceInLine(admin.TabularInline):
+
+class ChoiceInLine(NestedTabularInline):
     model = Choice
+    delete = False
+    extra = 0
+
+
+class QuestionInLine(NestedTabularInline):
+    model = Question
+    inlines = [ChoiceInLine]
+    delete = False
+    extra = 0
+
+class PassageAdmin(NestedModelAdmin):
+    list_display = ('id', 'preset','set', 'grade_level', 'language', 'passage_title', 'passage_length')
+    inlines = [QuestionInLine]
+
+    form = PassageAdminForm
 
 
 class QuestionAdmin(admin.ModelAdmin):

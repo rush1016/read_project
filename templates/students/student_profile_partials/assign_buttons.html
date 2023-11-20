@@ -1,0 +1,18 @@
+{% if not student.student_rating.english_gst_score or not student.student_rating.filipino_gst_score and not student.screening %}
+    <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#preset-select-modal">
+        Assign Screening Test
+    </a>
+    or
+    <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-gst-modal">Add GST Score</a>
+    {% include "students/modals/modal_add_gst.html" %}
+{% endif %}
+{% if student.assessments_done > 0 %}
+    <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#language-select-generate-report" >
+        Generate Individual Summary Record (ISR)
+    </a>
+{% endif %}
+{% if student.is_screened %}
+    <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#language-select-modal">
+        Assign Graded Passage
+    </a>
+{% endif %}

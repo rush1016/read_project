@@ -80,4 +80,7 @@ $(document).ready(function() {
             updateSectionOptions(gradeLevelField, classSectionField);
         });
     };
+
+
+    initializeModal('#addStudentModal');
 });

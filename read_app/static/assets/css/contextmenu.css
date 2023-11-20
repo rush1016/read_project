@@ -1,0 +1,12 @@
+.highlight {
+    background-color: yellow;
+}
+
+.context-menu {
+    border: 0px solid #343a40;
+    position: absolute;
+}
+
+.clickable-item {
+    cursor: pointer;
+}

@@ -1,0 +1,63 @@
+{% if screening_assessments %}
+    <div class="display-6 my-5">
+        Screening Test
+    </div> 
+    <table class="table">
+        <thead class="table-dark table-bordered">
+            <tr>
+                <th>Grade Level</th>
+                <th>Language</th>
+                <th>Literal</th>
+                <th>Inferential</th>
+                <th>Critical</th>
+                <th>Total Score</th>
+                <th>Status</th>
+                <th>Date completed</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assessment in screening_assessments %}
+                <tr>
+                    <td>
+                        Grade {{ assessment.grade_level }}
+                    </td>
+                    <td>{{ assessment.get_passages.0.passage.language }}</td>
+                    <td>
+                        {{ assessment.screening_assessment.correct_literal }} / {{ assessment.screening_assessment.total_literal }}
+                    </td>
+                    <td>
+                        {{ assessment.screening_assessment.correct_inferential }} / {{ assessment.screening_assessment.total_inferential }}
+                    </td>
+                    <td>
+                        {{ assessment.screening_assessment.correct_critical }} / {{ assessment.screening_assessment.total_critical }}
+                    </td>
+                    <td>
+                        {% if assessment.total_score %}
+                            {{ assessment.total_score }} / {{ assessment.number_of_questions }}
+                        {% else %}
+                            No records yet
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if assessment.is_finished %}
+                            Completed	
+                        {% else %}
+                            On-going
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if assessment.end_time %}
+                            {{ assessment.end_time }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'view_assessment' assessment.id %}" class="btn btn-success">View Assessment</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

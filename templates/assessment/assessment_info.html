@@ -8,29 +8,172 @@
 {% block content %}
 <div class="container my-5">
     <div class="my-5">
-        <div class="display-4">{{ assessment_instance.assessment_type }}</div>
-        <div class="lead">Total Score: {{ assessment_instance.total_score }} / {{ assessment_instance.number_of_questions }}</div> 
-        <div class="lead">Total Reading Time: {{ assessment_instance.total_reading_time }} seconds</div>
-        <div class="lead">Total Answering Time: {{ assessment_instance.total_answering_time }} seconds</div>
+        <div class="container d-flex justify-content-end">
+            <a href="{% url 'student_profile' assessment_instance.student.id %}" class="text-decoration-none">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                Back
+            </a>
+        </div>
+        <div class="display-4 text-center mb-5">
+            <strong>
+                {{ assessment_instance.assessment_type }}
+                {% if assessment_instance.assessment_type == "Screening" %}
+                    Test
+                {% else %}
+                    Passage
+                {% endif %}
+            </strong>
+        </div>
+
+        <!-- Student Info -->
+        <div class="display-6">
+            Student Name:
+            <strong>
+                {{ assessment_instance.student.full_name }}
+            </strong>
+        </div>
+        <div class="display-6 mb-5">
+            Student Grade Level:
+            <strong>
+                Grade {{ assessment_instance.student.grade_level }}
+            </strong>
+        </div>
+
+        <!-- Passcode -->
+        {% if not assessment_instance.is_finished %}
+            <div class="display-6 mb-3">
+                Passcode: 
+                <strong>
+                    {{ assessment_instance.passcode }}
+                </strong>
+                (Give this to your student to access the assessment quiz.)
+            </div>
+        {% endif %}
+        <!-- Assessment Info -->
+        <div class="lead">
+            Assessment Name:
+            <strong>
+                {{ assessment_instance.get_passages.0.passage.preset.name }}
+            </strong>
+        </div>
+        <!-- Assessment Info -->
+        <div class="lead">
+            Language:
+            <strong>
+                {{ assessment_instance.get_passages.0.passage.language }}
+            </strong>
+        </div>
+        <div class="lead">
+            Status:
+            <strong>
+                {% if assessment_instance.is_finished %}
+                    Completed
+                {% else %}
+                    On-going
+                {% endif %}
+            </strong>
+        </div>
+        <div class="lead">
+            Total Score: 
+            {% if assessment_instance.total_score %}
+                <strong>
+                    {{ assessment_instance.total_score }} / {{ assessment_instance.number_of_questions }}</div> 
+                </strong>
+            {% else %}
+                Not yet finished 
+            {% endif %}
+        <div class="lead">
+            Total Reading Time: 
+            {% if assessment_instance.total_reading_time %}
+                <strong>
+                    {{ assessment_instance.total_reading_time }} seconds</div>
+                </strong>
+            {% else %}
+                Not yet finished 
+            {% endif %} 
+        <div class="lead">
+            Total Answering Time: 
+            {% if assessment_instance.total_answering_time %}
+                <strong>
+                    {{ assessment_instance.total_answering_time }} seconds</div>
+                </strong>
+            {% else %}
+                Not yet finished
+            {% endif %}
+        </div>
+        {% if assessment_instance.assessment_type == "Graded" %}
+            <div class="lead">
+                Oral Reading Rating:
+                <strong>
+                    {{ assessment_instance.graded_assessment.oral_reading_rating }}
+                </strong>
+            </div>
+            <div class="lead">
+                Reading Comprehension Rating:
+                <strong>
+                    {{ assessment_instance.graded_assessment.reading_comprehension_rating }}
+                </strong>
+            </div>
+            <div class="lead">
+                Overall Rating:
+                <strong>
+                    {{ assessment_instance.graded_assessment.overall_rating }}
+                </strong>
+            </div>
+        {% endif %}
+        <!-- Button -->
+        {% if assessment_instance.assessment_type == "Graded" %}
+            <a href="{% url 'assessment_session' assessment_instance.id %}" class="btn btn-success mt-3">Recompute ratings</a>
+        {% endif %}
+        <hr>
     </div>
+
+    <div class="container mt-5 pt-5">
+        <h1 class="display-5">
+            <strong>
+                Assessment Summary
+            </strong>
+        </h1>
         {% for passage_instance, student_answers in student_answers.items %}
             <hr class="mt-5">
             <h1 class="display-6">{{ passage_instance.passage.passage_title }}</h1>
-            <div class="lead">Score: {{ passage_instance.score }} / {{ passage_instance.passage.get_questions|length }}</div>
-            <div class="lead">Reading Time: {{ passage_instance.reading_time }} seconds</div>
-            <div class="lead">Answering Time: {{ passage_instance.answering_time }} seconds</div>
+            <div class="lead">
+                Score:  
+                {% if passage_instance.score or passage_instance.score == 0 %}
+                    {{ passage_instance.score }} / {{ passage_instance.passage.get_questions|length }}
+                {% else %}
+                    Not yet taken
+                {% endif %}             
+            </div>
+            <div class="lead">
+                Reading Time: 
+                {% if passage_instance.reading_time or passage_instance.reading_time == 0 %}
+                    {{ passage_instance.reading_time }} seconds</div>
+                {% else %}
+                    Not yet taken 
+                {% endif %} 
+            <div class="lead">
+                Answering Time: 
+                {% if passage_instance.answering_time %}
+                    {{ passage_instance.answering_time }} seconds</div>
+                {% else %}
+                    Not yet taken 
+                {% endif %} 
 
             {% for student_answer in student_answers %}
                 <div class="card text-light">
                     <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
                         <div class="lead">
-                            ({{ student_answer.question.question_type }}) {{ student_answer.question }}
+                            {% if student_answer.question.question_type %}
+                                ({{ student_answer.question.question_type }})
+                            {% endif %} 
+                            {{ student_answer.question }}
                         </div>
                         <div class="lead">
                             {{ student_answer.answer }}
                         </div>
                         {% if student_answer.correct == False %}
-                            <div class="container lead bg-success rounded px-2">
+                            <div class="container lead bg-success rounded px-2 mt-2">
                                 Correct Answer: {{ student_answer.question.get_correct }}
                             </div>
                         {% endif %}
@@ -38,5 +181,6 @@
                 </div>
             {% endfor %}
         {% endfor %}
+    </div>
 </div>
 {% endblock content %}

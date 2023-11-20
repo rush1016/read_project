@@ -1,0 +1,50 @@
+<!-- Recommendations -->
+<div class="d-flex justify-content-around my-5">
+    <div class="card p-5 bg-primary text-light">
+        <h1 class="display-6 text-center mb-4">
+            English
+        </h1>
+        <p class="lead"><strong>Group Screening Test Score:</strong> {{ student.student_rating.english_gst_score }}</p>
+        <p class="lead">
+            <strong>Recommended Materials: </strong>
+            {% if student.student_rating.english_recommended_grade %}
+                Grade {{ student.student_rating.english_recommended_grade }}
+            {% else %}
+                Not yet Assessed
+            {% endif %}
+        </p>
+        <p class="lead">
+            <strong>Reading Level:</strong>
+            {% if student.student_rating.english_rating %}
+                {{ student.student_rating.english_rating }}
+            {% else %}
+                Needs further assessment
+            {% endif %}
+        </p>
+    </div>
+    <div class="card p-5 bg-success text-light">
+        <h1 class="display-6 text-center mb-4">
+            Filipino
+        </h1>
+        <p class="lead">
+            <strong>Group Screening Test Score:</strong> 
+            {{ student.student_rating.filipino_gst_score }}
+        </p>
+        <p class="lead">
+            <strong>Recommended Materials: </strong>
+            {% if student.student_rating.filipino_recommended_grade %}
+                Grade {{ student.student_rating.filipino_recommended_grade }}
+            {% else %}
+                Not yet assessed
+            {% endif %}
+        </p>
+        <p class="lead">
+            <strong>Reading Level:</strong>
+            {% if student.student_rating.filipino_rating %}
+                {{ student.student_rating.filipino_rating }}
+            {% else %}
+                Needs further assessment
+            {% endif %}
+        </p>
+    </div>
+</div>

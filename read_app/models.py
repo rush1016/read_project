@@ -5,7 +5,6 @@ import datetime
 
 
 class User(AbstractUser):
-    is_student = models.BooleanField('Student status', default=False)
     is_teacher = models.BooleanField('Teacher status', default=False)
     is_school_admin = models.BooleanField('School Admin status', default=False)
 
@@ -29,7 +28,6 @@ class Teacher(models.Model):
         primary_key=True,
         limit_choices_to={'is_teacher': True},
     )
-    teacher_code = models.CharField(max_length=80)
     date_created = models.DateField(default=timezone.now)
 
     def __str__(self):

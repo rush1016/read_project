@@ -16,7 +16,7 @@ $(document).ready(function() {
         
         $('#reading-list tbody tr').each(function() {
             let row = $(this);
-            let gradeInRow = row.find('td:eq(2)').text().trim().replace('Grade ', '');
+            let gradeInRow = row.find('td:eq(3)').text().trim().replace('Grade ', '');
             console.log(gradeInRow)
             let gradeMatch = (selectedGradeLevel === '' || gradeInRow === selectedGradeLevel);
             

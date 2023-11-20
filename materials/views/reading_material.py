@@ -5,7 +5,7 @@ from materials.models import Passage
 
 @login_required
 def to_reading_materials(request):
-    passages = Passage.objects.all().order_by('id')
+    passages = Passage.objects.all().order_by('set')
     context = {
         'passages': passages
     }

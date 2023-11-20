@@ -1,0 +1,47 @@
+<table id="reading-list" class="table table-responsive table-bordered">
+    <thead class="table-dark">
+        <th>Passage Title</th>
+        <th>Language</th>
+        <th>Type</th>
+        <th>Grade Level</th>
+        <th>Set</th>
+        <th>Word Count</th>
+        <th>Number of Questions</th>
+
+        <th></th>
+    </thead>
+    <tbody>
+        {% for passage in passages %}
+            <tr>
+                <td>{{ passage.passage_title }}</td>
+                <td>{{ passage.language }}</td>
+                <td>{% if passage.preset == None %}
+                        Graded Passage
+                    {% else %}
+                        {{ passage.preset }}
+                    {% endif %}
+                </td>
+                <td>Grade {{ passage.grade_level }}</td>
+                <td>
+                    {% if passage.set %}
+                        {{ passage.set }}
+                    {% endif %}
+                </td>
+                <td>{{ passage.passage_length }} words</td>
+                <td>{{ passage.number_of_questions }} questions</td>
+                <td class="d-flex justify-content-around">
+		            <a type="button" 
+                        class="btn btn-success h-50 align-self-center" 
+                        href="{% url 'manage_passage' passage.id %}">
+                            View Passage
+                    </a>
+                    {% if user.is_school_admin %}
+                        <a href="{% url 'create_question' passage.id %}" class="btn btn-primary">
+                            Add Question
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -7,8 +7,13 @@ class AssessmentPreset(models.Model):
         ('Screening', 'Screening'),
         ('Graded', 'Graded'),
     )
+    LANGUAGES = (
+        ('English', 'English'),
+        ('Filipino', 'Filipino'),
+    )
     grade_level = models.IntegerField()
     assessment_type = models.CharField(max_length=16, choices=ASSESSMENT_TYPES)
+    language = models.CharField(choices=LANGUAGES)
     name = models.CharField(max_length=127)
 
     def __str__(self):
@@ -22,6 +27,18 @@ class Passage(models.Model):
         null=True,
         blank=True,
     )
+    LANGUAGES = (
+        ('Filipino', 'Filipino'),
+        ('English', 'English'),
+    )
+    language = models.CharField(choices=LANGUAGES)
+    SETS = (
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+    )
+    set = models.CharField(null=True, blank=True, choices=SETS)
     passage_title = models.CharField(max_length=150)
     passage_content = models.CharField(max_length=5000)
     grade_level = models.IntegerField()

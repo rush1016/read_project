@@ -18,6 +18,12 @@
                 <img src="{% static 'assets/img/banner_3.png' %}" class="img-fluid" alt="https://pnghut.com/png/KQpFRSQjLW/reading-book-clip-art-transparent-png" title="https://pnghut.com/png/KQpFRSQjLW/reading-book-clip-art-transparent-png">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <div class="container d-flex justify-content-end">
+                    <a href="{% url 'register' %}" class="text-decoration-none">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Back
+                    </a>
+                </div>
                 <h1 class="display-5 mb-4">Login</h1>
                 <form method="POST" action="/login">
                     {% csrf_token %}
@@ -38,7 +44,7 @@
     
                 <div class="text-center text-lg-start mt-4 pt-2">
                     <button type="submit" name="login" value="Login" class="btn btn-success btn-lg w-100">Login</button>
-                    <p class="small fw-bold mt-2 pt-1 mb-0 text-center">Don't have an account? <a href="/register" class="link-success text-decoration-none">Register</a></p>
+                    <p class="small fw-bold mt-2 pt-1 mb-0 text-center">Don't have an account? <a href="{% url 'teacher_register' %}" class="link-success text-decoration-none">Register</a></p>
                 </div>
     
                 </form>

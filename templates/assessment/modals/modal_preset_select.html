@@ -1,0 +1,30 @@
+<div class="modal fade" id="preset-select-modal" tabindex="-1" aria-labelledby="preset-select-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'assign_recommended' student_id=student.id %}">
+                {% csrf_token %}
+            <div class="modal-body">
+                <input type="hidden" name="type" value="Screening"> 
+                <select name="preset_select" id="preset_select" class="form-select">
+                    {% for preset in presets %}
+                        {% if student.student_rating.english_gst_score and not preset.language == 'English' %}
+                            <option value="{{ preset.id }}">{{ preset.name }}</option>
+                        {% elif student.student_rating.filipino_gst_score and not preset.language == 'Filipino' %}
+                            <option value="{{ preset.id }}">{{ preset.name }}</option>
+                        {% elif not student.student_rating.english_gst_score and not student.student_rating.filipino_gst_score %}
+                            <option value="{{ preset.id }}">{{ preset.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary settings-confirm-button" id="settings-confirm-button" data-passage-id="{{ passage.id }}">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -5,11 +5,11 @@ from read_app.models import User
 from students.models import Student
 
 def assessment_list_view(request):
-    teacher_instance = get_object_or_404(User, pk=request.user.id, is_teacher=True)
-    students = get_list_or_404(Student, teacher=teacher_instance)
+    teacher_instance = User.objects.get(pk=request.user.id, is_teacher=True)
+    students = Student.objects.filter(teacher=teacher_instance)
 
-    screening_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Screening')
-    graded_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Graded')
+    screening_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Screening').order_by('-assigned_time')
+    graded_assessments = AssessmentSession.objects.filter(student__in=students, assessment_type='Graded').order_by('-assigned_time')
     context = {
         'screening_assessments': screening_assessments,
         'graded_assessments': graded_assessments

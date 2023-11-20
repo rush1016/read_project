@@ -4,13 +4,14 @@
 {% block title %}
 <title>Assessment</title>
 {% endblock title %}
-
 {% block content %}
 <div class="container my-5">
     <!-- Instruction Card -->
     {% include "assessment/student/partials/instruction_card.html" %}
+    <link rel="stylesheet" href="{% static "assets/css/assessment/main.css" %}">
 
     <div id="assessment-container" class="d-none">
+        <!-- Screening Assessment -->
         {% if type == 'Screening' %}
             <h1 class="display-5">Passage No. {{ order }}</h1>
         {% endif %}
@@ -30,10 +31,10 @@
                 </strong>
             </p>
         </div>
-        <div class="d-grid gap-2">
+        <div class="d-grid gap-2 col-md-6 mx-auto mt-md-5">
             <button 
                 id="start-answering" 
-                class="btn btn-primary my-2" 
+                class="btn btn-primary mt-5" 
                 data-passage-id="{{ passage_instance.id }}">
                     Start Answering
             </button>
@@ -52,10 +53,19 @@
                 <!-- Hidden Field for Passage ID -->
                 <input type="hidden" name="passage_id" value="{{ passage_instance.id }}">
 
-                {% for question_form in question_forms %}
-                <div class="card my-5 bg-secondary p-3">
-                    <div class="card-body text-light">
-                        {{ question_form }}
+                {% for question, question_form in question_forms.items %}
+                <div class="container my-5 bg-primary py-5">
+                    <!-- Question -->
+                    <div class="display-5 text-light text-center p-5">
+                        {{ question.question_content }}
+                    </div>
+
+                    <!-- Choices -->
+
+                    <div class="container text-light display-6">
+                        <div class="mx-auto w-75">
+                            {{ question_form }}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -68,6 +78,15 @@
                         <button type="submit" class="btn btn-success col-6 mx-auto">Submit</button>
                     {% elif type == 'Screening' %}
                         <button type="submit" class="btn btn-success col-6 mx-auto">Next</button>
+                        {% if assessment_instance.screening_assessment.current_passage > 1 %}
+                            <button type="button" class="btn btn-secondary col-6 mx-auto">
+                                <a 
+                                    href="{% url 'screening_assessment' assessment_id=assessment_instance.id order=order|add:"-1" %}"
+                                    class="text-light text-decoration-none">
+                                    Previous
+                                </a>
+                            </button>
+                        {% endif %}
                     {% endif %}
                 </div>
             </form>
@@ -76,4 +95,9 @@
 
 </div>
 <script src="{% static 'assets/js/assessment/main.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('.radio-div').find('label').find('input').addClass('form-check-input')
+    })
+</script>
 {% endblock content %}

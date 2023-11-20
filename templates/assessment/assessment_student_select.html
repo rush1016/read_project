@@ -16,7 +16,8 @@
 <div class="container my-5">
     <!-- Screening -->
     {% if assessment_type == 'Screening' and students %}
-        <h1 class="display-5">Select students: </h1>
+        {% include "utils/back.html" %}
+        <h1 class="display-5 mb-5">Select students to assign Screening Test: </h1>
         <table class="table table-hover" id="studentList">
             <form method="POST" action="{% url 'assign_assessment' assessment_type='Screening' %}">
                 {% csrf_token %}
@@ -30,10 +31,18 @@
 
     <!-- Graded -->
     {% elif assessment_type == 'Graded' %}
-        <table class="table">
+        {% include "utils/back.html" %}
+        <h1 class="display-5 my-5 text-center">Graded Passages</h1>
+
+        <!-- Filter -->
+		{% include 'reading/partials/partial_filter_reading_material.html' %}
+
+        <table id="reading-list" class="table">
             <thead class="table-dark">
+                <th></th>
                 <th>Passage Title</th>
                 <th>Grade Level</th>
+                <th>Language</th>
                 <th>Number of Words</th>
                 <th>Number of Questions</th>
                 <th></th>
@@ -41,8 +50,10 @@
             <tbody>
                 {% for passage in passages %}
                     <tr>
+                        <td></td>
                         <td>{{ passage.passage_title }}</td>
                         <td>Grade {{ passage.grade_level }}</td>
+                        <td>{{ passage.language }}</td>
                         <td>{{ passage.passage_length }} words</td>
                         <td>{{ passage.number_of_questions }} questions</td>
                         <td>
@@ -69,16 +80,24 @@
             <h1 class="display-6">Words: <strong>{{ passage.passage_length }} words</strong></h1>
             <h1 class="display-6">Questions: <strong>{{ passage.number_of_questions }} questions</strong></h1>
         </div>
-        <h1 class="lead mt-5">Select students:</h1>
 
         <!-- Form -->
         <form method="POST" action="{% url 'assign_assessment' assessment_type='Graded' %}">
             <input type="hidden" name="passage_id" value="{{ passage.id }}">
+            {% if students %}
+            <h1 class="lead mt-5">Select students:</h1>
             <table class="table table-hover" id="studentList">
                 {% csrf_token %}
-                {% include 'assessment/partials/partial_student_table.html' %}
+                    {% include 'assessment/partials/partial_student_table.html' %}
             </table>
             <button class="btn btn-success" id="graded-assessment-assign">Assign assesment</button>
+            {% else %}
+                <p class="lead my-5">There are no students can take this <strong>Graded Passage</strong> right now.
+                    <a href="{% url 'select_material_graded' %}" class="text-decoration-none text-success">
+                        Back to select passages
+                    </a>
+                </p>
+            {% endif %}
         </form>
 
     <!-- NO STUDENTS -->
@@ -90,4 +109,5 @@
 </div>
 
 <script src="{% static 'assets/js/assessment/checkbox.js' %}"></script>
+<script src="{% static 'assets/js/reading/filter_reading_materials.js' %}"></script>
 {% endblock %}

@@ -1,28 +1,88 @@
 from django import forms
-from django.db import transaction
-from django.core.exceptions import ValidationError
-from datetime import datetime
+from django.core.validators import RegexValidator
+from string import capwords
 
-from read_app.forms.base_registration import BaseRegistrationForm
-from read_app.models import User, Teacher
 from students.models import Student, ClassSection
 
-# For unique username generator
-from django.utils.text import slugify
 
-class StudentRegistrationForm(BaseRegistrationForm):
+class StudentRegistrationForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = Student
         fields = (
-             'teacher_code', 
-             'first_name', 
-             'last_name', 
-             'grade_level', 
-             'class_section', 
-             'email', 
-             'password1', 
-             'password2')
+            'first_name', 
+            'middle_name',
+            'last_name', 
+            'suffix',
+            'age',
+            'grade_level', 
+            'class_section',
+        )
+    SUFFIXES = (
+        ('', 'No suffix'),
+        ('Sr.', 'Sr.'),
+        ('Jr.', 'Jr.'),
+        ('III', 'III'),
+    )
 
+    first_name = forms.CharField(
+        label = 'First Name',
+        widget= forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter First Name',
+            }
+        ),
+        validators=[
+            RegexValidator(
+                r'^[A-Za-z\s\'-]+$',
+                'Enter a valid first name containing only letters, spaces, hyphens, and apostrophes.',)]
+    )
+    middle_name = forms.CharField(
+        label='Middle Name',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Middle Name (Optional)',
+            }
+        ),
+        validators=[
+            RegexValidator(
+                r'^[A-Za-z\s\'-]+$',
+                'Enter a valid middle name containing only letters, spaces, hyphens, and apostrophes.',)],
+        required=False
+    )
+    last_name = forms.CharField(
+        label='Last Name',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Last Name',
+            }
+        ),
+        validators=[
+            RegexValidator(
+                r'^[A-Za-z\s\'-]+$',
+                'Enter a valid last name containing only letters, spaces, hyphens, and apostrophes.',)]
+    )
+    suffix = forms.ChoiceField(
+        label='Suffix',
+        choices=SUFFIXES,
+        widget = forms.Select(
+            attrs={
+                'class': 'form-select',
+            }
+        ),
+        required=False
+    )
+    age = forms.IntegerField(
+        label='Age',
+        widget= forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter age of student'
+            }
+        )
+    )
     grade_level = forms.ChoiceField(
         choices=[], 
         label='Grade Level',
@@ -31,13 +91,20 @@ class StudentRegistrationForm(BaseRegistrationForm):
         choices=[], 
         label='Section',
     )
-    teacher_code = forms.CharField(
-        label='Teacher Code',
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter 6-Character Teacher Registration Code',
-                'required': 'required',}))
+
+    # Override clean methods to convert to Title Case / Capital first letter
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        return capwords(first_name)
+
+    def clean_middle_name(self):
+        middle_name = self.cleaned_data['middle_name']
+        return capwords(middle_name)
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data['last_name']
+        return capwords(last_name)
+
 
     def __init__(self, *args, **kwargs):
         super(StudentRegistrationForm, self).__init__(*args, **kwargs)
@@ -56,72 +123,3 @@ class StudentRegistrationForm(BaseRegistrationForm):
         self.fields['class_section'].choices = CLASS_SECTION_CHOICES
         self.fields['class_section'].widget.attrs['class'] = 'form-select'
         self.fields['class_section'].widget.attrs['required'] = 'required'
-    
-    def clean_teacher_code(self):
-         cleaned_data = super().clean()
-         teacher_code = cleaned_data.get('teacher_code')
-
-         teacher_exists = Teacher.objects.filter(teacher_code=teacher_code)
-
-         if not teacher_exists:
-              raise ValidationError("Invalid teacher code. Please enter ask your Teacher for their registration code.")
-         
-         return teacher_code
-
-    @transaction.atomic # Package the database operation to maintain data integrity.
-    def save(self):
-        # Save the Student account into the User model
-        user = super().save(commit=False)
-        username = self.generate_unique_username(
-            user.first_name,
-            user.last_name,
-            self.cleaned_data['grade_level'],
-            self.cleaned_data['class_section'][:3]
-        )
-        user.username = username
-        user.is_student = True
-        user.save()
-
-        # Create an instance of corresponding teacher and assign it as foreign key
-        teacher_code = self.cleaned_data['teacher_code']
-        teacher_instance = Teacher.objects.get(teacher_code=teacher_code)
-        teacher_user_instance = User.objects.get(pk=teacher_instance.user.id)
-
-        # Assign the student info into the Student model too
-        student_id = user.id
-        first_name = user.first_name
-        last_name = user.last_name
-        grade_level = self.cleaned_data['grade_level']
-        class_section = self.cleaned_data['class_section']
-
-        # Create a Student model associated with the Student User Account
-        # And add the necessary data into their respective fields
-        student = Student.objects.create(
-            user=user,                      # Primary Key (Instance)
-            teacher=teacher_user_instance,  # Foreign Key (Instance)
-            student_id=student_id,
-            first_name=first_name,
-            last_name=last_name,
-            grade_level=grade_level, 
-            class_section=class_section
-        )
-
-        student.save()
-
-    def generate_unique_username(self, first_name, last_name, grade_level, section):
-        first_name = first_name.lower()
-        last_name = last_name.lower()
-
-        # Generate a unique username based on first name, last name, grade level, and section
-        base_username = slugify(f"{first_name}.{last_name}-{grade_level}{section}")
-        
-        if not User.objects.filter(username=base_username).exists():
-                return base_username
-
-        # If the base username exists, find the next available incrementing number
-        i = 1
-        while True:
-            username = f"{base_username}-{i}"
-            if not User.objects.filter(username=username).exists():
-                return username
-            i += 1

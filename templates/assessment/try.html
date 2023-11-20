@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/contextmenu.css' %}">
+    {% csrf_token %}
+
+</head>
+
+{% block content %}
+<body>
+    <div class="container mt-5">
+        <input type="hidden" name="passage-id" id="passage-id" value="{{ passage_id }}">
+        <div id="interactive-area">
+            <!-- Passage content goes here. Each word should have the 'word' class. -->
+            <p>
+                {% for word in words %}
+                    <span class="word">{{ word }}</span>
+                {% endfor %}
+
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS scripts and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Your custom JavaScript script -->
+    <script src="{% static 'assets/jquery/js/jquery-3.7.1.js'%}"></script>
+    <script src="{% static 'assets/js/assessment/miscues.js' %}"></script>
+</body>
+{% endblock content %}

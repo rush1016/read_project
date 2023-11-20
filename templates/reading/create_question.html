@@ -1,0 +1,6 @@
+<form method="POST" action="{% url 'create_question' passage.id %}">
+    {% csrf_token %}
+    {{ question_form }}
+    {{ choice_form }}
+    <button type="submit" class="btn btn-success">Add Question</button>
+</form>

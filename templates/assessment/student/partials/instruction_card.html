@@ -1,7 +1,24 @@
 <div id="instruction-card">
     <div class="card p-3">
         <div class="card-body">
-            <h5 class="card-title display-5">Instructions:</h5>
+            <div class="display-3 text-center mb-3">
+                <strong>
+                    {{ assessment_instance.assessment_type }}
+                    {% if assessment_instance.assessment_type == 'Screening' %}
+                        Test Passage No. {{ assessment_instance.screening_assessment.current_passage }}
+                    {% else %}
+                        Passage
+                    {% endif %}
+                </strong>
+            </div>
+            <div class="card-title display-4"><strong>{{ assessment_instance.student.full_name }}</strong></div>
+            <div class="display-6 mb-2">Grade {{ assessment_instance.student.grade_level }}</div>
+            <hr>
+            <div class="display-6">Passage Title: <strong>{{ passage_instance.passage_title }}</strong></div>
+            <div class="display-6">Passage Grade Level: <strong>{{ passage_instance.grade_level }}</strong></div>
+            <div class="display-6">Questions: <strong>{{ passage_instance.number_of_questions }}</strong></div>
+
+            <h5 class="card-title mt-5">Instructions:</h5>
             <ul class="card-text lead">
                 <li>Click the button below to start reading the passage.</li>
                 <li>Read the passage carefully before you start answering.</li>
@@ -9,7 +26,22 @@
                 <li>Click the choice of your answer using the mouse</li>
                 <li>Click submit after you finish answering all the questions</li>
             </ul>
-            <button id="start-reading-button" class="btn btn-primary">Start Reading Passage</button>
+            <div class="d-grid gap-2 col-md-6 mx-auto mt-3">
+                <a id="start-reading-button" class="btn btn-primary">Start Reading Passage</a>
+                {% if assessment_instance.screening_assessment.current_passage > 1 %}
+                    <a href="{% url 'screening_assessment' assessment_id=assessment_instance.id order=order|add:"-1" %}" id="back-button" class="btn btn-secondary">
+                        Back to previous passage
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#back-button").click(function() {
+            history.back();
+        })
+    }) 
+</script>

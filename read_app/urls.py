@@ -9,6 +9,8 @@ from read_app.views.user import (
 )
 from read_app.forms.custom_password_confirm_form import CustomPasswordResetConfirmForm
 
+from read_app.views.reports import generate_report
+
 
 # Add urls here
 urlpatterns = [
@@ -20,10 +22,8 @@ urlpatterns = [
     
 
     # User Registration
-    path('register', user_register.registration, name="register"),
-    path('register/student', user_register.student_registration, name='student_registration'),
-    path('register/teacher', user_register.teacher_registration, name="teacher_registration"),
-
+    path('register', user_register.register, name="register"),
+    path('register/teacher', user_register.teacher_register, name="teacher_register"),
 
     # Password Reset
     path('forgot', user_forgot.forgot_password_request, name="forgot"),
@@ -31,4 +31,7 @@ urlpatterns = [
     path('password_reset/done', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(form_class=CustomPasswordResetConfirmForm), name='password_reset_confirm'),
     path('reset/done', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    # Generate Report
+    path('report/<int:student_id>', generate_report.download_report, name="generate_report"),
 ]

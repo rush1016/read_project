@@ -7,6 +7,24 @@
 
 {% block content %}
 <div class="container my-5">
+    <div>
+        <div class="display-4">
+            {{ assessment_instance.student.full_name }}
+        </div>
+        <div class="display-6">
+            Grade {{ assessment_instance.student.grade_level }}
+        </div>
+        <div class="display-6">
+            Total Reading Time: {{ assessment_instance.total_reading_time }} seconds
+        </div>
+        <div class="display-6">
+            Total Answering Time: {{ assessment_instance.total_answering_time }} seconds
+        </div>
+        <div class="display-6"></div>
+    </div>
+    
+
+    <!-- Stats and Scores -->
     <div class="div d-md-flex align-items-center">
         <div class="mt-5 d-flex justify-content-center">
             {% include "assessment/student/partials/donut_chart.html" %}
@@ -15,39 +33,13 @@
             <h1 class="display-5">Score: {{ score }} / {{ assessment_instance.number_of_questions }}</h1>
             <div>
                 <h1 class="display-3">
-                {% if assessment_instance.assessment_type == 'Screening' %}
-                    {% if score == 20 %}
+                    {% if score == assessment_instance.number_of_questions %}
                         Perfect score! Excellent work!
-                    {% elif score == 19 %}
+                    {% elif score == assessment_instance.number_of_questions|add:"-1" %}
                         Almost perfect! Just one step away!
-                    {% elif score == 18 %}
-                        Outstanding performance! Keep it up!
-                    {% elif score == 17 %}
-                        Fantastic! You're doing exceptionally well!
-                    {% elif score == 16 %}
-                        Excellent! Your hard work is paying off!
-                    {% elif score == 15 %}
-                        Great job! You're on the right track.
-                    {% elif score == 14 %}
-                        Well done! You've passed with flying colors!
-                    {% elif score > 10 %}
-                        Almost there! Keep it going! 
-                    {% elif score > 5 %}
-                        You are making progress! Do your best!
-                    {% elif score < 5 %}
-                        Nice effort! Do your best!
-                    {% endif %}
-                {% else %}
-                    {% if score == 5 %}
-                        Perfect score! Very good! 
-                    {% elif score == 4 %}
-                        Almost perfect! Just one step away!
-                    {% elif score == 3 %}
-                        Halfway there! Keep it up!
                     {% else %}
-                        Nice effort! Keep doing your best!
+                        Not bad. Don't mind. Practice makes perfect
                     {% endif %}
-                {% endif %}
                 </h1> 
             </div>
         </div>
@@ -55,6 +47,8 @@
     <input type="hidden" id="student-score" value="{{ score }}">
     <input type="hidden" id="question-count" value="{{ assessment_instance.number_of_questions }}">
 
+
+    <!-- Summary -->
     {% for passage_instance, student_answers in student_answers.items %}
         <h1 class="display-6 mt-5">{{ passage_instance.passage_title }}</h1>
 
@@ -66,17 +60,26 @@
                         {{ student_answer.question }}
                     </div>
                     <div class="lead">
-                        {{ student_answer.answer }}
+                        Your answer: 
+                        <strong>
+                            {{ student_answer.answer }}
+                        </strong> 
                     </div>
                     {% if student_answer.correct == False %}
-                        <div class="container lead bg-success rounded px-2">
-                            Correct Answer: {{ student_answer.question.get_correct }}
+                        <div class="container lead bg-success rounded px-2 mt-3">
+                            Correct Answer: 
+                            <strong>
+                                {{ student_answer.question.get_correct }}
+                            </strong> 
                         </div>
                     {% endif %}
                 </div>
             </div>
         {% endfor %}
     {% endfor %}
+    <div class="d-grid border col-8 mx-auto my-5">
+            <a href="{% url 'assessment_code' %}" class="btn btn-success">Next Assessment</a>
+    </div>
 </div>
 
 <script src="{% static 'assets/js/assessment/result_chart.js' %}"></script>

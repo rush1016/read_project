@@ -46,24 +46,16 @@ class QuestionForm(forms.ModelForm):
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
-        fields = ['choice_content', 'is_correct']
+        fields = ['choice_content']
 
     choice_content = forms.CharField(
         label='',
-        widget=forms.TextInput(attrs={
+        widget=forms.Textarea(attrs={
             'class': 'form-control mt-2',
             'placeholder': 'Add choice here',
             'required': 'required',
             }
         )
-    )
-    is_correct = forms.BooleanField(
-        label='Correct Answer',
-        widget=forms.CheckboxInput(attrs={
-            'class': 'form-check-input m-0'
-            }
-        ),
-        required=False
     )
 
 

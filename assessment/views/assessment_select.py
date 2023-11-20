@@ -12,10 +12,10 @@ def select(request):
 def select_student_screening(request):
     teacher_instance = User.objects.get(pk=request.user.id, is_teacher=True)
     students = Student.objects.filter(
-        teacher=teacher_instance, 
-        assessments_done=0, 
-        is_approved=True,
-    ).order_by('student_id')
+        teacher = teacher_instance, 
+        assessments_done = 0, 
+        gst_score = 0,
+    ).order_by('id')
 
     form = PresetSelect()
 
@@ -28,13 +28,7 @@ def select_student_screening(request):
 
 
 def select_material_graded(request):
-    graded_presets = [
-        'Grade 4 Graded Passage', 
-        'Grade 5 Graded Passage', 
-        'Grade 6 Graded Passage'
-        ]
-    preset_instances = get_list_or_404(AssessmentPreset, name__in=graded_presets)
-    passages = Passage.objects.filter(preset__in=preset_instances)
+    passages = Passage.objects.filter(preset=None)
 
     context = {
         'passages': passages,
@@ -52,10 +46,9 @@ def select_student_graded(request):
 
     students = Student.objects.filter(
         teacher=teacher_instance, 
-        is_approved=True,
         is_screened=True,
-        grade_level=passage_instance.grade_level,
-    ).order_by('student_id')
+        recommended_grade_level = passage_instance.grade_level
+    ).order_by('id')
 
     context = {
         'mode': 'select student',

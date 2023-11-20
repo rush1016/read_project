@@ -13,21 +13,24 @@
 <section class="form-section">
 	<div class="container-fluid h-custom">
 		<div class="row d-flex justify-content-center align-items-center h-100">
-			<div class="col-md-9 col-lg-6 col-xl-5">
+			<div class="col-md-9 col-lg-6 col-xl-5 d-xs-none d-md-flex">
 		  		<img src="{% static 'assets/img/banner_3.png' %}" class="img-fluid" alt="https://pnghut.com/png/KQpFRSQjLW/reading-book-clip-art-transparent-png" title="https://pnghut.com/png/KQpFRSQjLW/reading-book-clip-art-transparent-png">
 			</div>
-			<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-					<h1 class="display-1">Register</h1>
+			<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 my-sm-5 p-3">
 					<div class="text-center">
-						<p class="lead">Are you a</p>
-						<a type="button" class="btn btn-primary btn-lg" href="/register/teacher">Teacher?</a>
-						<p class="lead">or a</p>
-						<a type="button" class="btn btn-success btn-lg" href="/register/student">Student?</a>
+						<p class="display-3 my-3">Are you a</p>
+						<a type="button" class="btn btn-primary btn-lg p-3 px-5" href="{% url 'login' %}">
+							<p class="display-6 my-auto">
+								Teacher?
+							</p>
+						</a>
+						<p class="display-3 my-3">or a</p>
+						<a type="button" class="btn btn-success btn-lg py-3 px-5" href="{% url 'assessment_code' %}">
+							<p class="display-6 my-auto">
+								Student?
+							</p>
+						</a>
 					</div>
-				<div class="text-center text-lg-start mt-5 pt-2">
-					<p class="small fw-bold mt-2 pt-1 mb-0 text-center">Already have an account? <a href="/login" class="link-success text-decoration-none">Login</a></p>
-				</div>
-	
 			</div>
 		</div>
 	</div>

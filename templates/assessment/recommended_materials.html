@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Recommended Materials for {{ student.full_name }}</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Back Button -->
+    {% include "utils/back.html" %}
+    <h1 class="display-6">
+        Recommended Materials for 
+    </h1>
+    <h1 class="display-6">
+        <strong>
+            {{ student.full_name }}
+        </strong>
+    </h1>
+    <h1 class="display-6">
+        <strong>
+            Grade {{ student.grade_level }}
+        </strong>
+    </h1>
+    <h1 class="display-6">
+        Reading Level: 
+        {% if language == 'English' %}
+            {% if student.student_rating.english_rating %}
+                {{ student.student_rating.english_rating }} 
+            {% else %}
+                Needs further assessment
+            {% endif %}
+        {% elif language == 'Filipino' %} 
+            {% if student.student_rating.filipino_rating %}
+                {{ student.student_rating.filipino_rating }}
+            {% else %}
+                Needs further assessment
+            {% endif %}
+        {% endif %}
+        <strong>
+            {{ student. }}
+        </strong>
+    </h1>
+    <h1 class="display-6">
+        Recommended Material Grade Level: 
+        <strong>
+            Grade
+            {% if language == 'English' %}
+                {{ student.student_rating.english_recommended_grade }}
+            {% elif language == 'Filipino' %}
+                {{ student.student_rating.filipino_recommended_grade }}
+            {% endif %} 
+        </strong>
+    </h1>
+    {% if passages %}
+        <table class="table mt-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>Passage Title</th>
+                    <th>Grade Level</th>
+                    <th>Set</th>
+                    <th>Language</th>
+                    <th>Number of Words</th>
+                    <th>Number of Questions</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passage in passages %}
+                    <tr>
+                        <td>{{ passage.passage_title }}</td>
+                        <td>Grade {{ passage.grade_level }}</td>
+                        <td>{{ passage.set }}</td>
+                        <td>{{ passage.language }}</td>
+                        <td>{{ passage.passage_length }}</td>
+                        <td>{{ passage.number_of_questions }}</td>
+                        <td>
+                            <button 
+                                class="btn btn-success"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#assessment-settings-modal-{{ passage.id }}"
+                                data-student-id="{{ student.id }}"
+                                data-passage-id="{{ passage.id }}">
+                                Select
+                            </button>
+                        </td>
+                        {% include "assessment/modals/modal_assign_recommended.html" %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="lead text-center my-5">
+            There are currently no available materials for this grade level.
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

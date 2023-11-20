@@ -1,6 +1,8 @@
 from django.db import models
 from materials.models import Passage
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from students.models import Student
 from materials.models import Question, Choice
@@ -18,23 +20,66 @@ class AssessmentSession(models.Model):
     assessment_type = models.CharField(max_length=16, choices=ASSESSMENT_TYPES)
     number_of_questions = models.IntegerField(default=0)
     grade_level = models.IntegerField()
-    total_score = models.IntegerField(null=True)
-    total_reading_time = models.PositiveIntegerField(null=True)
-    total_answering_time = models.PositiveIntegerField(null=True)
+    total_score = models.IntegerField(null=True, blank=True)
+    total_reading_time = models.PositiveIntegerField(null=True, blank=True)
+    total_answering_time = models.PositiveIntegerField(null=True, blank=True)
+
     assigned_time = models.DateTimeField(default=timezone.now)
     due_date = models.DateTimeField(null=True)
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     is_finished = models.BooleanField(default=False)
+    passcode = models.CharField(max_length=16, unique=True)
     
     def __str__(self):
         return f"Assessment Session for {self.student}"
     
     def get_passages(self):
         return self.assessment_passage.all()
+    
+    def get_graded_passage(self):
+        return self.assessment_passage.all().first()
 
     def get_responses(self):
         return self.student_answer.all()
+    
+    def get_miscues(self):
+        return self.oral_miscues.all()
+
+
+# Signal to update assessments_done when a new AssessmentSession is created
+@receiver(post_save, sender=AssessmentSession)
+def update_assessments_done(sender, instance, **kwargs):
+    if instance.is_finished:
+        instance.student.assessments_done = instance.student.assessment_session.filter(assessment_type='Graded', is_finished=True).count()
+        instance.student.save()
+
+
+class AssessmentMiscue(models.Model):
+    assessment = models.ForeignKey(
+        AssessmentSession,
+        on_delete=models.CASCADE,
+        related_name="oral_miscues",
+    )
+    passage = models.ForeignKey(
+        Passage,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    word = models.CharField(max_length=64)
+    MISCUE_TYPES = (
+        ('Mispronunciation', 'Mispronunciation'),
+        ('Omission', 'Omission'),
+        ('Substitution', 'Substitution'),
+        ('Insertion', 'Insertion'),
+        ('Repetition', 'Repetition'),
+        ('Transposition', 'Transposition'),
+        ('Reversal', 'Reversal'),
+        ('Self-correction', 'Self-correction'),
+    )
+    miscue = models.CharField(choices=MISCUE_TYPES)
+    index = models.IntegerField()
     
 
 class ScreeningAssessment(models.Model):
@@ -76,9 +121,25 @@ class GradedAssessment(models.Model):
         on_delete=models.CASCADE,
         related_name='graded_assessment'
     )
+    RATINGS = (
+        ("Independent", "Independent"),
+        ("Instructional", "Instructional"),
+        ("Frustration", "Frustration"),
+    )
 
     def __str__(self):
         return f'Graded Assessment for {self.assessment_session.student}'
+    
+    oral_reading_score = models.FloatField(null=True, blank=True)
+    reading_comprehension_score = models.FloatField(null=True, blank=True)
+
+    oral_reading_rating = models.CharField(null=True, blank=True, choices=RATINGS)
+    reading_comprehension_rating = models.CharField(null=True, blank=True, choices=RATINGS)
+
+    overall_rating = models.CharField(null=True, blank=True, choices=RATINGS)
+
+    reading_speed = models.FloatField(null=True, blank=True)
+
 
 
 class AssessmentSessionPassage(models.Model):

@@ -16,7 +16,9 @@
 
     <div class="form-group d-flex justify-content-end p-3">
         <!-- Filter options -->
-        {% include 'students/partials/filter_student_table.html' %}
+        {% if students %}
+            {% include 'students/partials/filter_student_table.html' %}
+        {% endif %}
         
         <!-- Button to trigger the modal -->
         <button 
@@ -24,7 +26,7 @@
             class="btn btn-success w-25 h-50 my-3" 
             data-bs-toggle="modal" 
             data-bs-target="#addStudentModal">
-                Registration Code
+                Add Student
         </button>
     </div>
     <!-- End Modal Button -->
@@ -37,20 +39,16 @@
 
     <!-- Modal adding student records -->
     {% include 'students/modals/modal_add_student.html' %}
+    {% include 'students/modals/modal_confirm_add.html' %}
 
     <!-- Modal for confirmation of adding from archived records -->
     {% include 'students/modals/modal_add_archived_student.html' %}
-
-    <!-- Modal for editing student records-->
-    {% include 'students/modals/modal_edit_student.html' %}
-
-    <!-- Modal for delete record confirmation-->
-    {% include 'students/modals/modal_delete_student.html' %}
 </div>
 
 
 <!-- Script for calling add_student view -->
 <script src="{% static 'assets/js/students/add_student.js' %}"></script>
+<script src="{% static "assets/js/students/check_existing_record.js" %}"></script>
 
 <!-- Script for listening to edit button click and rendering edit form -->
 <script src="{% static 'assets/js/students/edit_student.js' %}"></script>

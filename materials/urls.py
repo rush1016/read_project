@@ -5,7 +5,8 @@ from materials.views import (
     reading_material,
     get_passage_info,
     delete_reading_material,
-    manage_passage
+    manage_passage,
+    create_question
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('manage_passage/<int:passage_id>', manage_passage.manage_passage, name="manage_passage"),
     path('delete_passage/<int:passage_id>', delete_reading_material.delete_passage, name="delete_passage"),
     path('get_passage_info/<int:passage_id>', get_passage_info.get_passage_info, name="get_passage_info"),
+    path('question/add/<int:passage_id>', create_question.create_question, name="create_question")
 ]

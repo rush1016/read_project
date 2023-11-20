@@ -12,8 +12,6 @@
     <form method="POST" action="{% url 'manage_passage' passage.id %}">
         {% csrf_token %}
          
-        <!-- Top buttons -->
-        {% include 'reading/partials/partial_edit_buttons.html' %}
         <input type="hidden" id="passage-id" name="passage-id" value="{{ passage.id }}">
         <!-- Form fields -->
         {{ passage_form.grade_level.label }}
@@ -54,8 +52,6 @@
             </div>
         {% endfor %}
         
-        <!-- Bottom buttons -->
-        {% include 'reading/partials/partial_edit_buttons.html' %}
 
         {% include 'reading/modals/modal_delete_passage.html' %}
 

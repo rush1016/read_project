@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     $.ajax({
       type: 'POST',
-      url: 'add_student',
+      url: 'add',
       data: addStudentForm.serialize(),
       dataType: 'json',
       success: function(response) {

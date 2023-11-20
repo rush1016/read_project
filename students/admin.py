@@ -1,6 +1,7 @@
 from django.contrib import admin
 from students.models import (
-    Student, 
+    Student,
+    StudentRating,
     ClassSection, 
     ArchivedStudent,
 )
@@ -8,18 +9,18 @@ from students.models import (
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 
         'student_school_id', 
         'last_name', 
         'first_name', 
         'teacher', 
         'grade_level', 
+        'recommended_grade_level',
         'class_section', 
         'date_added', 
-        'is_approved',
         'screening',
         'is_screened',
         'overall_rating',
+        'assessments_done',
     )
 
     # Define methods to access User model fields
@@ -30,6 +31,15 @@ class StudentAdmin(admin.ModelAdmin):
     def last_name(self, obj):
         return obj.user.last_name
     last_name.short_description = 'Last Name'
+
+class StudentRatingAdmin(admin.ModelAdmin):
+    list_display = (
+        'student',
+        'english_rating',
+        'english_recommended_grade',
+        'filipino_rating',
+        'filipino_recommended_grade',
+    )
 
 class ArchivedStudentAdmin(admin.ModelAdmin):
     list_display = (
@@ -53,6 +63,7 @@ class ClassSectionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Student, StudentAdmin)
+admin.site.register(StudentRating, StudentRatingAdmin)
 admin.site.register(ArchivedStudent, ArchivedStudentAdmin)
 
 admin.site.register(ClassSection, ClassSectionAdmin)

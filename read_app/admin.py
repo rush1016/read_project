@@ -12,14 +12,13 @@ class UserAdmin(UserAdmin):
         'first_name', 
         'last_name', 
         'email', 
-        'is_student', 
         'is_teacher', 
         'is_school_admin'
     )
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_school_admin', 'is_teacher', 'is_student')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_school_admin', 'is_teacher')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
@@ -30,7 +29,7 @@ class UserAdmin(UserAdmin):
     ) 
 
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'teacher_code', 'email', 'date_created')
+    list_display = ('user', 'first_name', 'last_name', 'email', 'date_created')
 
     # Define methods to access User model fields
     def first_name(self, obj):

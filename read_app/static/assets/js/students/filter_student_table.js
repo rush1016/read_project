@@ -14,8 +14,8 @@ $(document).ready(function() {
         
         $('#studentList tbody tr').each(function() {
             let row = $(this);
-            let gradeInRow = row.find('td:eq(2)').text().trim().replace('Grade ', '');
-            let sectionInRow = row.find('td:eq(3)').text().trim();
+            let gradeInRow = row.find('td:eq(1)').text().trim().replace('Grade ', '');
+            let sectionInRow = row.find('td:eq(2)').text().trim();
 
             let gradeMatch = (selectedGradeLevel === '' || gradeInRow === selectedGradeLevel);
             let sectionMatch = (selectedSection === '' || sectionInRow === selectedSection);

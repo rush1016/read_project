@@ -6,11 +6,18 @@
                 <h5 class="modal-title" id="edit-student-modal-label">Edit student record</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="edit-form-container">
-                    <!-- Rendered using JavaScript -->
+            <form method="POST" action="{% url 'edit_student' student.id %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div id="edit-form-container">
+                        {{ student_edit_form }}
+                    </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

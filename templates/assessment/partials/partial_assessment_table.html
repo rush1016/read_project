@@ -3,7 +3,13 @@
             <td>{{ assessment.assessment_type }}</td>
             <td>Grade {{ assessment.grade_level }}</td>
             {% if assessment.assessment_type == 'Screening' %}
-                <td>{{ assessment.total_score }} / {{ assessment.number_of_questions }}</td>
+                <td>
+                    {% if assessment.total_score %}
+                        {{ assessment.total_score }} / {{ assessment.number_of_questions }}
+                    {% else %}
+                        Not yet taken
+                    {% endif %}
+                </td>
                 <td>
                     {{ assessment.screening_assessment.correct_literal }} / {{ assessment.screening_assessment.total_literal }}
                 </td>
@@ -14,8 +20,19 @@
                     {{ assessment.screening_assessment.correct_critical }} / {{ assessment.screening_assessment.total_critical }}
                 </td>
             {% elif assessment.assessment_type == 'Graded' %}
-                <td>{{ assessment.total_score }} / {{ assessment.number_of_questions }}</td>
+                <td>{{ assessment.graded_assessment.overall_rating }}</td>
+                <td>{{ assessment.get_passages.0 }}</td>
+                {% if assessment.total_score %}
+                    <td>{{ assessment.total_score }} / {{ assessment.number_of_questions }}</td>
+                {% else %}
+                    <td>
+                        Not yet finished
+                    </td>
+                {% endif %}
             {% endif %}
+            <td>
+                {{ assessment.passcode }}
+            </td>
             <td>
                 {% if assessment.is_finished %}
                     Completed 
@@ -23,7 +40,15 @@
                     On-going
                 {% endif %}
             </td>
-            <td>
-                <a href="{% url 'view_assessment' assessment.id %}" class="text-decoration-none">View assessment</a>
+
+            <!-- Action Buttons -->
+            <td class="text-center">
+                {% if assessment.assessment_type == 'Screening' %}
+                    <a href="{% url 'view_assessment' assessment.id %}" class="btn btn-success">View assessment</a>
+                {% elif assessment.is_finished %}
+                    <a href="{% url 'assessment_session' assessment.id %}" class="btn btn-success">View Assessment</a>
+                {% else %}
+                    <a href="{% url 'assessment_session' assessment.id %}" class="btn btn-primary">Conduct Assessment</a>
+                {% endif %}
             </td>
         </tr>

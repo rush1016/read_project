@@ -1,0 +1,182 @@
+{% include "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Assessment Session</title>
+{% endblock title %}
+
+{% block content %}
+<div id="assessment-session">
+    <div class="card p-3">
+        <div class="card-body">
+            <div class="display-3 text-center my-5">
+                <strong>
+                    {{ assessment.assessment_type }}
+                    {% if assessment.assessment_type == 'Screening' %}
+                        Test Passage No. {{ assessment.screening_assessment.current_passage }}
+                    {% else %}
+                        Passage
+                    {% endif %}
+                </strong>
+            </div>
+            <div class="container">
+                <div class="card-title display-4">
+                    <strong>
+                    <a href="{% url 'student_profile' assessment.student.id %}" class="text-decoration-none link-success" title="Go to student profile">
+                        {{ assessment.student.full_name }}
+                    </a>
+                    </strong>
+                </div>
+                <div class="display-6 mb-2">Grade {{ assessment.student.grade_level }}</div>
+                {% for passage in assessment.get_passages %}
+                    <hr class="mt-5">
+                    {% if assessment.is_finished == False %}
+                        <div class="display-6">Passcode: <strong>{{ assessment.passcode }} </strong>(Give this to your student)</div>
+                    {% endif %}
+                    <div class="mt-3"></div>
+                    <div class="display-6">Passage Title: <strong>{{ passage.passage.passage_title }}</strong></div>
+                    <div class="display-6">Passage Grade Level: <strong>{{ passage.passage.grade_level }}</strong></div>
+                    <div class="display-6">Questions: <strong>{{ passage.passage.number_of_questions }}</strong></div>
+                    <div>
+                        {% if assessment_info %}
+                            {% if assessment.is_finished %}
+                                <div class="display-6">Status: <strong>Completed</strong></div>
+                                <div class="display-6">Total Score: 
+                                    <strong>
+                                        {{ assessment.total_score }} / {{ assessment.number_of_questions }}
+                                    </strong>
+                                </div>
+                    
+                                <div class="display-6">Oral Reading Rating: <strong>{{ assessment_info.oral_reading_rating }}</strong></div>
+                                <div class="display-6">Reading Comprehension Rating: <strong>{{ assessment_info.reading_comprehension_rating }}</strong></div>
+                                <div class="display-6">Reading Level: <strong>{{ assessment_info.overall_rating }}</strong></div>
+                            {% else %}
+                                <div class="display-6">Status: <strong>On-going</strong></div>
+                            {% endif %}
+
+                        {% endif %}
+                    </div>
+                    <div class="d-flex mt-5">
+                        <div class="d-grid col-5">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="card-title display-6">Instructions:</div>
+                                    <ul class="lead">
+                                        <li>If the student make a miscue. 
+                                            <strong>
+                                                Click
+                                            </strong>
+                                            the word from the box
+                                        </li>
+                                        <li>
+                                            <strong>
+                                                Choose
+                                            </strong>
+                                            the type of 
+                                            <strong class="text-warning">
+                                                MISCUE 
+                                            </strong>
+                                            for the word
+                                        </li>
+                                        <li>
+                                            To 
+                                            <strong class="text-danger">
+                                                DELETE
+                                            </strong>
+                                            the miscue, click on the highlighted words and click
+                                            <strong>
+                                                'delete'
+                                            </strong>
+                                            from the Menu
+                                        </li>
+                                        <li>
+                                            <strong>
+                                                Click
+                                            </strong>
+                                            the <strong class="text-success">Compute Ratings</strong> 
+                                            button only when the student has 
+                                            <strong>
+                                                FINISHED
+                                            </strong> answering the assessment
+                                        </li>
+                                    </ul>
+
+                                    <div class="card-title display-6 mt-3">Oral Reading Miscues</div>
+                                    <ul class="lead">
+                                        <li>Mispronunciation (Maling Bigkas)</li>
+                                        <li>Omission (Pagkakaltas)</li>
+                                        <li>Substitution (Pagpapalit)</li>
+                                        <li>Insertion (Pagsisingit)</li>
+                                        <li>Repetition (Pag-uulit)</li>
+                                        <li>Transposition (Pagpapalit ng lugar)</li>
+                                        <li>Reversal (Paglilipat)</li>
+                                        <li>Self-correction</li>
+                                    </ul>
+
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="d-grid col-7">
+                            <!-- Passage Container -->
+                            <input type="hidden" name="passage-id" id="passage-id" value="{{ passage.passage.id }}">
+                            <input type="hidden" name="assessment-id" id="assessment-id" value="{{ assessment.id }}">
+                            <div id="interactive-area" class="container border border-dark rounded p-3 mb-5">
+                                <p class="display-5">
+                                    <!-- Rendered using JavaScript -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="my-5">
+                    {% if assessment.is_finished %}
+                        <h1 class="display-6">
+                            Student's Answers
+                        </h1>
+                        {% for student_answer in assessment.get_responses %}
+    
+                            <hr>
+                            <div class="card text-light">
+                                <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">
+                                    <div class="lead">
+                                        {{ student_answer.question }}
+                                    </div>
+                                    <div class="lead">
+                                        Your answer: 
+                                        <strong>
+                                            {{ student_answer.answer }}
+                                        </strong> 
+                                    </div>
+                                    {% if student_answer.correct == False %}
+                                        <div class="container lead bg-success rounded px-2 mt-3">
+                                            Correct Answer: 
+                                            <strong>
+                                                {{ student_answer.question.get_correct }}
+                                            </strong> 
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            <!-- Button Containers -->
+            <form method="GET" action="{% url 'assign_recommended' assessment.student.id %}">
+            <div class="d-grid col-6 mx-auto">
+                {% if assessment.is_finished and assessment.graded_assessment.overall_rating %}
+                    <a href="{% url 'calculate_reading_level' assessment.id %}" class="btn btn-success">Recompute ratings</a>
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="Graded">
+                    <input type="hidden" name="language-selected" value="{{ assessment.get_graded_passage.passage.language }}">
+                    <button type="submit" class="btn btn-primary mt-3">Assign Next Assessment</button>
+                {% else %}
+                    <a href="{% url 'calculate_reading_level' assessment.id %}" class="btn btn-success">Compute Ratings</a>
+                {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static 'assets/js/assessment/miscues.js' %}"></script>
+{% endblock content %}

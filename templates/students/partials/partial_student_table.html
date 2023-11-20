@@ -1,49 +1,47 @@
 <div class="table table-responsive">
-    <table class="table table-hover" id="studentList">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Grade Level</th>
-                <th>Section</th>
-                <th>Comprehension Level</th>
-                <th>Date Added</th>
-                <th class="text-center"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students %}
+    {% if students %}
+        <table class="table table-hover" id="studentList">
+            <thead class="table-dark">
                 <tr>
-                    <td>{{ student.student_id }}</td>
-                    <td>{{ student.last_name }}, {{ student.first_name }}</td>
-                    <td>Grade {{ student.grade_level }}</td>
-                    <td>{{ student.class_section }}</td>
-                    <td>{{ student.overall_rating }}</td>
-                    <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
-                    <!--Action buttons-->
-                    <td class="d-grid gap-2 d-md-flex justify-content-md-around">
-                        {% if student.is_approved %}
+                    <th>Name</th>
+                    <th>Grade Level</th>
+                    <th>Section</th>
+                    <th>Reading Level</th>
+                    <th>Date Added</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.full_name }}</td>
+                        <td>Grade {{ student.grade_level }}</td>
+                        <td>{{ student.class_section }}</td>
+                        <td>{{ student.overall_rating }}</td>
+                        <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
+                        <!--Action buttons-->
+                        <td class="d-grid gap-2 d-md-flex justify-content-md-around">
                             <a 
-                                href="{% url 'student_profile' student.user.id %}" 
+                                href="{% url 'student_profile' student.id %}" 
                                 type="button" 
                                 class="btn btn-primary">
                                     View Student Profile
                             </a>
-                        {% else %}
-                            <button 
-                                type="button" 
-                                class="btn btn-success btn-sm approve-student-button" 
-                                id="approve-button" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#approve-student-modal" 
-                                data-student-id="{{ student.user.id }}">
-                                    Approve Registration
-                            </button>
-                        {% endif %}
-                    </td>
+                        </td>
                     
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="lead text-center my-5">
+            No students to display. Please select the "Add Students" button and enter your students' credentials to add them here.
+        </p>
+    {% endif %}
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#studentList').DataTable();
+    });
+</script>
