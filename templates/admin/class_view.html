@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Class List</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="display-5 ">
+        Class of Grade 4 - Rizal
+    </h1>
+    <h1 class="display-6 mb-3">
+        Teacher: 
+        <strong>
+            {{ teacher_user.teacher }}
+        </strong>
+    </h1>
+    <!-- Student List -->
+    <table class="table" id="student-list">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Reading Level</th>
+                <th>Assessments Done</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>
+                    {{ student.full_name }}
+                </td>
+                <td>
+                    {{ student.overall_rating }}
+                </td>
+                <td>
+                    {{ student.assessments_done }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#student-list').DataTable();
+    });
+</script>
+{% endblock content %}

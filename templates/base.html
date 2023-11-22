@@ -40,69 +40,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     {% if user.is_teacher %}
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'student_list' %}">
-                                    <i class="fas fa-chalkboard-teacher"></i> 
-                                    Student List
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'reading_material' %}">
-                                    <i class="fa-solid fa-book"></i> 
-                                    Reading Materials
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'assessment_select' %}">
-                                    <i class="fas fa-book-open"></i>
-                                    Start Assessments
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'assessment_list' %}">
-                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                    Assessment List
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="d-flex">
-                        {% include 'base_auth_dropdown.html' %}
-                    </div>
-
+                        {% include "base_partials/base_teacher_options.html" %}
                     {% elif user.is_student %}
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'student_assessment_list' %}">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                    My Assessments
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a 
-                                class="nav-link" 
-                                href="{% url 'student_profile' request.user.id %}">
-                                    <i class="fa-solid fa-user"></i> 
-                                    My Profile
-                            </a>
-                        </li>
-                    </ul> <!-- End of list -->
-                    <div class="d-flex">
-                        {% include 'base_auth_dropdown.html' %}
-                    </div>
-
+                        {% include "base_partials/base_student_options.html" %}
+                    {% elif user.is_school_admin %}
+                        {% include "base_partials/base_admin_options.html" %}
                     {% else %}
                     </ul>
                     <div class="d-flex">
-                        {% include 'base_not_auth_dropdown.html' %}
+                        {% include 'base_partials/base_not_auth_dropdown.html' %}
                     </div>
                     {% endif %}
             </div>

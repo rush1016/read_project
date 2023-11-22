@@ -12,10 +12,12 @@ def add_student(request):
         form = StudentRegistrationForm(request.POST)
 
         if form.is_valid():
-            student = form.save(commit=False)
-            student.teacher = request.user
+            teacher = request.user.teacher
+            student = form.save(teacher=teacher)
+            
             student.save()
 
+            # Create a rating record related to the added student
             StudentRating.objects.create(
                 student = student,
             )

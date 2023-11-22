@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from students.models import ClassSection
+from read_app.models import ClassSection
 
 
 def get_class_section_data(request):

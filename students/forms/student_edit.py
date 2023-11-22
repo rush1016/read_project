@@ -1,7 +1,8 @@
 from django import forms
 from django.core.validators import RegexValidator
 
-from students.models import Student, ClassSection
+from students.models import Student
+from read_app.models import ClassSection
 
 
 class StudentEditForm(forms.ModelForm):

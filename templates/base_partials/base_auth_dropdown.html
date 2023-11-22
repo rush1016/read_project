@@ -4,6 +4,7 @@
         <i class="far fa-user-circle"></i> {{ user_first_name }}
     </a>
     <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+        <li><a class="text-light dropdown-item bg-dark" href="{% url 'teacher_profile' %}">Profile</a></li>
         <li><a class="text-light dropdown-item bg-dark" href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </li>

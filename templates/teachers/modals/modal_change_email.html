@@ -1,0 +1,22 @@
+<div class="modal fade" id="change-email-modal" tabindex="-1" aria-labelledby="change-email-modal-Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                Change email
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{% url 'change_email' %}">
+            <div class="modal-body">
+                {% csrf_token %}
+                {{ email_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="confirmButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

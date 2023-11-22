@@ -2,14 +2,13 @@ from django.contrib import admin
 from students.models import (
     Student,
     StudentRating,
-    ClassSection, 
     ArchivedStudent,
 )
 
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
-        'student_school_id', 
+        'school',
         'last_name', 
         'first_name', 
         'teacher', 
@@ -56,14 +55,8 @@ class ArchivedStudentAdmin(admin.ModelAdmin):
     )
 
 
-class ClassSectionAdmin(admin.ModelAdmin):
-    list_display = ('grade_level', 'section_name')
-    filter = ('grade_level')
-    search_field = ('section_name')
 
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentRating, StudentRatingAdmin)
 admin.site.register(ArchivedStudent, ArchivedStudentAdmin)
-
-admin.site.register(ClassSection, ClassSectionAdmin)

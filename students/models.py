@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
-from read_app.models import User
+from read_app.models import User, School
+
+
 
 class Student(models.Model):
     teacher = models.ForeignKey(
@@ -12,7 +14,12 @@ class Student(models.Model):
             'is_teacher': True
         },
     )
-    student_school_id = models.CharField(unique=True, null=True, blank=True)
+    school = models.ForeignKey(
+        School,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     first_name = models.CharField(max_length=80)
     middle_name = models.CharField(null=True, blank=True)
@@ -141,7 +148,3 @@ class ArchivedStudent(models.Model):
     is_approved = models.BooleanField(default=False)
     date_archived = models.DateField(auto_now_add=True)
 
-
-class ClassSection(models.Model):
-    grade_level = models.IntegerField()
-    section_name = models.CharField(max_length=80)

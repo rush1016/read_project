@@ -1,4 +1,4 @@
-runtime: python311  # Use the appropriate Python version
+runtime: python311 
 entrypoint: gunicorn -b :$PORT read_project.wsgi
 
 instance_class: F2
@@ -6,7 +6,7 @@ instance_class: F2
 env_variables:
   DJANGO_SETTINGS_MODULE: "read_project.settings"
   # This setting is used in settings.py to configure your ALLOWED_HOSTS
-  APPENGINE_URL: https://data-watch-404900.uc.r.appspot.com
+  # APPENGINE_URL: https://data-watch-404-900.uc.r.appspot.com
 
 handlers:
 # This configures Google App Engine to serve the files in the app's static

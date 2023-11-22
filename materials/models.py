@@ -53,6 +53,8 @@ class Passage(models.Model):
     def save(self, *args, **kwargs):
         # Calculate and update passage length before saving
         self.passage_length = len(self.passage_content.split())
+        self.number_of_questions = self.get_questions().count()
+
         super(Passage, self).save(*args, **kwargs)
 
     def get_questions(self):

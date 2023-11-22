@@ -3,4 +3,6 @@ __pycache__
 db.sqlite3
 /app
 *.env
+*.env.development
+*.env.production
 .vscode

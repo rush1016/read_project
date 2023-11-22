@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>{{ user.get_full_name }}'s Profile</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="display-3">
+        {{ user.get_full_name }}
+    </h1>
+    <h1 class="display-5">
+        Teacher for Grade {{ user.teacher.grade_level }} - {{ user.teacher.section }}
+    </h1>
+    <hr>
+
+    <div class="mt-5">
+        <p class="lead">
+            School Name: {{ user.teacher.school.name }}
+        </p>
+        <p class="lead">
+            Email: {{ user.email }}
+        </p>
+        <p class="lead">
+            Username: {{ user.username }}
+        </p>
+        <p class="lead">
+            Number of students registered: {{ user.student_set.all.count }}
+        </p>
+        <button 
+            class="btn btn-primary" 
+            data-bs-toggle="modal" 
+            data-bs-target="#change-email-modal">
+            Change email
+        </button>
+        <button 
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#change-password-modal">
+            Change password
+        </button>
+    </div>
+    {% include "teachers/modals/modal_change_email.html" %}
+    {% include "teachers/modals/modal_change_password.html" %}
+
+
+
+</div>
+{% endblock content %}

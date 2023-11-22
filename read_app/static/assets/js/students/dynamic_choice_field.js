@@ -53,7 +53,7 @@ $(document).ready(function() {
                 let gradeLevel = gradeLevelMapping[classSectionName];
                 $(this).attr('data-grade-level', gradeLevel);
             }
-
+            console.log('hello');
         });
     }
 
@@ -79,8 +79,11 @@ $(document).ready(function() {
         $(idModal).on('shown.bs.modal', function () {
             updateSectionOptions(gradeLevelField, classSectionField);
         });
+
+        updateSectionOptions(gradeLevelField, classSectionField);
     };
 
 
     initializeModal('#addStudentModal');
+    initializeModal('#register-form');
 });

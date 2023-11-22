@@ -12,6 +12,9 @@
         <h2 class="display-3 mt-3">Student List</h2>
         {% include 'students/partials/back_button.html' %}
     </div>
+    <p class="display-6">
+        for Grade {{ user.teacher.grade_level }} - {{ user.teacher.section }}
+    </p>
     <!-- Filter records -->
 
     <div class="form-group d-flex justify-content-end p-3">

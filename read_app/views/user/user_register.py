@@ -6,16 +6,14 @@ from django.contrib.auth import authenticate, login
 
 
 def register(request):
-    if request.user.is_authenticated:
-        return redirect('home')
 
     return render(request, 'registration/signup_role_select.html')
 
 
 def login_after_register(request, form):
-    username = form.cleaned_data['email']
+    email = form.cleaned_data['email']
     password = form.cleaned_data['password1']
-    user = authenticate(username=username, password=password)
+    user = authenticate(username=email, password=password)
     login(request, user) # Login the user before redirecting to homepage
 
 
@@ -65,7 +63,6 @@ def teacher_register(request):
             context = {
                 'register_form': form
             }
-            messages.error(request, form.errors)
             return render(request, 'registration/signup_teacher.html', context )
     
     form = TeacherRegistrationForm()

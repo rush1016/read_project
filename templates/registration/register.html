@@ -22,16 +22,16 @@
 				<!-- Form-->
 				<form method="POST" action="">
 					{% csrf_token %}
-					{{ registerForm.as_p }}
+					<div class="form-container" id="register-form">
+						{{ registerForm.as_p }}
+					</div>
 				<div class="text-center text-lg-start mt-4 pt-2">
 					<button type="submit" name="register" class="btn btn-success btn-lg w-100">Register</button>
 					<p class="small fw-bold mt-2 pt-1 mb-0 text-center">Already have an account? <a href="/login" class="link-success text-decoration-none">Login</a></p>
 				</div>
-	
 				</form>
 			</div>
 		</div>
 	</div>
 </section>
-
 {% endblock %}

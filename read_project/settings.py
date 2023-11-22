@@ -23,16 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 env = environ.Env(DEBUG=(bool, False))
-env_file = os.path.join(BASE_DIR, ".env")
-project_id = "data-watch-404900"
-settings_name = "django-settings"
+env_development = BASE_DIR /  "read_project/.env.development"
+development_mode = True
 
-if os.path.isfile(env_file):
-    # Use a local secret file, if provided
 
-    env.read_env(env_file)
-# ...
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+# Set to Environment Variable to None in Development
+if os.environ.get("GOOGLE_CLOUD_PROJECT", None) and not development_mode:
     # Pull secrets from Secret Manager
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
 
@@ -42,6 +38,11 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
 
     env.read_env(io.StringIO(payload))
+
+elif os.path.isfile(env_development) and development_mode:
+    # Use a development env file
+    env.read_env(env_development)
+
 else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
@@ -60,13 +61,13 @@ if APPENGINE_URL:
     SECURE_SSL_REDIRECT = True
 else:
     ALLOWED_HOSTS = ["*"]
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = env('DEBUG')
 
 
 # Application definition
@@ -117,26 +118,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'read_project.wsgi.application'
 
-# Use django-environ to parse the connection string
-DATABASES = {"default": env.db()}
 
-# If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5432
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env("DB_NAME"),
-#         'USER': env("DB_USER"),
-#         'PASSWORD': env("DB_PASSWORD"),
-#         'HOST': env("DB_HOST"),
-#         'PORT': env("DB_PORT")
-#     }
-# }
+if development_mode:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST'),
+            'PORT': env('DB_PORT'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': env.db(),
+    }
 
 
 # Password validation
@@ -193,12 +190,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# # SMTP Emailer
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = env("SMTP_EMAIL")
-# EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD")
+# SMTP Emailer
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env("SMTP_EMAIL")
+EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD")
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  

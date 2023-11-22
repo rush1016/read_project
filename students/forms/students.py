@@ -2,7 +2,8 @@ from django import forms
 from django.core.validators import RegexValidator
 from string import capwords
 
-from students.models import Student, ClassSection
+from students.models import Student
+from read_app.models import Grade, ClassSection
 
 
 class StudentRegistrationForm(forms.ModelForm):
@@ -14,8 +15,6 @@ class StudentRegistrationForm(forms.ModelForm):
             'last_name', 
             'suffix',
             'age',
-            'grade_level', 
-            'class_section',
         )
     SUFFIXES = (
         ('', 'No suffix'),
@@ -83,14 +82,6 @@ class StudentRegistrationForm(forms.ModelForm):
             }
         )
     )
-    grade_level = forms.ChoiceField(
-        choices=[], 
-        label='Grade Level',
-    )
-    class_section = forms.ChoiceField(
-        choices=[], 
-        label='Section',
-    )
 
     # Override clean methods to convert to Title Case / Capital first letter
     def clean_first_name(self):
@@ -105,21 +96,15 @@ class StudentRegistrationForm(forms.ModelForm):
         last_name = self.cleaned_data['last_name']
         return capwords(last_name)
 
+    def save(self, teacher):
+        student = super().save(commit=False)
+        grade_level = teacher.grade_level
+        section = teacher.section
 
-    def __init__(self, *args, **kwargs):
-        super(StudentRegistrationForm, self).__init__(*args, **kwargs)
-        GRADE_LEVEL_CHOICES = [
-            (4, 'Grade 4'),
-            (5, 'Grade 5'),
-            (6, 'Grade 6'),
-        ]
-        # Get the class section data from the database then assign them as choices
-        CLASS_SECTION_CHOICES = [(obj.section_name, obj.section_name) for obj in ClassSection.objects.all().order_by('grade_level')]
+        student.teacher = teacher.user
+        student.grade_level = grade_level
+        student.class_section = section
 
-        self.fields['grade_level'].choices = GRADE_LEVEL_CHOICES
-        self.fields['grade_level'].widget.attrs['class'] = 'form-select'
-        self.fields['grade_level'].widget.attrs['required'] = 'required'
-
-        self.fields['class_section'].choices = CLASS_SECTION_CHOICES
-        self.fields['class_section'].widget.attrs['class'] = 'form-select'
-        self.fields['class_section'].widget.attrs['required'] = 'required'
+        student.save()
+        
+        return student

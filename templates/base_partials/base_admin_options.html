@@ -1,0 +1,20 @@
+    <li class="nav-item">
+        <a 
+            class="nav-link" 
+            href="{% url 'teacher_list' %}">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Teacher List
+        </a>
+    </li>
+    <li class="nav-item">
+        <a 
+            class="nav-link" 
+            href="{% url 'reading_material' %}">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Reading Materials
+        </a>
+    </li>
+</ul> <!-- End of list -->
+<div class="d-flex">
+    {% include 'base_partials/base_auth_dropdown.html' %}
+</div>

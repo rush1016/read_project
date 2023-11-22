@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Teacher List</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="display-4 mb-3">
+        Teachers of {{ user.admin.school.name }}
+    </h1>
+    <a href="{% url 'generate_srp' %}" class="btn btn-success">Generate School Reading Profile Document</a>
+    <table class="table" id="teacher-list">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Grade and Section</th>
+                <th>Students Registered</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td>
+                    
+                    {{ teacher.user.first_name }} {{ teacher.user.last_name }}
+                </td>
+                <td>
+                    {{ teacher.grade_level }} - {{ teacher.section }}
+                </td>
+                <td>
+                    {{ teacher.user.student_set.all.count }}
+                </td>
+                <td>
+                    <div class="d-grid gap-2 mx-auto">
+                        <a href="{% url 'view_class' teacher.user.id %}" class="btn btn-success">View Class</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#teacher-list').DataTable();
+    });
+</script>
+{% endblock content %}
+
