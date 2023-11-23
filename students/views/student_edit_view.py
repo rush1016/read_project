@@ -20,7 +20,8 @@ def student_edit(request, student_id):
         student = Student.objects.get(pk=student_id)
         student_form = StudentRegistrationForm(request.POST, instance=student)
         if student_form.is_valid():
-            student_form.save()
+            teacher = request.user
+            student_form.save(teacher=teacher)
 
             messages.success(request, 'Student record saved.')
         
@@ -29,4 +30,3 @@ def student_edit(request, student_id):
             messages.success(request, student_form.errors)
         
         return redirect('student_profile', student_id)
-        

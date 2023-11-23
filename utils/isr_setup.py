@@ -28,7 +28,6 @@ class IsrSetup():
         i = 1
         for row in table.rows[2:]:
             if i == first_assessment_grade_level:
-                print("True")
                 row.cells[0].text = '*'
             i += 1
 

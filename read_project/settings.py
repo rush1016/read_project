@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
 env_development = BASE_DIR /  "read_project/.env.development"
-development_mode = True
+development_mode = False
 
 
 # Set to Environment Variable to None in Development
@@ -67,7 +67,7 @@ else:
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = True
 
 
 # Application definition
@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'widget_tweaks',
     'nested_admin',
     'read_app',
@@ -131,9 +132,14 @@ if development_mode:
         }
     }
 else:
-    DATABASES = {
-        'default': env.db(),
-    }
+    # Use django-environ to parse the connection string
+    DATABASES = {"default": env.db()}
+
+    # If the flag as been set, configure to use proxy
+    if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+        DATABASES["default"]["HOST"] = "127.0.0.1"
+        DATABASES["default"]["PORT"] = 5432
+
 
 
 # Password validation
@@ -199,3 +205,5 @@ EMAIL_HOST_USER = env("SMTP_EMAIL")
 EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD")
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  
+
+SITE_ID = 1

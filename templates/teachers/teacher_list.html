@@ -8,7 +8,9 @@
     <h1 class="display-4 mb-3">
         Teachers of {{ user.admin.school.name }}
     </h1>
-    <a href="{% url 'generate_srp' %}" class="btn btn-success">Generate School Reading Profile Document</a>
+    <div class="d-grid gap-2 my-5 mx-auto d-md-flex justify-content-md-end">
+        <a href="{% url 'generate_srp' %}" class="btn btn-success">Generate School Reading Profile Document</a>
+    </div>
     <table class="table" id="teacher-list">
         <thead class="table-dark">
             <tr>

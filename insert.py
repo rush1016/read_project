@@ -1,7 +1,7 @@
 import os
 import django
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "..read_project.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "read_project.settings")
 django.setup()
 
 from read_app.models import Grade, ClassSection

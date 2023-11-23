@@ -36,7 +36,7 @@ class ChangeEmailForm(forms.Form):
             return email
 
         if User.objects.filter(email=email).exists():
-            raise ValidationError("An user with this email already exists!")
+            raise ValidationError("A user with this email already exists!")
         
         return email 
 

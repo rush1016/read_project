@@ -75,7 +75,6 @@ class SrpSetup():
             failed_per_section = {section.section_name: students.filter(class_section=section.section_name, gst_score__lt=14).count() for section in sections.filter(grade_level=grade_level)}
             passed_per_section = {section.section_name: students.filter(class_section=section.section_name, gst_score__gte=14).count() for section in sections.filter(grade_level=grade_level)}
 
-            print(total_per_section)
             for section, total in total_per_section.items():
                 try:
                     section_cell = table.cell(current_row, section_col)
@@ -83,7 +82,6 @@ class SrpSetup():
                     failed_cell = table.cell(current_row, failed_col)
                     passed_cell = table.cell(current_row, passed_col)
 
-                    print(section_cell.text, section)
                     if section == section_cell.text:
                         current_cell.text = str(total)
                         failed_cell.text = str(failed_per_section[section])

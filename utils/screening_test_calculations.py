@@ -30,6 +30,7 @@ class ScreeningTestCalculations():
     def calculate_screening_rating_add(student, gst_score, language):
         student_rating = student.student_rating
         if gst_score:
+            student.gst_score = gst_score
             set_gst_score(student_rating, language, gst_score)
 
             recommended_grade = calculate_screening_recommended_grade(student, gst_score)
