@@ -98,12 +98,12 @@ class StudentRegistrationForm(forms.ModelForm):
 
     def save(self, teacher):
         student = super().save(commit=False)
-        grade_level = teacher.grade_level
-        section = teacher.section
+
 
         student.teacher = teacher.user
-        student.grade_level = grade_level
-        student.class_section = section
+        student.school = teacher.school
+        student.grade_level = teacher.grade_level
+        student.class_section = teacher.section
 
         student.save()
         

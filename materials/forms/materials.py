@@ -50,6 +50,20 @@ class ChoiceForm(forms.ModelForm):
 
     choice_content = forms.CharField(
         label='',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control mt-2',
+            }
+        )
+    )
+
+
+class BulkChoiceForm(forms.ModelForm):
+    class Meta:
+        model = Choice
+        fields = ['choice_content']
+
+    choice_content = forms.CharField(
+        label='',
         widget=forms.Textarea(attrs={
             'class': 'form-control mt-2',
             'placeholder': 'Add choice here',

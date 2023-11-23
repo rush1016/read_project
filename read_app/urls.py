@@ -37,7 +37,7 @@ urlpatterns = [
 
     # Generate Report
     path('report/isr/<int:student_id>', generate_report.download_report, name="generate_report"),
-    path('report/srp', generate_srp_report.generate_srp_report_view, name="generate_srp"),
+    path('report/srp/<int:school_id>', generate_srp_report.generate_srp_report_view, name="generate_srp"),
 
     # Teacher profile
     path('profile', profile.teacher_profile_view, name="teacher_profile"),
@@ -45,6 +45,6 @@ urlpatterns = [
     path('profile/password/change', change_password.change_password_view, name="change_password"),
 
     # Admin Controls
-    path('list/teacher', teacher_list.teacher_list_view, name="teacher_list"),
+    path('list/teacher/<int:school_id>', teacher_list.teacher_list_view, name="teacher_list"),
     path('view/class/<int:teacher_user_id>', class_view.class_view, name="view_class"),
 ]

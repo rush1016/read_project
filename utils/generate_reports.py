@@ -170,14 +170,14 @@ class GenerateReports():
         return response
     
 
-    def generate_school_reading_profile():
+    def generate_school_reading_profile(school_id):
         # Classes per grade and section
-        school = School.objects.get(school_code=107037)
+        school = School.objects.get(pk=school_id)
         all_students = Student.objects.all()
         all_sections = ClassSection.objects.all().order_by('section_name')
 
+        # Setup
         doc = Document()
-        
         doc.styles['Normal'].font.name = 'Arial'
         doc.styles['Normal'].font.size = Pt(12)
 
@@ -232,7 +232,7 @@ class GenerateReports():
         
         # Save the document in-memory
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = f'attachment; filename=School_Reading_Profile.docx'
+        response['Content-Disposition'] = f'attachment; filename={school.name}School_Reading_Profile.docx'
         doc.save(response)
 
         return response

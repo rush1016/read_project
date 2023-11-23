@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class AssessmentPreset(models.Model):
@@ -51,10 +53,13 @@ class Passage(models.Model):
         return self.passage_title
     
     def save(self, *args, **kwargs):
+        # Initial save to get a passage id and instance
+        super(Passage, self).save(*args, **kwargs)
         # Calculate and update passage length before saving
         self.passage_length = len(self.passage_content.split())
         self.number_of_questions = self.get_questions().count()
-
+        
+        # Save the data calculated
         super(Passage, self).save(*args, **kwargs)
 
     def get_questions(self):
@@ -63,7 +68,8 @@ class Passage(models.Model):
 
 class Question(models.Model):
     passage = models.ForeignKey(
-        Passage, on_delete=models.CASCADE
+        Passage, 
+        on_delete=models.CASCADE,
     )
     QUESTION_TYPES = (
         ('Literal', 'Literal'),
@@ -82,6 +88,14 @@ class Question(models.Model):
     
     def get_correct(self):
         return self.choice_set.get(is_correct=True)
+
+
+@receiver(post_save, sender=Question)
+def update_question_count(sender, instance, **kwargs):
+    passage = instance.passage
+    passage.number_of_question = passage.question_set.count()
+
+    passage.save()
 
 
 class Choice(models.Model):

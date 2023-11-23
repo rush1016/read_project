@@ -6,11 +6,10 @@ $(document).ready(function () {
         let middleName = $('#id_middle_name').val();
         let lastName = $('#id_last_name').val();
         let suffix = $('#id_suffix').val();
-
-        console.log("name:", firstName, middleName, lastName)
+        let school_id = $('#school-id').val();
 
         // Check if a student with the same details already exists
-        checkExistingStudent(firstName, middleName, lastName, suffix, function(existingStudent) {
+        checkExistingStudent(firstName, middleName, lastName, suffix, school_id, function(existingStudent) {
             if (existingStudent) {
                 // Display a modal to confirm if the user wants to add the record
                 $('#confirm-add-modal').modal('show');
@@ -23,7 +22,7 @@ $(document).ready(function () {
     });
 
     // Function to check if a student with the same details already exists
-    function checkExistingStudent(firstName, middleName, lastName, suffix, callback) {
+    function checkExistingStudent(firstName, middleName, lastName, suffix, school_id, callback) {
         // Perform an AJAX request to check for an existing student
         $.ajax({
             type: 'GET',
@@ -33,6 +32,7 @@ $(document).ready(function () {
                 'middle_name': middleName,
                 'last_name': lastName,
                 'suffix': suffix,
+                'school_id': school_id,
             },
             success: function (data) {
                 callback(data.exists);

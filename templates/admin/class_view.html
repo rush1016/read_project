@@ -19,6 +19,7 @@
         <thead class="table-dark">
             <tr>
                 <th>Name</th>
+                <th>GST Score</th>
                 <th>Reading Level</th>
                 <th>Assessments Done</th>
             </tr>
@@ -28,6 +29,9 @@
             <tr>
                 <td>
                     {{ student.full_name }}
+                </td>
+                <td>
+                    {{ student.gst_score }}
                 </td>
                 <td>
                     {{ student.overall_rating }}

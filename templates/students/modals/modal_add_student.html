@@ -9,6 +9,7 @@
             <div class="modal-body">
                 <form method="POST" action="{% url 'add_student' %}" id="add-student-form">
                     {% csrf_token %}
+                    <input type="hidden" id="school-id" value="{{ user.teacher.school.id }}">
                     <div class="container mb-5">
                         {{ add_form }}
                     </div>

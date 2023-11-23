@@ -4,7 +4,6 @@ from django.utils import timezone
 from read_app.models import User, School
 
 
-
 class Student(models.Model):
     teacher = models.ForeignKey(
         User, 

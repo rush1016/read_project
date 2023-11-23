@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from materials.forms.materials import QuestionForm, ChoiceForm
+from materials.forms.materials import QuestionForm, ChoiceForm, BulkChoiceForm
 from materials.models import Passage, Choice
 
 def create_question(request, passage_id):
@@ -41,7 +41,7 @@ def create_question(request, passage_id):
     else:
         context = {
             'question_form': QuestionForm(),
-            'choice_form': ChoiceForm(),
+            'choice_form': BulkChoiceForm(),
             'passage': Passage.objects.get(pk=passage_id),
         }
         

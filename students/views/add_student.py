@@ -5,6 +5,7 @@ from django.http import JsonResponse
 
 from students.forms.students import StudentRegistrationForm
 from students.models import Student, StudentRating
+from read_app.models import School
 
 
 def add_student(request):
@@ -35,6 +36,8 @@ def check_existing_student(request):
     middle_name = request.GET.get('middle_name')
     last_name = request.GET.get('last_name')
     suffix = request.GET.get('suffix')
+    school_id = request.GET.get('school_id')
+    print(school_id)
 
     # Perform a query to check if a student with the given details exists
     existing_student = Student.objects.filter(

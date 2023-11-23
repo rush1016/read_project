@@ -20,7 +20,7 @@ def student_edit(request, student_id):
         student = Student.objects.get(pk=student_id)
         student_form = StudentRegistrationForm(request.POST, instance=student)
         if student_form.is_valid():
-            teacher = request.user
+            teacher = request.user.teacher
             student_form.save(teacher=teacher)
 
             messages.success(request, 'Student record saved.')

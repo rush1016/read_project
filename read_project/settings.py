@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
 env_development = BASE_DIR /  "read_project/.env.development"
-development_mode = False
+development_mode = True
 
 
 # Set to Environment Variable to None in Development
@@ -67,7 +67,7 @@ else:
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 
 # Application definition
