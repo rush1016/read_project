@@ -7,6 +7,7 @@
             <tr>
                 <th>Grade Level</th>
                 <th>Language</th>
+                <th>Total Score</th>
                 <th>Literal</th>
                 <th>Inferential</th>
                 <th>Critical</th>
@@ -23,6 +24,13 @@
                         Grade {{ assessment.grade_level }}
                     </td>
                     <td>{{ assessment.get_passages.0.passage.language }}</td>
+                    <td>
+                        {% if assessment.is_finished %}
+                            {{ assessment.total_score }} / {{ assessment.number_of_questions }}
+                        {% else %}
+                            Not yet complete
+                        {% endif %}
+                    </td>
                     <td>
                         {{ assessment.screening_assessment.correct_literal }} / {{ assessment.screening_assessment.total_literal }}
                     </td>

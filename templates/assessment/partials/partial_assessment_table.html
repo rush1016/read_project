@@ -1,6 +1,5 @@
-        <tr>
+        <tr class="bg-{% if assessment.is_finished %}success{% else %}primary{% endif %} bg-opacity-25 border-dark">
             <td>{{ assessment.student.last_name }}, {{ assessment.student.first_name }}</td>
-            <td>{{ assessment.assessment_type }}</td>
             <td>Grade {{ assessment.grade_level }}</td>
             {% if assessment.assessment_type == 'Screening' %}
                 <td>

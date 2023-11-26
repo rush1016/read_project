@@ -9,8 +9,18 @@ from read_app.views.user import (
 )
 from read_app.forms.custom_password_confirm_form import CustomPasswordResetConfirmForm
 
-from read_app.views.user import profile, change_email, change_password
-from read_app.views.reports import generate_report, generate_srp_report
+from read_app.views.user import (
+    profile, 
+    change_email, 
+    change_password, 
+    change_username
+)
+
+from read_app.views.reports import (
+    individual_summary_report, 
+    school_summary_report, 
+    class_summary_report
+)
 from read_app.views.admin import teacher_list
 from read_app.views.admin import class_view
 
@@ -36,13 +46,15 @@ urlpatterns = [
     path('reset/done', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # Generate Report
-    path('report/isr/<int:student_id>', generate_report.download_report, name="generate_report"),
-    path('report/srp/<int:school_id>', generate_srp_report.generate_srp_report_view, name="generate_srp"),
+    path('report/isr/<int:student_id>', individual_summary_report.generate_report, name="generate_individual"),
+    path('report/srp/<int:school_id>', school_summary_report.generate_report, name="generate_school"),
+    path('report/csr/<int:teacher_id>', class_summary_report.generate_report, name="generate_class"),
 
     # Teacher profile
     path('profile', profile.teacher_profile_view, name="teacher_profile"),
-    path('profile/email/change', change_email.change_email_view, name="change_email"),
-    path('profile/password/change', change_password.change_password_view, name="change_password"),
+    path('profile/change/email', change_email.change_email_view, name="change_email"),
+    path('profile/change/username', change_username.change_username_view, name="change_username"),
+    path('profile/change/password', change_password.change_password_view, name="change_password"),
 
     # Admin Controls
     path('list/teacher/<int:school_id>', teacher_list.teacher_list_view, name="teacher_list"),

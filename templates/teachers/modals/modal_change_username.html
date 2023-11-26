@@ -1,0 +1,22 @@
+<div class="modal fade" id="change-username-modal" tabindex="-1" aria-labelledby="change-username-modal-Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                Change Username
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{% url 'change_username' %}">
+            <div class="modal-body">
+                {% csrf_token %}
+                {{ username_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="confirmButton">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

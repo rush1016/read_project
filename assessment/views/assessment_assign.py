@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.shortcuts import redirect, get_object_or_404, get_list_or_404
 from django.contrib import messages
 from django.db import transaction
 
@@ -20,8 +20,9 @@ def assign_assessment(request, assessment_type):
 
         for student in student_list:
             student_instance = get_object_or_404(Student, pk=student)
-            passcode = generate_passcode()
+            passcode = generate_passcode() # 6-digit passcode
 
+            # Create the assessment session record to be saved into the database
             assessment_session = AssessmentSession.objects.create(
                 student = student_instance,
                 assessment_type = assessment_type,
@@ -40,7 +41,7 @@ def assign_assessment(request, assessment_type):
 
     return redirect('assessment_select')
 
-
+# Assign assessment based on type
 def assign_assessment_type(assessment_session, request):
     if assessment_session.assessment_type == 'Screening':
         preset_id = request.POST.get('preset_select')
@@ -60,10 +61,13 @@ def assign_screening(assessment_session, preset_id):
     passages = get_list_or_404(Passage, preset=preset)
     total_questions = 0
     order = 1
+    # Simple algorithm for adding order of passages to be taken
+    # This will be used later for rendering the passages in screening assessment
     for passage in passages:
         create_assessment_session_passage(assessment_session, passage, order)
         order += 1
         total_questions += len(passage.get_questions())
+
 
     assessment_session.number_of_questions = total_questions
     assessment_session.save()
@@ -71,12 +75,15 @@ def assign_screening(assessment_session, preset_id):
     screening_assessment_instance = ScreeningAssessment.objects.create(
         assessment_session = assessment_session
     )
+    # This counts the different types of questions and set them into the ScreeningAssessment record/instance
+    # Question types are: Literal, Inferential, and Critical
     screening_assessment_instance.update_question_counts() 
 
     return preset.grade_level
 
 
 def assign_graded(assessment_session, passage_id):
+    # Graded Passage Assessment is only taking 1 passage per assessment
     passage_instance = get_object_or_404(Passage, pk=passage_id)
     assessment_session.number_of_questions = len(passage_instance.get_questions())
     assessment_session.save()
@@ -90,6 +97,10 @@ def assign_graded(assessment_session, passage_id):
 
 
 def create_assessment_session_passage(assessment_session, passage, order):
+    # This function creates an AssessmentSessionPassage record
+    # This is a separate table that has relation to both AssessmentSession table
+    # And Passage table, to save which passages are being used for the assessment
+    # And to get the information from the main table of Passage
     AssessmentSessionPassage.objects.create(
         assessment_session = assessment_session,
         order = order,

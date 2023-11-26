@@ -4,7 +4,7 @@ class GradedAssessmentCalculations():
     @staticmethod
     def calculate_oral_reading(assessment_instance):
         assessment = assessment_instance
-        passage = assessment.get_passages()[0].passage # Get the first and only passage
+        passage = assessment.get_graded_passage().passage # Get the first and only passage
         graded_assessment = assessment_instance.graded_assessment
 
         miscues_count = assessment.get_miscues().count()
@@ -79,6 +79,7 @@ class GradedAssessmentCalculations():
 
     @staticmethod
     def calculate_student_overall_rating(assessment_instance):
+        assessment_instance.save()
         graded_assessment = assessment_instance.graded_assessment
         passage = assessment_instance.get_passages()[0].passage
         passage_language = passage.language

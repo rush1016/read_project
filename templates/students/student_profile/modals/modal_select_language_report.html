@@ -1,0 +1,31 @@
+<!-- Modal -->
+<div class="modal fade" id="language-select-generate-report" tabindex="-1" aria-labelledby="language-select-generate-reportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select which materials to generate report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'generate_individual' student.id %}">
+                    {% csrf_token %}
+                    <div class="container mb-5">
+                        <select name="selected-language" id="selected-language" class="form-select">
+                            {% if student.student_rating.english_rating %}
+                                <option value="English">English</option>
+                            {% endif %}
+                            {% if student.student_rating.filipino_rating %}
+                                <option value="Filipino">Filipino</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Generate Report</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->

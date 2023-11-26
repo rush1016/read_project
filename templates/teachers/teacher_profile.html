@@ -20,19 +20,27 @@
         </p>
         <p class="lead">
             Email: {{ user.email }}
+            <a 
+                class="link-primary text-decoration-none align-self-center mx-5" 
+                data-bs-toggle="modal" 
+                data-bs-target="#change-email-modal"
+                style="cursor: pointer;">
+                Change Email
+            </a>
         </p>
         <p class="lead">
             Username: {{ user.username }}
+            <a 
+                class="link-primary text-decoration-none align-self-center mx-5" 
+                data-bs-toggle="modal" 
+                data-bs-target="#change-username-modal"
+                style="cursor: pointer;">
+                Change Username
+            </a>
         </p>
         <p class="lead">
             Number of students registered: {{ user.student_set.all.count }}
         </p>
-        <button 
-            class="btn btn-primary" 
-            data-bs-toggle="modal" 
-            data-bs-target="#change-email-modal">
-            Change email
-        </button>
         <button 
             class="btn btn-success"
             data-bs-toggle="modal"
@@ -41,6 +49,7 @@
         </button>
     </div>
     {% include "teachers/modals/modal_change_email.html" %}
+    {% include "teachers/modals/modal_change_username.html" %}
     {% include "teachers/modals/modal_change_password.html" %}
 
 

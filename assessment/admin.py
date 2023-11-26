@@ -72,6 +72,7 @@ class AssessmentPassageAdmin(admin.ModelAdmin):
         'score',
         'reading_time',
         'answering_time',
+        'words_per_minute',
     )
 
 class StudentAnswerAdmin(admin.ModelAdmin):

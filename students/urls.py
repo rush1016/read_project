@@ -7,7 +7,8 @@ from students.views import (
     section_get_info, 
     add_student,
     student_edit_view,
-    student_delete_view
+    student_delete_view,
+    check_existing_screening
 )
 
 urlpatterns = [
@@ -22,5 +23,8 @@ urlpatterns = [
     path('delete/<int:student_id>', student_delete_view.student_delete, name='delete_student'),
 
     # Check existing records
-    path('check_existing_student', add_student.check_existing_student, name="check_existing_student")
+    path('check_existing_student', add_student.check_existing_student, name="check_existing_student"),
+
+    # Check existing Screening Test
+    path('check/screening_exists', check_existing_screening.check_existing_screening, name="check_existing_screening")
 ]

@@ -5,7 +5,9 @@
 <title>Assessment</title>
 {% endblock title %}
 {% block content %}
+<!-- Passage Box Button -->
 <div class="container my-5">
+    {% include "assessment/student/partials/passage_box_button.html" %}
     <!-- Instruction Card -->
     {% include "assessment/student/partials/instruction_card.html" %}
     <link rel="stylesheet" href="{% static "assets/css/assessment/main.css" %}">
@@ -15,8 +17,6 @@
         {% if type == 'Screening' %}
             <h1 class="display-5">Passage No. {{ order }}</h1>
         {% endif %}
-        <!-- Timer -->
-        {% include "assessment/student/partials/timer.html" %}
 
         <!-- Passage -->
         <div id="passage-container" class="passage-container border border-5 bg-warning rounded p-2">
@@ -38,6 +38,9 @@
                 data-passage-id="{{ passage_instance.id }}">
                     Start Answering
             </button>
+        </div>
+        <div id="passage-box" class="d-none">
+            {% include "assessment/student/modals/modal_passage_box.html" %}
         </div>
     
         <!-- Questions -->
@@ -71,6 +74,8 @@
                 {% endfor %}
                 <!-- Hidden fields for timer values -->
                 <input type="hidden" name="reading_time" id="reading-time" value="0">
+                <input type="hidden" name="extra_reading_time" id="extra-reading-time" value="0">
+                <input type="hidden" name="review_count" id="review-count" value="0">
                 <input type="hidden" name="answering_time" id="answering-time" value="0">
 
                 <div id="btn-container" class="container d-grid gap-2 mx-auto">

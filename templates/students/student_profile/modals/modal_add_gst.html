@@ -1,0 +1,38 @@
+<!-- Modal -->
+<div class="modal fade" id="add-gst-modal" tabindex="-1" aria-labelledby="add-gst-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+
+                {% if not student.student_rating.english_gst_score or not student.student_rating.filipino_gst_score and not student.screening %}
+                    Add 
+                {% else %}
+                    Edit
+                {% endif %}
+                    GST Score
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_gst' student.id %}" id="gst-score-form">
+                    {% csrf_token %}
+                    <div class="container mb-5">
+                        {{ gst_score_form }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="gst-add-button">
+                        {% if not student.student_rating.english_gst_score or not student.student_rating.filipino_gst_score and not student.screening %}
+                            Add
+                        {% else %}
+                            Update
+                        {% endif %}
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->

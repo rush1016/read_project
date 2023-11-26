@@ -3,11 +3,11 @@ from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction, models
 
-from materials.models import Choice
-from students.models import Student
+from materials.models import Passage, Choice
 from assessment.models import AssessmentSession, ScreeningAssessment, StudentAnswer
-from assessment.views.check_answer import check_answer
-from utils.update_passage_data import update_assessment_passage_data
+from utils.assessment.save_answers import save_answers
+from utils.assessment.update_passage_data import update_assessment_passage_data
+from utils.assessment.update_assessment_data import update_assessment_data
 from utils.screening_test_calculations import ScreeningTestCalculations
 
 from assessment.forms.question import AssessmentQuestionForm
@@ -87,39 +87,25 @@ def screening_save_answers_view(request, assessment_id, order):
     if request.method == 'POST':
         student_instance = assessment_instance.student
         passage_id = request.POST.get('passage_id')
+        passage_instance = Passage.objects.get(pk=passage_id)
         reading_time = request.POST.get('reading_time')
         answering_time = request.POST.get('answering_time')
-        score = 0
+        extra_reading_time = request.POST.get('extra_reading_time')
+        review_count = request.POST.get('review_count')
 
-        # Iterate through each question to check them
-        for question in questions:
-            # Get the unique field names using the question id
-            answer_field_name = f'answer_content_{question.id}'
-            answer_id = request.POST.get(answer_field_name)
-            choice_instance = get_object_or_404(Choice, pk=answer_id)
-            correct = False
-
-            if check_answer(question, choice_instance):
-                score += 1
-                correct = True
-
-            # Save or update student answer
-            student_answer_instance = StudentAnswer.objects.get_or_create(
-                assessment=assessment_instance,
-                student=student_instance,
-                passage=passage_instance,
-                question=question,
-            )
-            student_answer_instance[0].answer=choice_instance 
-            student_answer_instance[0].correct = correct
-            student_answer_instance[0].save()
+        # Process and save the answers into the database
+        score = save_answers(request, assessment_instance, passage_instance, student_instance, questions)
 
         # AssessmentSessionPassage model
         # Update recorded assessment values for each passage
-        update_assessment_passage_data(passage_id, assessment_instance, score, reading_time, answering_time)
+        update_assessment_passage_data(passage_instance, assessment_instance, score, reading_time, answering_time)
+        
+        # AssessmentSession model
+        update_assessment_data(assessment_instance, extra_reading_time, review_count)
 
         order += 1
 
+        # If all passages have been submitted
         if order > len(assessment_passages):
             # Screening Assessment model
             screening_instance = get_object_or_404(ScreeningAssessment, assessment_session = assessment_instance)

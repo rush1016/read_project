@@ -1,47 +1,52 @@
-<div class="table table-responsive">
-    {% if students %}
-        <table class="table table-hover" id="studentList">
-            <thead class="table-dark">
+{% if students %}
+    <table class="table table-hover" id="studentList">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Grade Level</th>
+                <th>Section</th>
+                <th>Reading Level</th>
+                <th>Date Added</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
                 <tr>
-                    <th>Name</th>
-                    <th>Grade Level</th>
-                    <th>Section</th>
-                    <th>Reading Level</th>
-                    <th>Date Added</th>
-                    <th class="text-center"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                    <tr>
-                        <td>{{ student.full_name }}</td>
-                        <td>Grade {{ student.grade_level }}</td>
-                        <td>{{ student.class_section }}</td>
-                        <td>{{ student.overall_rating }}</td>
-                        <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
-                        <!--Action buttons-->
-                        <td class="d-grid gap-2 d-md-flex justify-content-md-around">
-                            <a 
-                                href="{% url 'student_profile' student.id %}" 
-                                type="button" 
-                                class="btn btn-primary">
-                                    View Student Profile
-                            </a>
-                        </td>
+                    <td>{{ student.full_name }}</td>
+                    <td>Grade {{ student.grade_level }}</td>
+                    <td>{{ student.class_section }}</td>
+                    <td>{{ student.overall_rating }}</td>
+                    <td>{{ student.date_added|date:"M d, Y"|upper }}</td>
+                    <!--Action buttons-->
+                    <td class="d-grid gap-2 d-md-flex justify-content-md-around">
+                        <a 
+                            href="{% url 'student_profile' student.id %}" 
+                            type="button" 
+                            class="btn btn-primary">
+                                View Student Profile
+                        </a>
+                    </td>
                     
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="lead text-center my-5">
-            No students to display. Please select the "Add Students" button and enter your students' credentials to add them here.
-        </p>
-    {% endif %}
-</div>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="lead text-center my-5">
+        No students to display. Please select the "Add Students" button and enter your students' credentials to add them here.
+    </p>
+{% endif %}
 
 <script>
     $(document).ready(function() {
-        $('#studentList').DataTable();
+        $('#studentList').DataTable({
+            "responsive": true,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 0 }, 
+                { responsivePriority: 2, targets: 3 }, 
+                { responsivePriority: 3, targets: -1 }, 
+            ]
+        });
     });
 </script>

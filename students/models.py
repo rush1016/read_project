@@ -51,7 +51,6 @@ class Student(models.Model):
     gst_score = models.PositiveIntegerField(null=True, blank=True)
     recommended_grade_level = models.PositiveIntegerField(default=0)
     overall_rating = models.CharField(default='Not yet screened', max_length=64)
-    words_per_minute = models.DecimalField(default=0, decimal_places=2, max_digits=10)
 
     mean_read_time = models.DecimalField(default=0, decimal_places=2, max_digits=10)
     mean_score = models.DecimalField(default=0, decimal_places=2, max_digits=10)
@@ -77,7 +76,6 @@ class Student(models.Model):
             full_name += f' {self.suffix}'
         
         return full_name
-
     
     def get_assessments(self):
         return self.assessment_session.all()
@@ -94,6 +92,7 @@ class Student(models.Model):
             self.recommended_grade_level = self.grade_level
 
         super().save(*args, **kwargs)
+
 
 class StudentRating(models.Model):
     student = models.OneToOneField(

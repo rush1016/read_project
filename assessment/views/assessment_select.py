@@ -2,8 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 
 from read_app.models import User
 from students.models import Student
-from materials.models import Passage, AssessmentPreset
-from assessment.models import AssessmentSession
+from materials.models import Passage
 from assessment.forms.preset_select import PresetSelect
 
 def select(request):
@@ -11,13 +10,15 @@ def select(request):
 
 def select_student_screening(request):
     teacher_instance = User.objects.get(pk=request.user.id, is_teacher=True)
+    grade_level = teacher_instance.teacher.grade_level
     students = Student.objects.filter(
         teacher = teacher_instance, 
         assessments_done = 0, 
-        gst_score = 0,
+        gst_score = None,
+        screening=False,
     ).order_by('id')
 
-    form = PresetSelect()
+    form = PresetSelect(grade_level=grade_level)
 
     context = {
         'students': students,
@@ -28,7 +29,7 @@ def select_student_screening(request):
 
 
 def select_material_graded(request):
-    passages = Passage.objects.filter(preset=None)
+    passages = Passage.objects.all().order_by('grade_level', 'language')
 
     context = {
         'passages': passages,

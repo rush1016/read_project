@@ -9,7 +9,7 @@
         Teachers of {{ user.school_admin.school.name }}
     </h1>
     <div class="d-grid gap-2 my-5 mx-auto d-md-flex justify-content-md-end">
-        <a href="{% url 'generate_srp' user.school_admin.school.id %}" class="btn btn-success">Generate School Reading Profile Document</a>
+        <a href="{% url 'generate_school' user.school_admin.school.id %}" class="btn btn-success">Generate School Reading Profile Document</a>
     </div>
     <table class="table" id="teacher-list">
         <thead class="table-dark">

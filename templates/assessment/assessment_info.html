@@ -9,10 +9,7 @@
 <div class="container my-5">
     <div class="my-5">
         <div class="container d-flex justify-content-end">
-            <a href="{% url 'student_profile' assessment_instance.student.id %}" class="text-decoration-none">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                Back
-            </a>
+            {% include "utils/back.html" %}
         </div>
         <div class="display-4 text-center mb-5">
             <strong>
@@ -155,11 +152,19 @@
             <div class="lead">
                 Answering Time: 
                 {% if passage_instance.answering_time %}
-                    {{ passage_instance.answering_time }} seconds</div>
+                    {{ passage_instance.answering_time }} seconds
                 {% else %}
                     Not yet taken 
                 {% endif %} 
-
+            </div>
+            <div class="lead">
+                Words per minute: 
+                {% if passage_instance.words_per_minute %}
+                    {{ passage_instance.words_per_minute }}
+                {% else %}
+                    Not yet taken 
+                {% endif %} 
+            </div>
             {% for student_answer in student_answers %}
                 <div class="card text-light">
                     <div class="card-body bg-{% if student_answer.correct %}success{% else %}danger{% endif %}">

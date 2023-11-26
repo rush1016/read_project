@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>{{ student.first_name }} {{ student.last_name }}'s Profile</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+	{% include "utils/back.html" %}
+  	<div class="row">
+		<!-- Student's Full Name -->
+		<h1 class="display-4 mb-4">
+			{{ student.full_name }}
+		</h1>
+		<p class="lead"><strong>Grade Level:</strong> {{ student.grade_level }}</p>
+		<p class="lead"><strong>Section:</strong> {{ student.class_section }}</p>
+	
+		<!-- Update and Delete Student Profile Buttons -->
+		{% include "students/student_profile/partials/update_delete_buttons.html" %}
+		<hr>
+
+		<!-- English and Filipino Rating Information Cards -->
+		{% include "students/student_profile/partials/recommendations.html" %}
+			
+    	<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+			<!-- Assign Buttons -->
+			{% include "students/student_profile/partials/assign_buttons.html" %}
+		
+			<!-- Modals -->
+			{% if student %}
+				{% include "assessment/modals/modal_preset_select.html" %}
+				{% include "assessment/modals/modal_language_select.html" %}
+				{% include "students/student_profile/modals/modal_select_language_report.html" %}
+				{% include "students/student_profile/modals/modal_delete_student.html" %}
+			{% endif %}
+    	</div>
+	</div>
+
+<div class="row mt-5">
+    <hr>
+    <div class="container">
+		{% if student.get_assessments %}
+        	<h1 class="display-4 mb-5">
+            	Assessments Summary
+        	</h1>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-around text-center">
+				{% if student.mean_read_time %}
+					<p class="card bg-warning p-3 w-100"><strong>Average Reading Time:</strong> {{ student.mean_read_time }} seconds</p>
+					<p class="card bg-info p-3 w-100"><strong>Average Score:</strong> {{ student.mean_score }}</p>
+				{% endif %}
+			</div>
+			<!-- Student Rating Per Grade Level -->
+			{% include "students/student_profile/partials/student_rating_per_grade.html" %}
+	
+			<!-- Screening Tests -->
+			{% include "students/student_profile/partials/table_screening_tests.html" %}
+
+			<!-- Graded Passages -->
+			{% include "students/student_profile/partials/table_graded_passages.html" %}
+
+		
+		{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

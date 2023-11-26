@@ -10,11 +10,11 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between">
         <h2 class="display-3 mt-3">Student List</h2>
-        {% include 'students/partials/back_button.html' %}
     </div>
     <p class="display-6">
         for Grade {{ user.teacher.grade_level }} - {{ user.teacher.section }}
     </p>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#language-select-generate-report">Generate Class Summary</button>
     <!-- Filter records -->
 
     <div class="form-group d-flex justify-content-end p-3">
@@ -37,15 +37,12 @@
     <!-- Student table that contains student records -->
     {% include 'students/partials/partial_student_table.html' %}
 
-    <!-- Modal for approving student registration -->
-    {% include 'students/modals/modal_approve_student.html' %}
-
     <!-- Modal adding student records -->
     {% include 'students/modals/modal_add_student.html' %}
     {% include 'students/modals/modal_confirm_add.html' %}
 
-    <!-- Modal for confirmation of adding from archived records -->
-    {% include 'students/modals/modal_add_archived_student.html' %}
+    <!-- Modal for selecting language for reports -->
+    {% include "students/modals/modal_class_report.html" %}
 </div>
 
 

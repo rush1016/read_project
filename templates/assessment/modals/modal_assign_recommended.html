@@ -25,13 +25,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.settings-confirm-button').click(function() {
-            let passageId = $(this).data('passage-id');
-            let studentId = $(this).data('student-id');
-
-            window.location.href = `recommended/${studentId}`;
-        });
-    });
-</script>

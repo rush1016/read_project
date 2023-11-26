@@ -9,16 +9,18 @@
             <div class="modal-body p-3">
                 <div class="lead">Select the language of material you want to use:</div>
                 <select name="language-selected" id="language-selected" class="form-select mt-5">
-                    {% if student.student_rating.english_gst_score %}
+                    {% if student.student_rating.english_gst_score != None %}
                         <option value="English">English</option>
                     {% endif %}
-                    {% if student.student_rating.filipino_gst_score %}
+                    {% if student.student_rating.filipino_gst_score != None %}
                         <option value="Filipino">Filipino</option>
                     {% endif %}
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary settings-confirm-button" id="settings-confirm-button" data-passage-id="{{ passage.id }}">Confirm</button>
+                <button type="submit" class="btn btn-primary settings-confirm-button" id="settings-confirm-button">
+                    Confirm
+                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
             </form>

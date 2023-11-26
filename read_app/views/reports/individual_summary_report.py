@@ -1,11 +1,11 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from utils.generate_reports import GenerateReports
+from utils.generate_reports.generate_individual_summary import generate_isr_word_document
 
-def download_report(request, student_id):
+def generate_report(request, student_id):
     language = request.POST.get('selected-language')
-    generated_report = GenerateReports.generate_isr_word_document(student_id, language)
+    generated_report = generate_isr_word_document(student_id, language)
 
     if generated_report:
         messages.success(request, 'Successfully generated report.')

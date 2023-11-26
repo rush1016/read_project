@@ -1,7 +1,7 @@
 from django.db import models
 from materials.models import Passage
 from django.utils import timezone
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from students.models import Student
@@ -22,7 +22,10 @@ class AssessmentSession(models.Model):
     grade_level = models.IntegerField()
     total_score = models.IntegerField(null=True, blank=True)
     total_reading_time = models.PositiveIntegerField(null=True, blank=True)
+    extra_reading_time = models.PositiveIntegerField(null=True, blank=True)
     total_answering_time = models.PositiveIntegerField(null=True, blank=True)
+    review_count = models.PositiveIntegerField(null=True, blank=True)
+    words_per_minute = models.FloatField(null=True, blank=True)
 
     assigned_time = models.DateTimeField(default=timezone.now)
     due_date = models.DateTimeField(null=True)
@@ -50,9 +53,35 @@ class AssessmentSession(models.Model):
 # Signal to update assessments_done when a new AssessmentSession is created
 @receiver(post_save, sender=AssessmentSession)
 def update_assessments_done(sender, instance, **kwargs):
+    student = instance.student
     if instance.is_finished:
-        instance.student.assessments_done = instance.student.assessment_session.filter(assessment_type='Graded', is_finished=True).count()
-        instance.student.save()
+        if instance.assessment_type == 'Graded':
+            graded_assessments = student.assessment_session.filter(assessment_type='Graded', is_finished=True)
+            graded_count = graded_assessments.count()
+            total_reading_time = sum(session.total_reading_time for session in graded_assessments)
+            total_score = sum(session.total_score for session in graded_assessments)
+            average_reading_time = total_reading_time / graded_count if graded_count > 0 else 0
+            average_score = total_score / graded_count if graded_count > 0 else 0
+
+            student.assessments_done = graded_count
+            student.mean_read_time = average_reading_time
+            student.mean_score = average_score
+            
+            # Calculate the total reading time and the number of sessions
+
+        elif instance.assessment_type == 'Screening':
+            student.screening = False
+            student.is_screened = True
+
+        student.save()
+
+# Signal to update student.screening when an AssessmentSession is deleted
+@receiver(post_delete, sender=AssessmentSession)
+def update_student_screening(sender, instance, **kwargs):
+    student = instance.student
+    if instance.assessment_type == 'Screening':
+        student.screening = False
+        student.save()
 
 
 class AssessmentMiscue(models.Model):
@@ -115,6 +144,7 @@ class ScreeningAssessment(models.Model):
         # Save the updated counts
         self.save()
 
+
 class GradedAssessment(models.Model):
     assessment_session = models.OneToOneField(
         AssessmentSession,
@@ -141,7 +171,6 @@ class GradedAssessment(models.Model):
     reading_speed = models.FloatField(null=True, blank=True)
 
 
-
 class AssessmentSessionPassage(models.Model):
     assessment_session = models.ForeignKey(
         AssessmentSession, 
@@ -157,6 +186,7 @@ class AssessmentSessionPassage(models.Model):
     score = models.PositiveIntegerField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(null=True, blank=True)
     answering_time = models.PositiveIntegerField(null=True, blank=True)
+    words_per_minute = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.passage.passage_title

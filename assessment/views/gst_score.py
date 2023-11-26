@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 from assessment.forms.gst_score import GstScoreForm
+from assessment.models import AssessmentSession
 from students.models import Student
 from utils.screening_test_calculations import ScreeningTestCalculations
 
@@ -11,6 +12,7 @@ def add_gst_score(request, student_id):
     if request.method == 'POST':
         student = Student.objects.get(pk=student_id)
         form = GstScoreForm(request.POST)
+
         if form.is_valid():
 
             gst_score = int(form.cleaned_data['gst_score'])

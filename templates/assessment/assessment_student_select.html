@@ -37,40 +37,8 @@
         <!-- Filter -->
 		{% include 'reading/partials/partial_filter_reading_material.html' %}
 
-        <table id="reading-list" class="table">
-            <thead class="table-dark">
-                <th></th>
-                <th>Passage Title</th>
-                <th>Grade Level</th>
-                <th>Language</th>
-                <th>Number of Words</th>
-                <th>Number of Questions</th>
-                <th></th>
-            </thead>
-            <tbody>
-                {% for passage in passages %}
-                    <tr>
-                        <td></td>
-                        <td>{{ passage.passage_title }}</td>
-                        <td>Grade {{ passage.grade_level }}</td>
-                        <td>{{ passage.language }}</td>
-                        <td>{{ passage.passage_length }} words</td>
-                        <td>{{ passage.number_of_questions }} questions</td>
-                        <td>
-                            <button 
-                                class="btn btn-success"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#assessment-settings-modal-{{ passage.id }}"
-                                data-passage-id="{{ passage.id }}">
-                                Select
-                            </button>
-                        </td>
-                    </tr>
-                    
-                    {% include 'assessment/modals/modal_settings.html' %}
-                {% endfor %}
-            </tbody>
-        </table>
+        {% include 'assessment/partials/partial_list_materials.html' %}
+
 
     <!-- Graded Select Students -->
     {% elif mode == 'select student' and passage %}
@@ -110,4 +78,4 @@
 
 <script src="{% static 'assets/js/assessment/checkbox.js' %}"></script>
 <script src="{% static 'assets/js/reading/filter_reading_materials.js' %}"></script>
-{% endblock %}
+{% endblock content %}

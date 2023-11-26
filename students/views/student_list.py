@@ -21,6 +21,6 @@ def student_list(request):
 
 
 def get_student_list(teacher_instance):
-    students = Student.objects.filter(teacher=teacher_instance).order_by('-date_added', '-id')
+    students = Student.objects.filter(teacher=teacher_instance)
 
     return students

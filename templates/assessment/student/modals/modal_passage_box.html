@@ -1,0 +1,27 @@
+<div class="modal fade" id="modal-passage-box" tabindex="-1" aria-labelledby="modal-passage-box-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-warning">
+            <div class="modal-header border-warning">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h1 class="display-3 text-center my-3 my-sm-2">
+                    <strong>
+                        {{ passage_instance.passage_title }}
+                    </strong>
+                </h1>
+                <p class="display-6 m-md-5 m-sm-3">
+                    <strong>
+                        {{ passage_instance.passage_content }}
+                    </strong>
+                </p>
+
+            </div>
+            <div class="modal-footer border-warning">
+                <div class="d-grid col-6 mx-auto">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

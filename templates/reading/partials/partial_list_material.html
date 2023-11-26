@@ -1,5 +1,6 @@
-<table id="reading-list" class="table table-responsive table-bordered">
+<table id="reading-list" class="table table-responsive table-hover">
     <thead class="table-dark">
+        <th></th>
         <th>Passage Title</th>
         <th>Language</th>
         <th>Type</th>
@@ -12,7 +13,14 @@
     </thead>
     <tbody>
         {% for passage in passages %}
-            <tr>
+            <tr class="bg-{% if passage.grade_level == 1 %}info
+            {% elif passage.grade_level == 2 %}warning
+            {% elif passage.grade_level == 3 %}success
+            {% elif passage.grade_level == 4 %}danger
+            {% elif passage.grade_level == 5 %}secondary
+            {% elif passage.grade_level == 6 %}light
+            {% endif %} border-dark">
+                <td></td>
                 <td>{{ passage.passage_title }}</td>
                 <td>{{ passage.language }}</td>
                 <td>{% if passage.preset == None %}
@@ -36,7 +44,7 @@
                             View Passage
                     </a>
                     {% if user.is_school_admin %}
-                        <a href="{% url 'create_question' passage.id %}" class="btn btn-primary">
+                        <a href="{% url 'create_question' passage.id %}" class="btn btn-outline-primary">
                             Add Question
                         </a>
                     {% endif %}
@@ -45,3 +53,17 @@
         {% endfor %}
     </tbody>
 </table>
+<script>
+	$(document).ready(function() {
+		$('#reading-list').DataTable({
+			"responsive": true,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 0 }, 
+                { responsivePriority: 2, targets: 1 }, 
+                { responsivePriority: 3, targets: -1 }, 
+                { responsivePriority: 4, targets: 3 }, 
+
+			]
+        });
+	});
+</script>

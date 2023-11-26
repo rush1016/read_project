@@ -3,9 +3,15 @@
         Assign Screening Test
     </a>
     or
-    <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-gst-modal">Add GST Score</a>
-    {% include "students/modals/modal_add_gst.html" %}
+    <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-gst-modal">
+        Add GST Score
+    </a>
+{% else %}
+    <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-gst-modal">
+        Edit GST Score
+    </a>
 {% endif %}
+
 {% if student.assessments_done > 0 %}
     <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#language-select-generate-report" >
         Generate Individual Summary Record (ISR)
@@ -16,3 +22,6 @@
         Assign Graded Passage
     </a>
 {% endif %}
+
+{% include "students/student_profile/modals/modal_add_gst.html" %}
+{% include "students/student_profile/modals/modal_confirm_add_gst.html" %}

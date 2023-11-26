@@ -26,7 +26,7 @@ $(document).ready(function () {
         // Perform an AJAX request to check for an existing student
         $.ajax({
             type: 'GET',
-            url: 'check_existing_student', // Replace with the actual URL for your check
+            url: 'check_existing_student',
             data: {
                 'first_name': firstName,
                 'middle_name': middleName,

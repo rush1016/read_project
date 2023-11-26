@@ -5,15 +5,16 @@ class ScreeningTestCalculations():
     @staticmethod
     def calculate_screening_rating(assessment_instance):
         student_instance = assessment_instance.student
+        student_rating = student_instance.student_rating
         language = assessment_instance.get_passages()[0].passage.language
         gst_score = assessment_instance.total_score
 
         # Check if it's a Screening Assessment and the student has passed the screening test
         if assessment_instance.assessment_type == 'Screening':
             if gst_score >= 14:
-                overall_rating = f'Passed Screening Test ({language})'
+                overall_rating = f'Grade {assessment_instance.grade_level} - Independent'
             else:
-                overall_rating = 'Further Assessment Required'
+                overall_rating = f'Further Assessment Required - ({language})'
 
             # Update the student's overall_rating
             student_instance.overall_rating = overall_rating
@@ -24,12 +25,13 @@ class ScreeningTestCalculations():
             recommended_grade = calculate_screening_recommended_grade(student_instance, gst_score)
 
             set_recommended_grade(student_instance, language, recommended_grade)
+            set_rating_field(language, student_rating, overall_rating)
 
 
     @staticmethod
     def calculate_screening_rating_add(student, gst_score, language):
         student_rating = student.student_rating
-        if gst_score:
+        if gst_score or gst_score == 0:
             student.gst_score = gst_score
             set_gst_score(student_rating, language, gst_score)
 
@@ -37,15 +39,14 @@ class ScreeningTestCalculations():
 
             set_recommended_grade(student_rating, language, recommended_grade)
 
-            if 0 < gst_score < 15:
+            if gst_score < 14:
                 rating = 'Further assessments required'
                 
-            elif gst_score >= 15:
+            elif gst_score >= 14:
                 rating = f'Grade {student.grade_level} - Independent'
 
         else:
             rating = 'Not yet screened'
-
 
         set_rating_field(language, student_rating, rating)
         student.overall_rating = rating

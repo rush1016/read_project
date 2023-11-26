@@ -22,4 +22,4 @@ def student_profile_view(request, student_id):
         'student_edit_form': student_edit_form,
     }
 
-    return render(request, 'students/student_profile.html', context)
+    return render(request, 'students/student_profile/student_profile.html', context)

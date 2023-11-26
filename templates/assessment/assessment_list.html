@@ -19,18 +19,17 @@
         <div class="tab-pane fade show active" id="screening" role="tabpanel" aria-labelledby="home-tab">
             <div class="mt-5"></div>
             {% if screening_assessments %}
-            <table class="table" id='screening-tests-list'>
+            <table class="table table-hover" id='screening-tests-list'>
                 <thead class="table-dark">
                     <tr>
                         <th>Student</th>
-                        <th>Assessment Type</th>
-                        <th>Grade Level</th>
+                        <th>Passage Grade Level</th>
                         <th>Score</th> 
                         <th>Literal</th>
                         <th>Inferential</th>
                         <th>Critical</th>
-                        <th>Status</th>
                         <th>Passcode</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -51,8 +50,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Student</th>
-                        <th>Assessment Type</th>
-                        <th>Grade Level</th>
+                        <th>Passage Grade Level</th>
                         <th>Reading Rating</th>
                         <th>Passage Title</th>
                         <th>Score</th> 
@@ -76,7 +74,15 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('#screening-tests-list').DataTable();
+        $('#screening-tests-list').DataTable({
+            "responsive": true,
+            "columnDefs": [
+                { responsivePriority: 1, targets: 0 }, 
+                { responsivePriority: 2, targets: 2 }, 
+                { responsivePriority: 3, targets: 8 }, 
+                { responsivePriority: 4, targets: -1 }, 
+            ]
+        });
         $('#graded-passages-list').DataTable();
     });
 </script>
