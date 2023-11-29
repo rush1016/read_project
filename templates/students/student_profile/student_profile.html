@@ -64,4 +64,28 @@
     </div>
   </div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#screening-tests').DataTable({
+			"paging": false,
+			"searching": false,
+			"responsive": true,
+			"columnDefs": [
+				{ responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: 1 }, 
+                { responsivePriority: 3, targets: -1 }, 
+                { responsivePriority: 4, targets: -3 }, 
+			]
+		});
+		$('#graded-passages').DataTable({
+			"responsive": true,
+			"columnDefs": [
+				{ responsivePriority: 1, targets: 0 },
+				{ responsivePriority: 2, targets: 1 },
+				{ responsivePriority: 3, targets: -1 },
+				{ responsivePriority: 4, targets: -3 },
+			]
+		});
+	});
+</script>
 {% endblock content %}
